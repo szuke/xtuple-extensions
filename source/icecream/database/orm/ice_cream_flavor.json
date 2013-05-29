@@ -1,0 +1,52 @@
+[
+  {
+    "context": "icecream",
+    "nameSpace": "XM",
+    "type": "IceCreamFlavor",
+    "table": "xt.icflav",
+    "idSequenceName": "icflav_icflav_id_seq",
+    "lockable": true,
+    "comment": "Ice Cream Flavor Map",
+    "privileges": {
+      "all": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true
+      }
+    },
+    "properties": [
+      {
+        "name": "id",
+        "attr": {
+          "type": "Number",
+          "column": "icflav_id",
+          "isPrimaryKey": true
+        }
+      },
+      {
+        "name": "name",
+        "attr": {
+          "type": "String",
+          "column": "icflav_name",
+          "isNaturalKey": true
+        }
+      },
+      {
+        "name": "description",
+        "attr": {
+          "type": "String",
+          "column": "icflav_description"
+        }
+      },
+      {
+        "name": "calories",
+        "attr": {
+          "type": "Number",
+          "column": "icflav_calories"
+        }
+      }
+    ],
+    "isSystem": true
+  }
+]
