@@ -9,7 +9,7 @@ var fs = require('fs'),
 (function () {
   "use strict";
 
-  var argv, buildExtension, rootDir, extensions, finish;
+  var argv, buildExtension, rootDir, specifiedDir, extensions, finish;
 
   //
   // Recurse down the array of the extensions to be built
@@ -45,13 +45,14 @@ var fs = require('fs'),
     }
 
     extDir = extensionQueue.pop();
+    extName = extDir.substring(extDir.lastIndexOf('/source/') + 8);
 
     // create the package file for enyo to use
     var rootPackageContents = 'enyo.depends("' + extDir + '/client");';
-    fs.writeFileSync("./package.js", rootPackageContents);
+    fs.writeFileSync("package.js", rootPackageContents);
 
     // run the enyo deployment method asyncronously
-    exec("./tools/deploy.sh", recurse);
+    exec(rootDir + "/tools/deploy.sh", recurse);
   };
 
   //
@@ -60,8 +61,9 @@ var fs = require('fs'),
   argv = process.argv;
   if (argv.indexOf("-e") >= 0) {
     // the user has specified a particular extension
-    extensions = [ argv[argv.indexOf("-e") + 1] ];
-
+    // regex: remove trailing slash if present
+    specifiedDir = argv[argv.indexOf("-e") + 1].replace(/\/$/, "");
+    extensions = [specifiedDir];
   } else {
     // add the core extensions
     // TODO: rmrf with node, remove buildExtensions.sh, move to /scripts directory
@@ -75,17 +77,29 @@ var fs = require('fs'),
   // Define cleanup function
   //
   finish = function () {
-    fs.unlinkSync("./package.js");
-    console.log("all done");
+    fs.unlinkSync("package.js");
+    fs.unlinkSync(rootDir + "/enyo");
+    rimraf("./build", function () {
+      rimraf("./deploy", function () {
+        console.log("all done");
+      });
+    });
   };
 
   /**
     Make the builds directory if it's not there
    */
+  // rootDir is the directory that contains the source directory
   rootDir = extensions[0].substring(0, extensions[0].indexOf('/source/'));
   if (!fs.existsSync(rootDir + '/builds')) {
-    // make a builds dir if it's not there already
     fs.mkdirSync(rootDir + '/builds');
+  }
+
+  /**
+    Symlink the enyo directories if they're not there
+   */
+  if (!fs.existsSync(rootDir + '/enyo')) {
+    fs.symlinkSync(rootDir + "/xtuple/enyo-client/application/enyo", rootDir + '/enyo');
   }
 
   //
