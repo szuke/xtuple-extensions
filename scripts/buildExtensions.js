@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*jshint node:true, indent:2, curly:false, eqeqeq:true, immed:true, latedef:true, newcap:true, noarg:true,
 regexp:true, undef:true, strict:true, trailing:true, white:true */
 /*global X:true, Backbone:true, _:true, XM:true, XT:true*/
@@ -68,7 +70,7 @@ var fs = require('fs'),
     // add the core extensions
     // TODO: rmrf with node, remove buildExtensions.sh, move to /scripts directory
     // this isn't complete for 1.3.5, so users should continue to use the old script
-    console.log("You need to specify an extension with -e");
+    console.log("You need to specify an extension with -e followed by the path to the extension");
     process.exit(1);
     extensions = fs.readdirSync("./source");
   }
