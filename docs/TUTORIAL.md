@@ -171,8 +171,7 @@ XT.extensions.icecream = {};
 
 _A note about the javascript wrappers in the client:_ At the beginning of all of our client-side files you'll see a jshint declaration, and the entirety of the code is wrapped in an anonymous function which is executed immediately. If possible, we also `"use strict"`. These are all good practices and you should follow them when writing in our style. Moreover, you'll also see that for the extension client-side files (except for `core.js` and the `package.js` files), the code is wrapped in another, named function that is not executed immediately. This allows us to load the code of the extension and actually execute the code at different moments in our setup process. For the sake of concision the code examples in this tutorial will ignore all these wrappers, but you will see them in the actual implementation of this sample extension.
 
-You might find yourself copying and pasting the tops and bottoms of client-side files, so as to avoid writing the jshint, `"use strict", and wrapper functions. This is fine to do, but make sure that you rename the XT.extensions functions. There must only be one `XT.extensions.iceCream.initModels` [function](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream/client/models/ice_cream_flavor.js#L9), for example. 
-http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream
+You might find yourself copying and pasting the tops and bottoms of client-side files, so as to avoid writing the jshint, `"use strict"`, and wrapper functions. This is fine to do, but make sure that you rename the XT.extensions functions. There must only be one `XT.extensions.iceCream.initModels` [function](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream/client/models/ice_cream_flavor.js#L9), for example. 
 
 ### Models
 
