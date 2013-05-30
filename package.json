@@ -8,6 +8,8 @@
     "url": "https://github.com/xtuple/xtuple-extensions.git"
   },
   "dependencies": {
+    "rimraf":"2.1.x",
+    "underscore":"1.4.x"
   },
   "devDependencies": {
     "chai":"1.5.x",

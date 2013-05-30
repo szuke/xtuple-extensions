@@ -3,32 +3,40 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
 /*global X:true, Backbone:true, _:true, XM:true, XT:true*/
 var fs = require('fs'),
   exec = require('child_process').exec,
-  rimraf = require('rimraf').exec,
+  rimraf = require('rimraf'),
   _ = require('underscore');
 
 (function () {
   "use strict";
 
-  var argv, buildExtension, extensions, finish;
+  var argv, buildExtension, rootDir, extensions, finish;
 
   //
   // Recurse down the array of the extensions to be built
   //
   buildExtension = function (extensionQueue, callback) {
-    var extDir, extName, buildDir, recurse;
+    var extDir, extName, recurse;
 
     recurse = function (err, stdout, stderr) {
+      var buildDir;
+
       if (err) {
         console.log("Error building enyo app", err);
       }
       console.log(extDir, "extension has been built");
 
       // move the built extension into its proper directory
-      fs.mkdirSync(buildDir);
-      fs.renameSync("./build/app.js", buildDir + "/" + extName + ".js");
+      buildDir = extDir.replace('/source/', '/builds/');
+      // delete it
+      rimraf(buildDir, function () {
+        // make it
+        fs.mkdirSync(buildDir);
+        // populate it
+        fs.renameSync("./build/app.js", buildDir + "/" + extName + ".js");
 
-      // actually recurse
-      buildExtension(extensionQueue, callback);
+        // actually recurse
+        buildExtension(extensionQueue, callback);
+      });
     };
 
     if (extensionQueue.length === 0) {
@@ -37,7 +45,6 @@ var fs = require('fs'),
     }
 
     extDir = extensionQueue.pop();
-    buildDir = extDir.replace('/source/', '/builds/');
 
     // create the package file for enyo to use
     var rootPackageContents = 'enyo.depends("' + extDir + '/client");';
@@ -72,7 +79,14 @@ var fs = require('fs'),
     console.log("all done");
   };
 
-  console.log(extensions);
+  /**
+    Make the builds directory if it's not there
+   */
+  rootDir = extensions[0].substring(0, extensions[0].indexOf('/source/'));
+  if (!fs.existsSync(rootDir + '/builds')) {
+    // make a builds dir if it's not there already
+    fs.mkdirSync(rootDir + '/builds');
+  }
 
   //
   // Go do it.
