@@ -1,0 +1,13 @@
+/node_modules
+/builds
+
+# might be left over from failed build
+/enyo
+/scripts/package.js
+/build
+/deploy
+
+
+npm-debug.log
+*.swp
+*.DS_Store

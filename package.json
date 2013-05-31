@@ -1,0 +1,24 @@
+{
+  "author": "xTuple <dev@xtuple.com>",
+  "name": "xtuple",
+  "description": "xTuple Enterprise Resource Planning Mobile-Web client public extensions",
+  "version": "1.3.5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xtuple/xtuple-extensions.git"
+  },
+  "dependencies": {
+    "rimraf":"2.1.x",
+    "underscore":"1.4.x"
+  },
+  "devDependencies": {
+    "chai":"1.5.x",
+    "mocha":"1.9.x",
+    "zombie":"1.4.x"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "0.8.x"
+  },
+  "scripts": {}
+}
