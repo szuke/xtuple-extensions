@@ -278,11 +278,11 @@ cd xtuple/enyo-client/application/tools
 ./deploy.sh
 ```
 
-Building the extensions are a similar process. 
+Building an extension is a similar process. 
 
 ```bash
-cd xtuple-extensions/scripts
-./buildExtensions.js -e ../source/icecream
+cd xtuple/scripts
+sudo ./build_client.js -e ../../xtuple-extensions/source/icecream
 ```
 
 That's it! Load up your browser, sign in to the app, and you should see an empty list of _iceCreamFlavors in the setup area. If you don't see it, it's likely that you haven't associated this extension with the admin user as described above. You might want to open up the browser's javascript console and verify that `Installing extension icecream` is logged.
