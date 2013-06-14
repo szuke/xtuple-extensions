@@ -10,7 +10,7 @@ white:true*/
     enyo.kind({
       name: "XV.Oauth2clientWorkspace",
       kind: "XV.Workspace",
-      title: "_client".loc(),
+      title: "_oauth2Client".loc(),
       model: "XM.Oauth2client",
       components: [
         {kind: "Panels", arrangerKind: "CarouselArranger",
@@ -18,19 +18,19 @@ white:true*/
           {kind: "XV.Groupbox", name: "mainPanel", components: [
             {kind: "onyx.GroupboxHeader", content: "_overview".loc()},
             {kind: "XV.ScrollableGroupbox", name: "mainGroup", classes: "in-panel", components: [
-              {kind: "XV.InputWidget", attr: "clientID"},
-              {kind: "XV.InputWidget", attr: "clientSecret"},
-              {kind: "XV.InputWidget", attr: "clientName"},
-              {kind: "XV.InputWidget", attr: "clientEmail"},
-              {kind: "XV.InputWidget", attr: "clientWebSite"},
-              {kind: "XV.InputWidget", attr: "clientLogo"},
-              {kind: "XV.InputWidget", attr: "clientType"}, // TODO: use picker
+              {kind: "XV.InputWidget", attr: "clientID", label: "_id".loc()},
+              {kind: "XV.InputWidget", attr: "clientSecret", label: "_secret".loc()},
+              {kind: "XV.InputWidget", attr: "clientName", label: "_name".loc()},
+              {kind: "XV.InputWidget", attr: "clientEmail", label: "_email".loc()},
+              {kind: "XV.InputWidget", attr: "clientWebSite", label: "_website".loc()},
+              {kind: "XV.InputWidget", attr: "clientLogo", label: "_logo".loc()},
+              {kind: "XV.InputWidget", attr: "clientType", label: "_type".loc()}, // TODO: use picker
               {kind: "XV.CheckboxWidget", attr: "isActive"},
               {kind: "XV.DateWidget", attr: "issued"},
               {kind: "XV.InputWidget", attr: "authURI"},
               {kind: "XV.InputWidget", attr: "tokenURI"},
               {kind: "XV.CheckboxWidget", attr: "delegatedAccess"},
-              {kind: "XV.InputWidget", attr: "clientX509PubCert"},
+              {kind: "XV.InputWidget", attr: "clientX509PubCert", label: "_x509PubCert".loc()},
               {kind: "XV.InputWidget", attr: "organization"}
 
 

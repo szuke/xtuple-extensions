@@ -10,7 +10,7 @@ white:true*/
     enyo.kind({
       name: "XV.Oauth2clientList",
       kind: "XV.List",
-      label: "_clients".loc(),
+      label: "_oauth2Clients".loc(),
       collection: "XM.Oauth2clientCollection",
       query: {orderBy: [
         {attribute: 'id'}
