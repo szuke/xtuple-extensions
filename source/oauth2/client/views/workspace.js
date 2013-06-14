@@ -24,7 +24,7 @@ white:true*/
               {kind: "XV.InputWidget", attr: "clientEmail", label: "_email".loc()},
               {kind: "XV.InputWidget", attr: "clientWebSite", label: "_website".loc()},
               {kind: "XV.InputWidget", attr: "clientLogo", label: "_logo".loc()},
-              {kind: "XV.InputWidget", attr: "clientType", label: "_type".loc()}, // TODO: use picker
+              {kind: "XV.Oauth2clientTypePicker", attr: "clientType"}, // TODO: use picker
               {kind: "XV.CheckboxWidget", attr: "isActive"},
               {kind: "XV.DateWidget", attr: "issued"},
               {kind: "XV.InputWidget", attr: "authURI"},
