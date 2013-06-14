@@ -24,7 +24,7 @@ white:true*/
               {kind: "XV.InputWidget", attr: "clientEmail", label: "_email".loc()},
               {kind: "XV.InputWidget", attr: "clientWebSite", label: "_website".loc()},
               {kind: "XV.InputWidget", attr: "clientLogo", label: "_logo".loc()},
-              {kind: "XV.Oauth2clientTypePicker", attr: "clientType"}, // TODO: use picker
+              {kind: "XV.Oauth2clientTypePicker", attr: "clientType"},
               {kind: "XV.CheckboxWidget", attr: "isActive"},
               {kind: "XV.DateWidget", attr: "issued"},
               {kind: "XV.InputWidget", attr: "authURI"},
@@ -32,11 +32,9 @@ white:true*/
               {kind: "XV.CheckboxWidget", attr: "delegatedAccess"},
               {kind: "XV.InputWidget", attr: "clientX509PubCert", label: "_x509PubCert".loc()},
               {kind: "XV.InputWidget", attr: "organization"}
-
-
-              // TODO: delegated URIs
             ]}
-          ]}
+          ]},
+          {kind: "XV.Oauth2clientRedirectBox", attr: "redirectURIs" }
         ]}
       ]
     });

@@ -21,7 +21,11 @@ white:true*/
     });
 
     XM.Oauth2clientRedirs = XM.Model.extend({
-      recordType: "XM.Oauth2clientRedirs"
+
+      recordType: "XM.Oauth2clientRedirs",
+
+      autoFetchId: true
+
     });
 
     //

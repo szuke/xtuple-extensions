@@ -8,6 +8,8 @@ var lang = XT.stringsFor("en_US", {
     "_oauth2": "OAUTH2",
     "_oauth2Client": "OAUTH2 Client",
     "_oauth2Clients": "OAUTH2 Clients",
+    "_redirects": "Redirects",
+    "_redirectURI": "Redirect URI",
     "_secret": "Secret",
     "_serviceAccount": "Service Account",
     "_tokenURI": "Token URI",
