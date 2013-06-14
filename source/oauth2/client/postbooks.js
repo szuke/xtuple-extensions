@@ -7,12 +7,16 @@ white:true*/
   "use strict";
 
   XT.extensions.oauth2.initPostbooks = function () {
-    var panels, relevantPrivileges;
 
-    panels = [
-      {name: "oauth2ClientList", kind: "XV.Oauth2clientList"}
-    ];
-    XT.app.$.postbooks.appendPanels("setup", panels);
+    var module = {
+      name: "oauth2",
+      label: "_oauth2".loc(),
+      panels: [
+        {name: "oauth2ClientList", kind: "XV.Oauth2clientList"}
+      ]
+    };
+    XT.app.$.postbooks.insertModule(module, 2);
   };
+
 }());
 
