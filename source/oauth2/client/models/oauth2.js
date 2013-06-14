@@ -13,7 +13,11 @@ white:true*/
     //
 
     XM.Oauth2client = XM.Model.extend({
-      recordType: "XM.Oauth2client"
+
+      recordType: "XM.Oauth2client",
+
+      autoFetchId: true
+
     });
 
     XM.Oauth2clientRedirs = XM.Model.extend({

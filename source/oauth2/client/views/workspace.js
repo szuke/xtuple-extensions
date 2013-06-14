@@ -19,8 +19,22 @@ white:true*/
             {kind: "onyx.GroupboxHeader", content: "_overview".loc()},
             {kind: "XV.ScrollableGroupbox", name: "mainGroup", classes: "in-panel", components: [
               {kind: "XV.InputWidget", attr: "clientID"},
+              {kind: "XV.InputWidget", attr: "clientSecret"},
               {kind: "XV.InputWidget", attr: "clientName"},
-              {kind: "XV.InputWidget", attr: "clientType"}
+              {kind: "XV.InputWidget", attr: "clientEmail"},
+              {kind: "XV.InputWidget", attr: "clientWebSite"},
+              {kind: "XV.InputWidget", attr: "clientLogo"},
+              {kind: "XV.InputWidget", attr: "clientType"}, // TODO: use picker
+              {kind: "XV.CheckboxWidget", attr: "isActive"},
+              {kind: "XV.DateWidget", attr: "issued"},
+              {kind: "XV.InputWidget", attr: "authURI"},
+              {kind: "XV.InputWidget", attr: "tokenURI"},
+              {kind: "XV.CheckboxWidget", attr: "delegatedAccess"},
+              {kind: "XV.InputWidget", attr: "clientX509PubCert"},
+              {kind: "XV.InputWidget", attr: "organization"}
+
+
+              // TODO: delegated URIs
             ]}
           ]}
         ]}
