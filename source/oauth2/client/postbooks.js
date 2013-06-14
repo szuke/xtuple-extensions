@@ -16,6 +16,12 @@ white:true*/
       ]
     };
     XT.app.$.postbooks.insertModule(module, 2);
+
+    var relevantPrivileges = [
+      "MaintainOauth2clients"
+    ];
+    XT.session.addRelevantPrivileges(module.name, relevantPrivileges);
+
   };
 
 }());

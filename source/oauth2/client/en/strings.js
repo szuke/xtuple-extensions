@@ -5,6 +5,7 @@ var lang = XT.stringsFor("en_US", {
     "_id": "ID",
     "_issued": "Issued",
     "_logo": "Logo",
+    "_maintainOauth2clients": "Maintain OAUTH2 Clients",
     "_oauth2": "OAUTH2",
     "_oauth2Client": "OAUTH2 Client",
     "_oauth2Clients": "OAUTH2 Clients",

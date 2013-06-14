@@ -6,6 +6,14 @@
     "table": "xt.oa2client",
     "idSequenceName": "oa2client_oa2client_id_seq",
     "comment": "Defines global OAuth 2.0 server registered client storage.",
+    "privileges": {
+      "all": {
+        "create": "MaintainOauth2clients",
+        "read": "MaintainOauth2clients",
+        "update": "MaintainOauth2clients",
+        "delete": "MaintainOauth2clients"
+      }
+    },
     "properties": [
      {
        "name": "id",
@@ -156,6 +164,7 @@
        }
      }
     ],
+    "isNestedOnly": true,
     "isSystem": true
   },
   {
