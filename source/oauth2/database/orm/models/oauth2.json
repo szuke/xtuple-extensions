@@ -20,21 +20,24 @@
        "attr": {
          "type": "Number",
          "column": "oa2client_id",
-         "isPrimaryKey": true
+         "isPrimaryKey": true,
+         "required": true
        }
      },
      {
        "name": "clientID",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_id"
+         "column": "oa2client_client_id",
+         "required": true
        }
      },
      {
        "name": "clientSecret",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_secret"
+         "column": "oa2client_client_secret",
+         "required": true
        }
      },
      {
@@ -69,7 +72,8 @@
        "name": "clientType",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_type"
+         "column": "oa2client_client_type",
+         "required": true
        }
      },
      {
