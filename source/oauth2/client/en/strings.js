@@ -4,6 +4,10 @@ var lang = XT.stringsFor("en_US", {
     "_delegatedAccess": "Delegated Access",
     "_id": "ID",
     "_issued": "Issued",
+    "_generatingPrivateKey": "A new keypair will be generated for this OAUTH2 client. " +
+      "The public key will be saved in the database with this client. The private key " +
+      "is available as a one-time download. Click \"ok\" to open a new tab for " +
+      "downloading the private key",
     "_logo": "Logo",
     "_maintainOauth2clients": "Maintain OAUTH2 Clients",
     "_oauth2": "OAUTH2",

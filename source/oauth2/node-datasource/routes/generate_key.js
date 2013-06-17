@@ -6,6 +6,12 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
   "use strict";
 
   exports.generateKey = function (req, res) {
-    res.send("TODO: generate key");
+    var buffer,
+      data = "TODO: private key goes here";
+
+    buffer = new Buffer(data);
+
+    res.attachment("X509_needs_name");
+    res.send(buffer);
   };
 }());

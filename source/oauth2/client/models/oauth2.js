@@ -18,11 +18,12 @@ white:true*/
 
       autoFetchId: true,
 
-      // clientType must not be editable once first saved.
       bindEvents: function () {
         XM.Model.prototype.bindEvents.apply(this, arguments);
         this.on('statusChange', this.statusDidChange);
       },
+
+      // clientType must not be editable once first saved.
       statusDidChange: function () {
         this.setReadOnly('clientType', this.getStatus() !== XM.Model.READY_NEW);
       },
@@ -41,12 +42,10 @@ white:true*/
           that = this;
 
         options.success = function (model, resp, options) {
-          console.log(that.get("clientType"));
           if (status === XM.Model.READY_NEW && that.get("clientType") === 'jwt bearer') {
-            that.notify("_generatingKey".loc(), {callback: function () {
-              window.open(XT.getOrganizationPath() + '/oauth2-generate-key',
-                '_newtab');
-            }});
+            // download the private key
+            window.open(XT.getOrganizationPath() + '/oauth2-generate-key',
+              '_newtab');
           }
 
           if (success) { success(model, resp, options); }
@@ -57,7 +56,20 @@ white:true*/
           value = options;
         }
 
-        XM.Model.prototype.save.call(this, key, value, options);
+        if (status === XM.Model.READY_NEW && that.get("clientType") === 'jwt bearer') {
+          // The order of operations for a new jwt bearer is
+          // 1. Notify the user that the download is coming
+          // 2. Save normally
+          // 3. Open the download tab.
+          //
+          // It's a little curious that 2 happens after 1, but the notify listener
+          // on the workspace gets destroyed by the time we would need it otherwise.
+          that.notify("_generatingPrivateKey".loc(), {callback: function () {
+            XM.Model.prototype.save.call(that, key, value, options);
+          }});
+        } else {
+          XM.Model.prototype.save.call(this, key, value, options);
+        }
       }
 
     });
