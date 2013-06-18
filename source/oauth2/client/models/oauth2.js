@@ -18,6 +18,10 @@ white:true*/
 
       autoFetchId: true,
 
+      readOnlyAttributes: [
+        "secret"
+      ],
+
       bindEvents: function () {
         XM.Model.prototype.bindEvents.apply(this, arguments);
         this.on('statusChange', this.statusDidChange);

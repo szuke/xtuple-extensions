@@ -5,11 +5,16 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
 (function () {
   "use strict";
 
+  var ursa = require("ursa");
+
   exports.generateKey = function (req, res) {
     var buffer,
       data = "TODO: private key goes here";
 
     buffer = new Buffer(data);
+
+    var keypair = ursa.generatePrivateKey();
+    console.log(keypair);
 
     res.attachment("X509_needs_name");
     res.send(buffer);

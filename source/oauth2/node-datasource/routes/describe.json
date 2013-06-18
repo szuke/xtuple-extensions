@@ -1,7 +1,0 @@
-[
-  {
-    "path": "oauth2-generate-key", 
-    "file": "generate_key.js", 
-    "function": "generateKey"
-  }
-]
