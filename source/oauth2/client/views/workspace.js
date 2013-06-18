@@ -17,7 +17,8 @@ white:true*/
           fit: true, components: [
           {kind: "XV.Groupbox", name: "mainPanel", components: [
             {kind: "onyx.GroupboxHeader", content: "_overview".loc()},
-            {kind: "XV.ScrollableGroupbox", name: "mainGroup", classes: "in-panel", components: [
+            {kind: "XV.ScrollableGroupbox", name: "mainGroup", fit: true,
+                classes: "in-panel", components: [
               {kind: "XV.InputWidget", attr: "clientID", label: "_id".loc()},
               {kind: "XV.InputWidget", attr: "clientSecret", label: "_secret".loc()},
               {kind: "XV.InputWidget", attr: "clientName", label: "_name".loc()},

@@ -36,21 +36,24 @@
        "name": "clientSecret",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_secret"
+         "column": "oa2client_client_secret",
+         "required": true
        }
      },
      {
        "name": "clientName",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_name"
+         "column": "oa2client_client_name",
+         "required": true
        }
      },
      {
        "name": "clientEmail",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_email"
+         "column": "oa2client_client_email",
+         "required": true
        }
      },
      {
