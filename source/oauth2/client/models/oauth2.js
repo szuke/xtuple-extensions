@@ -18,10 +18,6 @@ white:true*/
 
       autoFetchId: true,
 
-      readOnlyAttributes: [
-        "secret"
-      ],
-
       bindEvents: function () {
         XM.Model.prototype.bindEvents.apply(this, arguments);
         this.on('statusChange', this.statusDidChange);
@@ -33,6 +29,8 @@ white:true*/
       },
 
       // TODO: validate secret key unique constraint
+      // secret keys only seem to be applicable for website clients, so we might
+      // not want to make it unique
 
       save: function (key, value, options) {
         // Handle both `"key", value` and `{key: value}` -style arguments.
@@ -48,7 +46,7 @@ white:true*/
         options.success = function (model, resp, options) {
           if (status === XM.Model.READY_NEW && that.get("clientType") === 'jwt bearer') {
             // download the private key
-            window.open(XT.getOrganizationPath() + '/oauth2-generate-key',
+            window.open(XT.getOrganizationPath() + '/oauth2-generate-key?id=' + that.id,
               '_newtab');
           }
 

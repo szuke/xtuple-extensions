@@ -36,8 +36,7 @@
        "name": "clientSecret",
        "attr": {
          "type": "String",
-         "column": "oa2client_client_secret",
-         "required": true
+         "column": "oa2client_client_secret"
        }
      },
      {
