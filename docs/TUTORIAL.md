@@ -19,7 +19,7 @@ As you work through the tutorial you will be putting of your code in the `/sourc
 We write our database code in plv8, which allows us to use pure javascript even when constructing tables. You won't see any SQL in this tutorial! Don't worry: it's postgres behind the scenes. We'll be putting three files in the `database/source` directory (You'll have to make these directories inside the `icecream` directory). 
 * `icflav.sql` (to define the table)
 * `register.sql` (to register the extension in the database)
-* `init_script.sql` (as a single point of entry to call the other two and any other files we make)
+* `manifest.js` (as a single point of entry to call the other two and any other files we make)
 
 Let's start with `icflav.sql`. We'll make a table named `xt.icflav`, with four columns:
 * `icflav_id` (the primary key)
@@ -65,25 +65,31 @@ Now is also a good time to associate this extension with the admin. Any extensio
 
 ***
 
-We can put these files together with an `init_script.sql` file, which as a convention will be run by maintenances processes when the database needs to be updated. Another function of the `init_script.sql` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent.
+We can put these files together in our `manifest.js` file, which as a convention will be run by maintenances processes when the database needs to be updated. Another function of the `manifest.js` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent.
 
-```bash
-\i icflav.sql
-\i register.sql
+```javascript
+{
+  "version": "1.3.9",
+  "comment": "Ice Cream Flavor sample extension",
+  "databaseScripts": [
+    "icflav.sql",
+    "register.sql"
+  ]
+}
 ```
 
-From now on, you can just run the `init_script.sql` file only. All of these files are idempotent, so you don't have to worry about anything being installed in duplicate.
+From now on, you can just update the database by running the core build tool. All of these files are idempotent, so you don't have to worry about anything being installed in duplicate.
 
 ```bash
-$ cd database/source
-$ psql -U admin -d dev -f init_script.sql
+$ cd xtuple
+$ ./scripts/build_all.js -d dev -e ../xtuple-extensions/source/icecream
 ```
 
 ### ORMs
 
 The xTuple ORMs are a JSON mapping between the SQL tables and the object-oriented world above the database. In this part of the tutorial we need to make an ORM for the IceCreamFlavor business object. 
 
-By convention, we put new orms in the `orm/models` directory, and extensions to existing orms in the `orm/ext` directory. Unlike with the sql scripts, you don't need to have a master file like the `init_script.sql` that references them all. The xTuple ORM installer will find all the files in these directories and load them in the appropriate order based on the dependency chain.
+By convention, we put new orms in the `orm/models` directory, and extensions to existing orms in the `orm/ext` directory. Unlike with the sql scripts, you don't need to have a master file like the `manifest.js` that references them all. The core build tool will find all the files in these directories and load them in the appropriate order based on the dependency chain.
 
 Put the following JSON object in a new file, `database/orm/models/ice_cream_flavor.json`
 
@@ -150,11 +156,11 @@ The name of the idSequence follows the postgres convention and was created autom
 
 Currently, all ORMs in the application are isSystem:true.
 
-You'll need to run the ORM installer in our core to put these ORMs into the database.
+The same core build tool that ran the files referenced in `manifest.js` will also find and run any orms in the ORM directory.
 
 ```bash
-cd xtuple/node-datasource/installer
-./installer.js -h localhost -d dev -u admin -p 5432 --path ../../../xtuple-extensions/source/icecream/database/orm -P
+$ cd xtuple
+$ ./scripts/build_all.js -d dev -e ../xtuple-extensions/source/icecream
 ```
 
 **Verify** your work by finding a new view called ice_cream_flavor in the xm schema of your database. Now we're ready to move on to the client! There is no need to make any modifications to the `node-datasource`.
