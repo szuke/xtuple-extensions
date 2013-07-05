@@ -2,7 +2,7 @@
 regexp:true, undef:true, strict:true, trailing:true, white:true */
 /*global X:true, _:true, SYS:true */
 
-// https://localhost/dev/oauth2-generate-key?id=7
+// https://localhost/dev/oauth/generate-key?id=7
 
 (function () {
   "use strict";

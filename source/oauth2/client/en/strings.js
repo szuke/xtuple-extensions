@@ -4,6 +4,7 @@ var lang = XT.stringsFor("en_US", {
     "_delegatedAccess": "Delegated Access",
     "_id": "ID",
     "_issued": "Issued",
+    "_fullListUrl": "Full List URL",
     "_generatingPrivateKey": "A new keypair will be generated for this OAUTH2 client. " +
       "The public key will be saved in the database with this client. The private key " +
       "is available as a one-time download. Click \"ok\" to open a new tab for " +
@@ -17,7 +18,9 @@ var lang = XT.stringsFor("en_US", {
     "_redirectURI": "Redirect URI",
     "_secret": "Secret",
     "_serviceAccount": "Service Account",
+    "_singleResourceUrl": "Single Resource URL",
     "_tokenURI": "Token URI",
+    "_tokenRevocationURI": "Token Revocation URI",
     "_webServer": "Web Server",
     "_website": "Website",
     "_x509PubCert": "X.509 Public Key Certificate"
