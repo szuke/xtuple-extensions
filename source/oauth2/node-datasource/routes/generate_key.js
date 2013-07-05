@@ -14,9 +14,6 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
     path = require("path"),
     fs = require("fs");
 
-
-
-
   /**
     Fetch the requested oauth2client model, validate the request,
     generate a keypair whose public key will be saved with the
@@ -37,35 +34,20 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
           certFilename = filenamePrefix + "_cert.pem",
           privateKeyFilename = filenamePrefix + "_private_key.pem",
           p12Filename = filenamePrefix + ".p12",
-          attachmentFilename = p12Filename,
-          //attachmentFilename = publicKey.substring(0, publicKey.indexOf("-----END")) + ".p12",
+          attachmentFilename = publicKey.substring(0, publicKey.indexOf("-----END")) + ".p12",
           csrExec = "openssl req -new -key %@ -out %@".f(privateKeyFilename, csrFilename),
           p12contents;
 
-
-        // XXX new Buffer(privateKey); ???
         async.series([
           function (callback) { fs.writeFile(publicKeyFilename, publicKey, callback); },
           function (callback) { fs.writeFile(privateKeyFilename, privateKey, callback); },
           function (callback) {
-           /*
-            var child = spawn("openssl",
-              ["req", "-new", "-key", privateKeyFilename, "-out", csrFilename]);
-
-            child.stdout.on('data', function (data) {
-              console.log("data is", data);
-            });
-
-            child.on('close', function (code) {
-              callback(null, code);
-            });
-            */
             var child = exec(csrExec, callback);
             // blow through command-line questions
             child.stdin.setEncoding = 'utf-8';
             child.stdin.write("\n\n\n\n\n\n\n\n\n");
-            child.stdin.end();
             //child.stdin.write("US\nVirginia\nNorfolk\nxTuple\n\n\n\n\n");
+            child.stdin.end();
           },
           function (callback) {
             var certSpawn = spawn("openssl",
@@ -99,9 +81,6 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
             res.send({isError: true, message: "Error generating p12 key: " + err.message, error: err});
             return;
           }
-          // TODO: get from results[5 or 6 etc.]
-          console.log("p12 is ", p12contents);
-          //console.log(results);
           res.attachment(attachmentFilename);
           res.send(new Buffer(p12contents));
         });
@@ -116,14 +95,12 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
 
         // Cursory validation: this should be a jwt bearer and the
         // public key field should not have already been set.
-        // TODO: uncomment
-        //if (clientModel.get("clientType" !== "jwt bearer") ||
-        //    clientModel.get("clientX509PubCert")) {
-        //  res.send({isError: true, message: "Invalid request"});
-        //  return;
-        //}
+        if (clientModel.get("clientType" !== "jwt bearer") ||
+            clientModel.get("clientX509PubCert")) {
+          res.send({isError: true, message: "Invalid request"});
+          return;
+        }
 
-        // TODO: probably set a bunch more fields here
         clientModel.set("clientX509PubCert", publicKey);
         clientModel.save(null, {
           error: error,
