@@ -9,6 +9,7 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
 
   var ursa = require("ursa"),
     exec = require("child_process").exec,
+    spawn = require("child_process").spawn,
     async = require("async"),
     path = require("path"),
     fs = require("fs");
@@ -36,13 +37,9 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
           certFilename = filenamePrefix + "_cert.pem",
           privateKeyFilename = filenamePrefix + "_private_key.pem",
           p12Filename = filenamePrefix + ".p12",
-          attachmentFilename = publicKey.substring(0, publicKey.indexOf("-----END")) +
-            "-private_key.pem",
+          attachmentFilename = p12Filename,
+          //attachmentFilename = publicKey.substring(0, publicKey.indexOf("-----END")) + ".p12",
           csrExec = "openssl req -new -key %@ -out %@".f(privateKeyFilename, csrFilename),
-          certExec = "openssl x509 -req -in %@ -signkey %@ -out %@"
-            .f(csrFilename, privateKeyFilename, certFilename),
-          p12Exec = "openssl pkcs12 -export -in %@ -inkey %@ -out %@"
-            .f(certFilename, privateKeyFilename, p12Filename),
           p12contents;
 
 
@@ -51,14 +48,39 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
           function (callback) { fs.writeFile(publicKeyFilename, publicKey, callback); },
           function (callback) { fs.writeFile(privateKeyFilename, privateKey, callback); },
           function (callback) {
+           /*
+            var child = spawn("openssl",
+              ["req", "-new", "-key", privateKeyFilename, "-out", csrFilename]);
+
+            child.stdout.on('data', function (data) {
+              console.log("data is", data);
+            });
+
+            child.on('close', function (code) {
+              callback(null, code);
+            });
+            */
             var child = exec(csrExec, callback);
             // blow through command-line questions
+            child.stdin.setEncoding = 'utf-8';
             child.stdin.write("\n\n\n\n\n\n\n\n\n");
+            child.stdin.end();
+            //child.stdin.write("US\nVirginia\nNorfolk\nxTuple\n\n\n\n\n");
           },
-          function (callback) { exec(certExec, callback); },
           function (callback) {
-            var child = exec(p12Exec, callback);
-            child.stdin.write("notasecret\nnotasecret\n"); // XXX: not to stdin?
+            var certSpawn = spawn("openssl",
+              ["x509", "-req", "-in", csrFilename, "-signkey", privateKeyFilename, "-out", certFilename]);
+            certSpawn.on('close', function (code) {
+              callback(null, code);
+            });
+          },
+          function (callback) {
+            var child = spawn("openssl",
+              ["pkcs12", "-export", "-in", certFilename, "-inkey", privateKeyFilename, "-out", p12Filename, "-password", "pass:notasecret"]);
+
+            child.on('close', function (code) {
+              callback(null, code);
+            });
           },
           function (callback) {
             fs.readFile(p12Filename, function (err, contents) {
@@ -77,11 +99,11 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
             res.send({isError: true, message: "Error generating p12 key: " + err.message, error: err});
             return;
           }
-          console.log(results);
-          res.attachment(attachmentFilename);
+          // TODO: get from results[5 or 6 etc.]
           console.log("p12 is ", p12contents);
-          res.send(p12contents);
-          //res.send(new Buffer(p12contents));
+          //console.log(results);
+          res.attachment(attachmentFilename);
+          res.send(new Buffer(p12contents));
         });
       },
       fetchSuccess = function (model, result) {
