@@ -65,7 +65,7 @@ Now is also a good time to associate this extension with the admin. Any extensio
 
 ***
 
-We can put these files together in our `manifest.js` file, which as a convention will be run by maintenances processes when the database needs to be updated. Another function of the `manifest.js` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent.
+We can put these files together in our `manifest.js` file, which as a convention will be run by the xTuple build process when the database needs to be updated. Another function of the `manifest.js` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent.
 
 ```javascript
 {
@@ -82,7 +82,7 @@ From now on, you can just update the database by running the core build tool. Al
 
 ```bash
 $ cd xtuple
-$ ./scripts/build_all.js -d dev -e ../xtuple-extensions/source/icecream
+$ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ```
 
 ### ORMs
@@ -160,7 +160,7 @@ The same core build tool that ran the files referenced in `manifest.js` will als
 
 ```bash
 $ cd xtuple
-$ ./scripts/build_all.js -d dev -e ../xtuple-extensions/source/icecream
+$ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ```
 
 **Verify** your work by finding a new view called ice_cream_flavor in the xm schema of your database. Now we're ready to move on to the client! There is no need to make any modifications to the `node-datasource`.
@@ -277,18 +277,13 @@ Take a second to see how these files, between them, cover all the client-side js
 
 ### Building the client
 
-Enyo provides a build process to join all the client-side code together into one four big files, `enyo.js`, `enyo.css`, `app.js`, and `app.css`. Perhaps you've already built the core app by the following commands:
+
+
+The same core build tool that built the database-side code will also build the client-side code.
 
 ```bash
-cd xtuple/enyo-client/application/tools
-./deploy.sh
-```
-
-Building an extension is a similar process. 
-
-```bash
-cd xtuple/scripts
-sudo ./build_client.js -e ../../xtuple-extensions/source/icecream
+$ cd xtuple
+$ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ```
 
 That's it! Load up your browser, sign in to the app, and you should see an empty list of _iceCreamFlavors in the setup area. If you don't see it, it's likely that you haven't associated this extension with the admin user as described above. You might want to open up the browser's javascript console and verify that `Installing extension icecream` is logged.
