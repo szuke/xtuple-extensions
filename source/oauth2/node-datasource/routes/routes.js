@@ -5,11 +5,18 @@ regexp:true, undef:true, strict:true, trailing:true, white:true */
 (function () {
   "use strict";
 
-  var generateKey = require("./generate_key").generateKey;
+  var generateKey = require("./generate_key").generateKey,
+    revokeToken = require("./revoke_token").revokeToken;
 
   exports.generateKey = {
-    path: "oauth2-generate-key",
+    path: "oauth/generate-key",
     function: generateKey
+  };
+
+  exports.revokeToken = {
+    path: "oauth/revoke-token",
+    verb: "POST",
+    function: revokeToken
   };
 
 }());
