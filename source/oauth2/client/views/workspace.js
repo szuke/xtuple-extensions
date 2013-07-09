@@ -1,10 +1,9 @@
 /*jshint indent:2, curly:true, eqeqeq:true, immed:true, latedef:true,
-newcap:true, noarg:true, regexp:true, undef:true, strict:true, trailing:true,
+newcap:true, noarg:true, regexp:true, undef:true, trailing:true,
 white:true*/
 /*global XT:true, XV:true, Backbone:true, enyo:true, console:true */
 
 (function () {
-  "use strict";
 
   XT.extensions.oauth2.initWorkspace = function () {
     enyo.kind({
@@ -28,8 +27,11 @@ white:true*/
               {kind: "XV.Oauth2clientTypePicker", attr: "clientType"},
               {kind: "XV.CheckboxWidget", attr: "isActive"},
               {kind: "XV.DateWidget", attr: "issued"},
-              {kind: "XV.InputWidget", attr: "authURI"},
-              {kind: "XV.InputWidget", attr: "tokenURI"},
+              {kind: "XV.InputWidget", name: "fullListUrl", label: "_fullListUrl".loc(), disabled: true},
+              {kind: "XV.InputWidget", name: "singleResourceUrl", label: "_singleResourceUrl".loc(), disabled: true},
+              {kind: "XV.InputWidget", name: "authURI", label: "_authURI".loc(), disabled: true},
+              {kind: "XV.InputWidget", name: "tokenURI", label: "_tokenURI".loc(), disabled: true},
+              {kind: "XV.InputWidget", name: "tokenRevocationURI", label: "_tokenRevocationURI".loc(), disabled: true},
               {kind: "XV.CheckboxWidget", attr: "delegatedAccess"},
               {kind: "XV.InputWidget", attr: "clientX509PubCert", label: "_x509PubCert".loc()},
               {kind: "XV.InputWidget", attr: "organization"}
@@ -37,7 +39,15 @@ white:true*/
           ]},
           {kind: "XV.Oauth2clientRedirectBox", attr: "redirectURIs" }
         ]}
-      ]
+      ],
+      create: function () {
+        this.inherited(arguments);
+        this.$.fullListUrl.setValue(XT.getOrganizationPath() + "/discovery/v1alpha1/apis/v1alpha1/rest");
+        this.$.singleResourceUrl.setValue(XT.getOrganizationPath() + "/discovery/v1alpha1/apis/:model/v1alpha1/rest");
+        this.$.authURI.setValue(XT.getOrganizationPath() + "/dialog/authorize");
+        this.$.tokenURI.setValue(XT.getOrganizationPath() + "/oauth/token");
+        this.$.tokenRevocationURI.setValue(XT.getOrganizationPath() + "/oauth/revoke-token");
+      }
     });
 
     XV.registerModelWorkspace("XM.Oauth2client", "XV.Oauth2clientWorkspace");

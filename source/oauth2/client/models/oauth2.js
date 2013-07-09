@@ -68,7 +68,7 @@ white:true*/
         options.success = function (model, resp, options) {
           if (status === XM.Model.READY_NEW && that.get("clientType") === 'jwt bearer') {
             // download the private key
-            window.open(XT.getOrganizationPath() + '/oauth2-generate-key?id=' + that.id,
+            window.open(XT.getOrganizationPath() + '/oauth/generate-key?id=' + that.id,
               '_newtab');
           }
 
