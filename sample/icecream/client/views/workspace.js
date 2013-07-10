@@ -7,6 +7,13 @@ white:true*/
   "use strict";
 
   XT.extensions.icecream.initWorkspace = function () {
+
+    var extensions = [
+      {kind: "onyx.GroupboxHeader", container: "mainGroup", content: "_iceCreamFlavor".loc()},
+      {kind: "XV.IceCreamFlavorPicker", container: "mainGroup", attr: "favoriteFlavor" }
+    ];
+    XV.appendExtension("XV.ContactWorkspace", extensions);
+
     enyo.kind({
       name: "XV.IceCreamFlavorWorkspace",
       kind: "XV.Workspace",

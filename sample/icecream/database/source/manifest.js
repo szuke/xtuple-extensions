@@ -3,6 +3,7 @@
   "comment": "Ice Cream Flavor sample extension",
   "databaseScripts": [
     "icflav.sql",
+    "cntcticflav.sql",
     "register.sql"
   ]
 }
