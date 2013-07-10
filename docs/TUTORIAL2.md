@@ -1,3 +1,6 @@
+## xTuple Extension Tutorial
+### Part II: Extending a business object
+
 Having completed **Part I** of our tutorial, we can now manage `IceCreamFlavors` per the customer's requirements. Now we need to be able to extend the `Contact` business object to add `IceCreamFlavor` as a field.
 
 ### Tables
