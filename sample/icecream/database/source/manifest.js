@@ -1,5 +1,5 @@
 {
-  "version": "1.3.9",
+  "version": "1.4.0",
   "comment": "Ice Cream Flavor sample extension",
   "databaseScripts": [
     "icflav.sql",
