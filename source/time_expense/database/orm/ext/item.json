@@ -1,0 +1,90 @@
+[
+  {
+    "context": "time_expense",
+    "nameSpace": "XM",
+    "type": "Item",
+    "table": "xt.teexpinfo",
+    "isExtension": true,
+    "comment": "Extended by time_expense",
+    "relations": [
+      {
+        "column": "teexp_id",
+        "inverse": "id"
+      }
+    ],
+    "properties": [
+     {
+       "name": "projectExpenseMethod",
+       "attr": {
+         "type": "String",
+         "column": "teexp_method"
+       }
+     },
+     {
+       "name": "projectExpenseCategory",
+       "toOne": {
+         "isNested": true,
+         "type": "ExpenseCategory",
+         "column": "teexp_expcat_id"
+       }
+     },
+     {
+       "name": "projectExpenseLedgerAccount",
+       "toOne": {
+         "isNested": true,
+         "type": "LedgerAccountRelation",
+         "column": "teexp_accnt_id"
+       }
+     }
+    ],
+    "isSystem": true
+  },
+  {
+    "context": "time_expense",
+    "nameSpace": "XM",
+    "type": "ItemListItem",
+    "table": "xt.teexpinfo",
+    "isExtension": true,
+    "comment": "Extended by Time Expense",
+    "relations": [
+      {
+        "column": "teexp_id",
+        "inverse": "id"
+      }
+    ],
+    "properties": [
+     {
+       "name": "projectExpenseMethod",
+       "attr": {
+         "type": "String",
+         "column": "teexp_method"
+       }
+     }
+    ],
+    "isSystem": true
+  },
+  {
+    "context": "time_expense",
+    "nameSpace": "XM",
+    "type": "ItemRelation",
+    "table": "xt.teexpinfo",
+    "isExtension": true,
+    "comment": "Extended by Time Expense",
+    "relations": [
+      {
+        "column": "teexp_id",
+        "inverse": "id"
+      }
+    ],
+    "properties": [
+     {
+       "name": "projectExpenseMethod",
+       "attr": {
+         "type": "String",
+         "column": "teexp_method"
+       }
+     }
+    ],
+    "isSystem": true
+  }
+]
