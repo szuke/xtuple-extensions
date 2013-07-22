@@ -61,7 +61,8 @@ file should look like this:
 
   ``` javascript
     extensionRoutes: [
-      "../../xtuple-extensions/source/oauth2/node-datasource/routes"
+      "../../xtuple-extensions/source/oauth2/node-datasource/routes",
+      "../../path-to-some-other-extension-you-may-have/note-no-comma-on-last-array-value-here->"
     ],
   ```
 Finally, install the extension on your xTuple database. Assuming you already
