@@ -1,6 +1,6 @@
-/*jshint bitwise:true, indent:2, curly:true eqeqeq:true, immed:true,
+/*jshint bitwise:true, indent:2, curly:true, eqeqeq:true, immed:true,
 latedef:true, newcap:true, noarg:true, regexp:true, undef:true,
-trailing:true white:true*/
+trailing:true, white:true*/
 /*global XT:true, XM:true, XV:true, enyo:true*/
 
 (function () {
@@ -33,9 +33,9 @@ trailing:true white:true*/
         {name: "manager", label: "_manager".loc(), attr: "employee.manager.code",
             defaultKind: "XV.EmployeeWidget"},
         {name: "department", label: "_department".loc(), attr: "employee.department.number",
-            defaultKind: "XV.DepartmentPicker"},
-        {name: "shift", label: "_manager".loc(), attr: "employee.shift.number",
-            defaultKind: "XV.ShiftPicker"}
+            defaultKind: "XV.DepartmentWidget"},
+        {name: "shift", label: "_shift".loc(), attr: "employee.shift.number",
+            defaultKind: "XV.ShiftWidget"}
       ],
       getParameters: function () {
         var params = this.inherited(arguments),
