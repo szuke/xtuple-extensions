@@ -214,7 +214,7 @@
      {
        "name": "site",
        "toOne": {
-         "type": "Site",
+         "type": "SiteRelation",
          "column": "tehead_warehous_id",
          "required": true
        }
