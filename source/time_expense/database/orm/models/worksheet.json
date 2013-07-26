@@ -828,12 +828,23 @@
     "idSequenceName": "te.teitem_teitem_id_seq",
     "comment": "Worksheet Time Map",
     "privileges": {
-     "all": {
-       "create": true,
-       "read": true,
-       "update": true,
-       "delete": true
-     }
+      "all": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true
+      },
+      "attribute": {
+        "employeeRate": {
+          "view": "MaintainEmpCostAll"
+        },
+        "billingRate": {
+          "view": "CanViewRates"
+        },
+        "billingTotal": {
+          "view": "CanViewRates"
+        }
+      }
     },
     "properties": [
      {
@@ -975,7 +986,7 @@
        "name": "employeeRate",
        "attr": {
          "type": "Number",
-         "column": "teitem_rate"
+         "column": "teitem_empcost"
        }
      },
      {
