@@ -1,5 +1,5 @@
-/*jshint indent:2, curly:true eqeqeq:true, immed:true, latedef:true,
-newcap:true, noarg:true, regexp:true, undef:true, strict:true, trailing:true
+/*jshint indent:2, curly:true, eqeqeq:true, immed:true, latedef:true,
+newcap:true, noarg:true, regexp:true, undef:true, strict:true, trailing:true,
 white:true*/
 /*global XT:true, XM:true, Backbone:true, _:true, console:true */
 
@@ -166,6 +166,7 @@ white:true*/
           params,
           i;
         this.setReadOnly("billingRate", !billable);
+        if (!XT.session.privileges.get("CanViewRates")) { return; }
         if (billable) {
           params = {
             isTime: this.isTime,
@@ -187,12 +188,15 @@ white:true*/
             data[that.ratioKey] = resp.rate;
             data.billingCurrency = resp.currency || XT.baseCurrency();
             that.set(data);
-            that.on("change: " + that.ratioKey, that.detailDidChange);
+            that.on("change:" + that.ratioKey, that.detailDidChange);
             that.detailDidChange();
           };
           this.dispatch("XM.Worksheet", "getBillingRate", params, options);
         } else {
+          this.off('change:' + this.ratioKey, this.detailDidChange);
           this.set(this.ratioKey, 0);
+          this.on('change:' + this.ratioKey, this.detailDidChange);
+          this.detailDidChange();
         }
       },
 

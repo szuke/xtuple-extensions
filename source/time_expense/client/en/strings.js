@@ -32,7 +32,7 @@ XT.stringsFor("en_US", {
   "_noInvoice": "No Invoice",
   "_noVoucher": "No Voucher",
   "_notUsed": "Not Used",
-  "_pPM": "PPM",
+  "_TE": "Time Expense",
   "_projectBilling": "Project Billing",
   "_rate": "Rate",
   "_site": "Site",
