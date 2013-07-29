@@ -18,6 +18,8 @@ currently supports two OAuth 2.0 scenarios:
 Those two types of clients can be added to your xTuple OAuth 2.0 Server in a
 process very similar adding OAuth 2.0 Clients in Google's [APIs Console](https://code.google.com/apis/console#access).
 
+Refer to xTuple wiki for more details on how to use [xTuple's OAuth 2.0 Server](https://github.com/xtuple/xtuple/wiki/xTuple%27s-OAuth-2.0-Server).
+
 ### OAuth 2.0 Extension Installation:
 
 To use this extension, you need to first ensure that you have OpenSSL installed
@@ -75,12 +77,14 @@ You can now start the datasource.
 
 ### OAuth 2.0 Client Setup:
 
-After you have installed the OAuth 2.0 extension, login to the Mobile-Web
-client as a privileged  "admin" user. Enter the "Setup->User Accounts" workspace
-and select your "admin" user. Check the "oauth2" box in the "EXTENSIONS"
-section and check the "Maintain OAUTH2 Clients" in the "OAUTH2" Privileges
-section. Then refresh your browser window and you should see an "OAUTH2" menu
-option on the left hand side of the screen.
+After you have installed the OAuth 2.0 extension, refresh your broswer and/or
+restart the datasource. Then login to the Mobile-Web client as a privileged
+"admin" user. Enter the "Setup->User Accounts" workspace and select your
+"admin" user. Check the "oauth2" box in the "EXTENSIONS" section. Refresh your
+browser again for the new privileges to show up. Then check the
+"Maintain OAUTH2 Clients" in the "OAUTH2" Privileges section. Then refresh your
+browser window and you should see an "OAUTH2" menu option on the left hand side
+of the screen.
 
 Select the "OAUTH2" workspace and add an OAuth 2.0 Client. You should then have
 all the OAuth 2.0 Client credentials you will need to connect to the OAuth 2.0
