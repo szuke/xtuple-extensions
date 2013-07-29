@@ -1,5 +1,7 @@
 var lang = XT.stringsFor("en_US", {
     "_authURI": "Auth URI",
+    "_clientName": "Client Name",
+    "_clientEmail": "Client Email",
     "_clientType": "Client Type",
     "_delegatedAccess": "Delegated Access",
     "_details": "Details",

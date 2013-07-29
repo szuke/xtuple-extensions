@@ -63,7 +63,12 @@ white:true*/
 
         this.$.delegatedAccess.setShowing(model.get("clientType") === 'jwt bearer');
         this.$.clientX509PubCert.setShowing(model.get("clientType") === 'jwt bearer');
-        // TODO: this.$.redirectBox.setDisabled(model.get("clientType") !== 'web server');
+        // Enyo messes this one up for some reason, so use CSS
+        if (model.get("clientType") === 'web server') {
+          this.$.redirectBox.applyStyle("visibility", "showing");
+        } else {
+          this.$.redirectBox.applyStyle("visibility", "hidden");
+        }
 
       }
     });
