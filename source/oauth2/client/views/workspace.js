@@ -19,9 +19,9 @@ white:true*/
             {kind: "XV.ScrollableGroupbox", name: "mainGroup", fit: true,
                 classes: "in-panel", components: [
               {kind: "onyx.GroupboxHeader", content: "_id".loc()},
-              {kind: "XV.TextArea", attr: "clientID" },
+              {kind: "XV.TextArea", attr: "clientID", classes: "xv-short-textarea" },
               {kind: "onyx.GroupboxHeader", content: "_secret".loc()},
-              {kind: "XV.TextArea", attr: "clientSecret"},
+              {kind: "XV.TextArea", attr: "clientSecret", classes: "xv-short-textarea" },
               {kind: "onyx.GroupboxHeader", content: "_details".loc()},
               {kind: "XV.InputWidget", attr: "clientName", label: "_name".loc()},
               {kind: "XV.InputWidget", attr: "clientEmail", label: "_email".loc()},
@@ -34,15 +34,15 @@ white:true*/
               {kind: "XV.CheckboxWidget", name: "delegatedAccess", attr: "delegatedAccess"},
               {kind: "XV.InputWidget", name: "clientX509PubCert", attr: "clientX509PubCert", label: "_x509PubCert".loc()},
               {kind: "onyx.GroupboxHeader", content: "_fullListUrl".loc()},
-              {kind: "XV.TextArea", name: "fullListUrl", disabled: true},
+              {kind: "XV.TextArea", name: "fullListUrl", classes: "xv-short-textarea", disabled: true},
               {kind: "onyx.GroupboxHeader", content: "_singleResourceUrl".loc()},
-              {kind: "XV.TextArea", name: "singleResourceUrl", disabled: true},
+              {kind: "XV.TextArea", name: "singleResourceUrl", classes: "xv-short-textarea", disabled: true},
               {kind: "onyx.GroupboxHeader", content: "_authURI".loc()},
-              {kind: "XV.TextArea", name: "authURI", disabled: true},
+              {kind: "XV.TextArea", name: "authURI", classes: "xv-short-textarea", disabled: true},
               {kind: "onyx.GroupboxHeader", content: "_tokenURI".loc()},
-              {kind: "XV.TextArea", name: "tokenURI", disabled: true},
+              {kind: "XV.TextArea", name: "tokenURI", classes: "xv-short-textarea", disabled: true},
               {kind: "onyx.GroupboxHeader", content: "_tokenRevocationURI".loc()},
-              {kind: "XV.TextArea", name: "tokenRevocationURI", disabled: true}
+              {kind: "XV.TextArea", name: "tokenRevocationURI", classes: "xv-short-textarea", disabled: true}
             ]}
           ]},
           {kind: "XV.Oauth2clientRedirectBox", name: "redirectBox", attr: "redirectURIs" }
