@@ -9,10 +9,10 @@
     "comment": "Ice Cream Flavor Map",
     "privileges": {
       "all": {
-        "create": true,
+        "create": "MaintainIceCreamFlavors",
         "read": true,
-        "update": true,
-        "delete": true
+        "update": "MaintainIceCreamFlavors",
+        "delete": "MaintainIceCreamFlavors"
       }
     },
     "properties": [
