@@ -6,6 +6,10 @@ white:true*/
 (function () {
   "use strict";
 
-  XT.extensions.icecream = {};
+  XT.extensions.icecream = {
+    setVersion: function () {
+      XT.setVersion("1.4.1", "iceCream");
+    }
+  };
 
 }());

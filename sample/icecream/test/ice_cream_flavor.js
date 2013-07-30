@@ -6,17 +6,25 @@
 (function () {
   "use strict";
 
-  var crud = require("../../../../xtuple/node-datasource/test/mocha/lib/crud"),
+  var crud = require("../../../../xtuple/test/mocha/lib/crud"),
     assert = require("chai").assert,
     data = {
       recordType: "XM.IceCreamFlavor",
       autoTestAttributes: true,
       createHash: {
-        name: "Vanilla",
-        calories: 200
+        name: "VANILLA" + Math.random(),
+        calories: 1200
       },
       updateHash: {
-        calories: 400
+        calories: 1400
+      },
+      setCallback: function (data, done) {
+        var model = data.model;
+        assert.equal(model.get("name").substring(0, 7), "VANILLA");
+        model.set("calories", 200);
+        assert.equal(model.get("name").substring(0, 7), "LITE VA");
+        model.set("calories", 1200);
+        assert.equal(model.get("name").substring(0, 7), "VANILLA");
       }
     };
 

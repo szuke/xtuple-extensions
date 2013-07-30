@@ -70,7 +70,7 @@ We can put these files together in our `manifest.js` file, which as a convention
 
 ```javascript
 {
-  "version": "1.3.9",
+  "version": "1.4.1",
   "comment": "Ice Cream Flavor sample extension",
   "databaseScripts": [
     "icflav.sql",
