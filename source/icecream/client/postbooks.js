@@ -18,6 +18,7 @@ white:true*/
       "MaintainIceCreamFlavors"
     ];
     XT.session.addRelevantPrivileges("icecream", relevantPrivileges);
+    XT.session.privilegeSegments.Contact.push("MaintainIceCreamFlavors");
 
   };
 }());
