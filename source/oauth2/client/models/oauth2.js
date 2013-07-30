@@ -41,15 +41,12 @@ white:true*/
         this.setReadOnly('clientType', this.getStatus() !== XM.Model.READY_NEW);
 
         if (this.getStatus() === XM.Model.READY_NEW) {
-          var uniqueId = XT.getOrganizationPath().substring(1) +
-            "_" + XT.generateUUID();
-
-          this.set('clientID', uniqueId);
+          this.set('clientID', XT.getOrganizationPath().substring(1) + "_" + XT.generateUUID());
           // XXX the secret is only relevant for websites, but we generate it here
           // for both because it's required to be unique on the DB level
           // secret keys only seem to be applicable for website clients, so we might
           // not want to make it unique
-          this.set('clientSecret', uniqueId);
+          this.set('clientSecret', XT.generateUUID());
           this.set('issued', new Date());
         }
       },

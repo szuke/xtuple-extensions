@@ -18,35 +18,58 @@ white:true*/
             {kind: "onyx.GroupboxHeader", content: "_overview".loc()},
             {kind: "XV.ScrollableGroupbox", name: "mainGroup", fit: true,
                 classes: "in-panel", components: [
-              {kind: "XV.InputWidget", attr: "clientID", label: "_id".loc()},
-              {kind: "XV.InputWidget", attr: "clientSecret", label: "_secret".loc()},
+              {kind: "onyx.GroupboxHeader", content: "_id".loc()},
+              {kind: "XV.TextArea", attr: "clientID", classes: "xv-short-textarea" },
+              {kind: "onyx.GroupboxHeader", content: "_secret".loc()},
+              {kind: "XV.TextArea", attr: "clientSecret", classes: "xv-short-textarea" },
+              {kind: "onyx.GroupboxHeader", content: "_details".loc()},
               {kind: "XV.InputWidget", attr: "clientName", label: "_name".loc()},
               {kind: "XV.InputWidget", attr: "clientEmail", label: "_email".loc()},
               {kind: "XV.InputWidget", attr: "clientWebSite", label: "_website".loc()},
-              {kind: "XV.InputWidget", attr: "clientLogo", label: "_logo".loc()},
+              {kind: "XV.InputWidget", attr: "clientLogo", label: "_logoURL".loc()},
               {kind: "XV.Oauth2clientTypePicker", attr: "clientType"},
               {kind: "XV.CheckboxWidget", attr: "isActive"},
               {kind: "XV.DateWidget", attr: "issued"},
-              {kind: "XV.InputWidget", name: "fullListUrl", label: "_fullListUrl".loc(), disabled: true},
-              {kind: "XV.InputWidget", name: "singleResourceUrl", label: "_singleResourceUrl".loc(), disabled: true},
-              {kind: "XV.InputWidget", name: "authURI", label: "_authURI".loc(), disabled: true},
-              {kind: "XV.InputWidget", name: "tokenURI", label: "_tokenURI".loc(), disabled: true},
-              {kind: "XV.InputWidget", name: "tokenRevocationURI", label: "_tokenRevocationURI".loc(), disabled: true},
-              {kind: "XV.CheckboxWidget", attr: "delegatedAccess"},
-              {kind: "XV.InputWidget", attr: "clientX509PubCert", label: "_x509PubCert".loc()},
-              {kind: "XV.InputWidget", attr: "organization"}
+              {kind: "XV.InputWidget", attr: "organization"},
+              {kind: "XV.CheckboxWidget", name: "delegatedAccess", attr: "delegatedAccess"},
+              {kind: "XV.InputWidget", name: "clientX509PubCert", attr: "clientX509PubCert", label: "_x509PubCert".loc()},
+              {kind: "onyx.GroupboxHeader", content: "_fullListUrl".loc()},
+              {kind: "XV.TextArea", name: "fullListUrl", classes: "xv-short-textarea", disabled: true},
+              {kind: "onyx.GroupboxHeader", content: "_singleResourceUrl".loc()},
+              {kind: "XV.TextArea", name: "singleResourceUrl", classes: "xv-short-textarea", disabled: true},
+              {kind: "onyx.GroupboxHeader", content: "_authURI".loc()},
+              {kind: "XV.TextArea", name: "authURI", classes: "xv-short-textarea", disabled: true},
+              {kind: "onyx.GroupboxHeader", content: "_tokenURI".loc()},
+              {kind: "XV.TextArea", name: "tokenURI", classes: "xv-short-textarea", disabled: true},
+              {kind: "onyx.GroupboxHeader", content: "_tokenRevocationURI".loc()},
+              {kind: "XV.TextArea", name: "tokenRevocationURI", classes: "xv-short-textarea", disabled: true}
             ]}
           ]},
-          {kind: "XV.Oauth2clientRedirectBox", attr: "redirectURIs" }
+          {kind: "XV.Oauth2clientRedirectBox", name: "redirectBox", attr: "redirectURIs" }
         ]}
       ],
       create: function () {
+        var base = XT.getBaseUrl() + XT.getOrganizationPath();
         this.inherited(arguments);
-        this.$.fullListUrl.setValue(XT.getOrganizationPath() + "/discovery/v1alpha1/apis/v1alpha1/rest");
-        this.$.singleResourceUrl.setValue(XT.getOrganizationPath() + "/discovery/v1alpha1/apis/:model/v1alpha1/rest");
-        this.$.authURI.setValue(XT.getOrganizationPath() + "/dialog/authorize");
-        this.$.tokenURI.setValue(XT.getOrganizationPath() + "/oauth/token");
-        this.$.tokenRevocationURI.setValue(XT.getOrganizationPath() + "/oauth/revoke-token");
+
+        this.$.fullListUrl.setValue(base + "/discovery/v1alpha1/apis/v1alpha1/rest");
+        this.$.singleResourceUrl.setValue(base + "/discovery/v1alpha1/apis/:model/v1alpha1/rest");
+        this.$.authURI.setValue(base + "/dialog/authorize");
+        this.$.tokenURI.setValue(base + "/oauth/token");
+        this.$.tokenRevocationURI.setValue(base + "/oauth/revoke-token");
+      },
+      attributesChanged: function (model, options) {
+        this.inherited(arguments);
+
+        this.$.delegatedAccess.setShowing(model.get("clientType") === 'jwt bearer');
+        this.$.clientX509PubCert.setShowing(model.get("clientType") === 'jwt bearer');
+        // Enyo messes this one up for some reason, so use CSS
+        if (model.get("clientType") === 'web server') {
+          this.$.redirectBox.applyStyle("visibility", "showing");
+        } else {
+          this.$.redirectBox.applyStyle("visibility", "hidden");
+        }
+
       }
     });
 
