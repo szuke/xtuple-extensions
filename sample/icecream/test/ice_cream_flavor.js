@@ -18,20 +18,17 @@
       updateHash: {
         calories: 1400
       },
-      setCallback: function (data, done) {
+      beforeDeleteActions: [{it: "should update the description to and from LITE", action: function (data, done) {
         var model = data.model;
         assert.equal(model.get("name").substring(0, 7), "VANILLA");
         model.set("calories", 200);
         assert.equal(model.get("name").substring(0, 7), "LITE VA");
         model.set("calories", 1200);
         assert.equal(model.get("name").substring(0, 7), "VANILLA");
-      }
+      }}]
     };
 
   describe('Ice cream flavor crud test', function () {
-    this.timeout(20 * 1000);
-    it('should perform all the crud operations', function (done) {
-      crud.runAllCrud(data, done);
-    });
+    crud.runAllCrud(data);
   });
 }());
