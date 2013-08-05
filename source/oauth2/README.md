@@ -82,10 +82,25 @@ restart the datasource. Then login to the Mobile-Web client as a privileged
 "admin" user. Enter the "Setup->User Accounts" workspace and select your
 "admin" user. Check the "oauth2" box in the "EXTENSIONS" section. Refresh your
 browser again for the new privileges to show up. Then check the
-"Maintain OAUTH2 Clients" in the "OAUTH2" Privileges section. Then refresh your
-browser window and you should see an "OAUTH2" menu option on the left hand side
-of the screen.
+"Maintain OAUTH2 Clients" in the "OAUTH2" Privileges section. It should look
+similar to this:
 
-Select the "OAUTH2" workspace and add an OAuth 2.0 Client. You should then have
-all the OAuth 2.0 Client credentials you will need to connect to the OAuth 2.0
-Server.
+![oauth2 extension setup](http://i.imgur.com/61ksWNW.png)
+
+Then refresh your browser window and you should see an "OAUTH2" menu option on
+the left hand side of the main home screen.
+
+![oauth2 extension menu](http://i.imgur.com/ZuoRxYF.png)
+
+Select the "OAUTH2" workspace and add an OAuth 2.0 Client. It should look
+similar to this:
+
+![oauth2 extension workspace](http://i.imgur.com/QE4SUHp.png)
+
+You should then have all the OAuth 2.0 Client credentials you will need to
+connect to the OAuth 2.0 Server.
+
+Note, you do not have to add OAuth 2.0 Clients as the "admin" user, but you
+will have to give a user "Maintain OAUTH2 Clients" privileges so they can
+register their own clients. You should reserve that privilege for trusted
+users only as it does open up your system to outside access.
