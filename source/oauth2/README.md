@@ -99,3 +99,8 @@ similar to this:
 
 You should then have all the OAuth 2.0 Client credentials you will need to
 connect to the OAuth 2.0 Server.
+
+Note, you do not have to add OAuth 2.0 Clients as the "admin" user, but you
+will have to give a user "Maintain OAUTH2 Clients" privileges so they can
+register their own clients. You should reserve that privilege for trusted
+users only as it does open up your system to outside access.
