@@ -3,7 +3,7 @@
 
 ## Overview
 
-Suppose you are working with a prospect who is excited to use xTuple, but are balking at one critical missing feature. The prospect needs to be able to profile each contact's favorite ice cream flavor. The list of possible ice cream flavors must be fully customizable, and include the calorie count. Furthermore, users must be able to filter contacts by ice cream flavor. This data is going to be the lynchpin of an upcoming multichannel promotional campaign that the prospect is about the wage, and they cannot live without it.
+Suppose you are working with a prospect who is excited to use xTuple, but are balking at one critical missing feature. The prospect needs to be able to profile each contact's favorite ice cream flavor. The list of possible ice cream flavors must be fully customizable, and include the calorie count. Furthermore, users must be able to filter contacts by ice cream flavor. This data is going to be the lynchpin of an upcoming multichannel promotional campaign that the prospect is about the wage, and they cannot live without it. Using characteristics is not an option, because they do not want to have to hit the `New` button, and, as we'll see, their requirements are going to end using some fairly sophisticated business logic, which is beyond the scope of simple characteristics.
 
 This tutorial will walk you through setting up this customization in two parts. First, we need to add a new business object, `IceCreamFlavor`. Second, we need to extend the Contact business object to include this field.
 
@@ -108,8 +108,7 @@ $ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ### ORMs
 
 The xTuple ORMs are a JSON mapping between the SQL tables and the object-oriented world above the database. In this part of the tutorial we need to make an ORM for the IceCreamFlavor business object. 
-
-By convention, we put new orms in the `orm/models` directory, and extensions to existing orms in the `orm/ext` directory. Unlike with the sql scripts, you don't need to have a master file like the `manifest.js` that references them all. The core build tool will find all the files in these directories and load them in the appropriate order based on the dependency chain.
+[ [WHERE?] ](TUTORIAL-FAQ.md#where-should-I-put-orm-definitions):
 
 Put the following JSON object in a new file, `database/orm/models/ice_cream_flavor.json`
 
@@ -195,9 +194,7 @@ We'll start with `core.js`, in which we create an object to store our extension.
 XT.extensions.icecream = {};
 ```
 
-_A note about the javascript wrappers in the client:_ At the beginning of all of our client-side files you'll see a jshint declaration, and the entirety of the code is wrapped in an anonymous function which is executed immediately. If possible, we also `"use strict"`. These are all good practices and you should follow them when writing in our style. Moreover, you'll also see that for the extension client-side files (except for `core.js` and the `package.js` files), the code is wrapped in another, named function that is not executed immediately. This allows us to load the code of the extension and actually execute the code at different moments in our setup process. For the sake of concision the code examples in this tutorial will ignore all these wrappers, but you will see them in the actual implementation of this sample extension.
-
-You might find yourself copying and pasting the tops and bottoms of client-side files, so as to avoid writing the jshint, `"use strict"`, and wrapper functions. This is fine to do, but make sure that you rename the XT.extensions functions. There must only be one `XT.extensions.iceCream.initModels` [function](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream/client/models/ice_cream_flavor.js#L9), for example. 
+[ [WHAT ELSE?] ](TUTORIAL-FAQ.md#what-is-wrapping-the-sample-client-code):
 
 ### Models
 
@@ -337,6 +334,7 @@ and add `en` as an entry in the root `package.js` array, anywhere above `views`.
 
 ### Workspaces
 
+Of course, our lists aren't going to do much good if you can't drill down into a workspace to view more detail or edit an item. Let's build the workspace now.
 
 ```
   enyo.kind({

@@ -5,9 +5,10 @@ Having completed **Part I** of our tutorial, we can now manage `IceCreamFlavors`
 
 ### Tables
 
-In a perfect world, we would just go into the `cntct` table and add a column. This is not an option. We're writing a humble extension here! We have no authority to make changes to core tables in the `public` schema.
+Let's create a new table that will function as a link table between `contact` and `icflav`, and then extend the `Contact` ORM.
+[ [WHY?] ](TUTORIAL-FAQ.md#why-do-we-need-a-new-table-to-extend-contact):
+Open a new file `database/source/cntcticflav.sql`:
 
-We'll take the next-easiest approach. Let's create a new table that will function as a link table between `contact` and `icflav`, and then extend the `Contact` ORM. The good news is that when we complete this plumbing in the database, the `Contact` business object will appear in the application as if this field were in it from the beginning. Open a new file `database/source/cntcticflav.sql`:
 
 ```javascript
 select xt.create_table('cntcticflav', 'ic');
@@ -94,7 +95,9 @@ We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on
 XT.cacheCollection("XM.iceCreamFlavors", "XM.IceCreamFlavorCollection");
 ```
 
-That was easy (don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`!). **Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
+That 
+[ [WHAT?] ](TUTORIAL-FAQ.md#what-is-the-xm-collection-cache):
+was easy (don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`!). **Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
 
 ### Widgets
 
