@@ -17,36 +17,52 @@ As you work through the tutorial you will be putting of your code in the `/sourc
 
 ### Tables
 
-We write our database code in plv8, which allows us to use pure javascript even when constructing tables. You won't see any SQL in this tutorial! Don't worry: it's postgres behind the scenes. We'll be putting three files in the `database/source` directory (You'll have to make these directories inside the `icecream` directory). 
+We write our database code in plv8, which allows us to use pure javascript even when constructing tables. You won't see any SQL in this tutorial! Don't worry: it's postgres behind the scenes. We'll be putting four files in the `database/source` directory (You'll have to make these directories inside the `icecream` directory). 
+* 'create_ic_schema.sql' (to create the schema) [ [WHY?] ](TUTORIAL-FAQ.md#why-create-a-new-schema)
 * `icflav.sql` (to define the table)
 * `register.sql` (to register the extension in the database)
 * `manifest.js` (as a single point of entry to call the other two and any other files we make)
 
-Let's start with `icflav.sql`. We'll make a table named `xt.icflav`, with four columns:
+Let's start with `create_ic_schema.sql`.
+
+``` javascript
+do $$
+  /* Only create the schema if it hasn't been created already */
+  var res, sql = "select schema_name from information_schema.schemata where schema_name = 'ic'",
+  res = plv8.execute(sql);
+  if (!res.length) {
+    sql = "create schema ic; grant all on schema ic to group xtrole;"
+    plv8.execute(sql);
+  }
+$$ language plv8;
+```
+
+Next, we'll make a table named `ic.icflav`, with four columns:
 * `icflav_id` (the primary key)
 * `icflav_name` (the natural key)
 * `icflav_description`
 * `icflav_calories`
 
 ```javascript
-select xt.create_table('icflav');
+select xt.create_table('icflav', 'ic');
 
-select xt.add_column('icflav','icflav_id', 'serial', 'primary key');
-select xt.add_column('icflav','icflav_name', 'text');
-select xt.add_column('icflav','icflav_description', 'text');
-select xt.add_column('icflav','icflav_calories', 'integer');
+select xt.add_column('icflav','icflav_id', 'serial', 'primary key', 'ic');
+select xt.add_column('icflav','icflav_name', 'text', '', 'ic');
+select xt.add_column('icflav','icflav_description', 'text', '', 'ic');
+select xt.add_column('icflav','icflav_calories', 'integer', 'ic');
 
-comment on table xt.icflav is 'Ice cream flavors';
+comment on table ic.icflav is 'Ice cream flavors';
 ```
 
-You can actually create the table by running this code against your database
+You can run these files directly against your database, if you like
 
 ```bash
 $ cd database/source
+$ psql -U admin -d dev -f create_ic_schema.sql
 $ psql -U admin -d dev -f icflav.sql
 ```
 
-**Verify** your work so far by finding the icflav table in the xt schema of your development database using pgadmin3 or psql.
+**Verify** your work so far by finding the icflav table in the ic schema of your development database using pgadmin3 or psql.
 
 
 ***
@@ -100,7 +116,7 @@ Put the following JSON object in a new file, `database/orm/models/ice_cream_flav
     "context": "icecream",
     "nameSpace": "XM",
     "type": "IceCreamFlavor",
-    "table": "xt.icflav",
+    "table": "ic.icflav",
     "idSequenceName": "icflav_icflav_id_seq",
     "lockable": true,
     "comment": "Ice Cream Flavor Map",
@@ -149,7 +165,7 @@ Put the following JSON object in a new file, `database/orm/models/ice_cream_flav
 ]
 ```
 
-A lot of the ORM is self-explanatory; you just have to follow the conventions in place. The ORM creates a business object XM.IceCreamFlavor, mapped to the xt.icflav table. The four columns from the table are given names that will be used by the application. (Above this layer, nobody needs to worry about column names like icflav_calories.)
+A lot of the ORM is self-explanatory; you just have to follow the conventions in place. The ORM creates a business object XM.IceCreamFlavor, mapped to the ic.icflav table. The four columns from the table are given names that will be used by the application. (Above this layer, nobody needs to worry about column names like icflav_calories.)
 
 You'll notice that the privileges are all true. Anyone can do any action to this object. This is the default behavior, and we could have left this out of the map altogether. However, soon enough we'll be putting real privileges behind this business object, so it's useful to see it in action.
 
@@ -347,6 +363,6 @@ A few things to note. The `attr` fields need to be the model attribute names. Th
 
 By now you're hopefully getting the hang of the `package.js` system, so update these files as appropriate. 
 
-**Verify** this works by refreshing the app, going to the empty list, and clicking the add button in the toolbar. This workspace should load. Add some data, and save. The item should show up in the list. The data should be in the xt.icflav table. You should be able to go back into the workspace and edit the data. You'll notice some more untranslated fields, so put these into `strings.js` and rebuild.
+**Verify** this works by refreshing the app, going to the empty list, and clicking the add button in the toolbar. This workspace should load. Add some data, and save. The item should show up in the list. The data should be in the ic.icflav table. You should be able to go back into the workspace and edit the data. You'll notice some more untranslated fields, so put these into `strings.js` and rebuild.
 
 Congratulations! You've made a new business object in the xTuple application. In [Part II](TUTORIAL2.md) we're going to start putting it to use.
