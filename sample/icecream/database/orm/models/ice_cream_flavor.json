@@ -3,7 +3,7 @@
     "context": "icecream",
     "nameSpace": "XM",
     "type": "IceCreamFlavor",
-    "table": "xt.icflav",
+    "table": "ic.icflav",
     "idSequenceName": "icflav_icflav_id_seq",
     "lockable": true,
     "comment": "Ice Cream Flavor Map",

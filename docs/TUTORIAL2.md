@@ -5,18 +5,19 @@ Having completed **Part I** of our tutorial, we can now manage `IceCreamFlavors`
 
 ### Tables
 
-In a perfect world, we would just go into the `cntct` table and add a column. This is not an option. We're writing a humble extension here! We have no authority to make changes to core tables in the `public` schema.
+Let's create a new table that will function as a link table between `contact` and `icflav`, and then extend the `Contact` ORM.
+[ [WHY?] ](TUTORIAL-FAQ.md#why-do-we-need-a-new-table-to-extend-contact)
+Open a new file `database/source/cntcticflav.sql`:
 
-We'll take the next-easiest approach. Let's create a new table that will function as a link table between `contact` and `icflav`, and then extend the `Contact` ORM. The good news is that when we complete this plumbing in the database, the `Contact` business object will appear in the application as if this field were in it from the beginning. Open a new file `database/source/cntcticflav.sql`:
 
 ```javascript
-select xt.create_table('cntcticflav');
+select xt.create_table('cntcticflav', 'ic');
 
-select xt.add_column('cntcticflav','cntcticflav_id', 'serial', 'primary key');
-select xt.add_column('cntcticflav','cntcticflav_cntct_id', 'integer', 'references cntct (cntct_id)');
-select xt.add_column('cntcticflav','cntcticflav_icflav_id', 'integer', 'references xt.icflav (icflav_id)');
+select xt.add_column('cntcticflav','cntcticflav_id', 'serial', 'primary key', 'ic');
+select xt.add_column('cntcticflav','cntcticflav_cntct_id', 'integer', 'references cntct (cntct_id)', 'ic');
+select xt.add_column('cntcticflav','cntcticflav_icflav_id', 'integer', 'references ic.icflav (icflav_id)', 'ic');
 
-comment on table xt.cntcticflav is 'Joins Contact with Ice cream flavor';
+comment on table ic.cntcticflav is 'Joins Contact with Ice cream flavor';
 ```
 
 Don't forget to add this new file to the `manifest.js` file, underneath the definition for `icflav.sql`.
@@ -31,7 +32,7 @@ We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFla
     "context": "icecream",
     "nameSpace": "XM",
     "type": "Contact",
-    "table": "xt.cntcticflav",
+    "table": "ic.cntcticflav",
     "isExtension": true,
     "isChild": false,
     "comment": "Extended by Icecream",
@@ -56,7 +57,7 @@ We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFla
     "context": "icecream",
     "nameSpace": "XM",
     "type": "ContactListItem",
-    "table": "xt.cntcticflav",
+    "table": "ic.cntcticflav",
     "isExtension": true,
     "isChild": false,
     "comment": "Extended by Icecream",
@@ -80,7 +81,7 @@ We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFla
 ]
 ```
 
-What we're doing here is pointing back to the original `Contact` ORM and telling it that there's another bit of data for it, in the `xt.cntcticflav` table. Note that we're adding the field both to the editable object and the list item object. That's because one drives the workspace and the other drives the list, and we're going to want both to have access to the new `favoriteFlavor` field.
+What we're doing here is pointing back to the original `Contact` ORM and telling it that there's another bit of data for it, in the `ic.cntcticflav` table. Note that we're adding the field both to the editable object and the list item object. That's because one drives the workspace and the other drives the list, and we're going to want both to have access to the new `favoriteFlavor` field.
 
 ### Models
 
@@ -94,7 +95,9 @@ We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on
 XT.cacheCollection("XM.iceCreamFlavors", "XM.IceCreamFlavorCollection");
 ```
 
-That was easy (don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`!). **Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
+That 
+[ [WHAT?] ](TUTORIAL-FAQ.md#what-is-the-xm-collection-cache)
+was easy (don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`!). **Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
 
 ### Widgets
 
