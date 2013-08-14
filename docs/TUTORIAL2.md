@@ -6,7 +6,7 @@ Having completed **Part I** of our tutorial, we can now manage `IceCreamFlavors`
 ### Tables
 
 Let's create a new table that will function as a link table between `contact` and `icflav`, and then extend the `Contact` ORM.
-[ [WHY?] ](TUTORIAL-FAQ.md#why-do-we-need-a-new-table-to-extend-contact):
+[ [WHY?] ](TUTORIAL-FAQ.md#why-do-we-need-a-new-table-to-extend-contact)
 Open a new file `database/source/cntcticflav.sql`:
 
 
@@ -96,7 +96,7 @@ XT.cacheCollection("XM.iceCreamFlavors", "XM.IceCreamFlavorCollection");
 ```
 
 That 
-[ [WHAT?] ](TUTORIAL-FAQ.md#what-is-the-xm-collection-cache):
+[ [WHAT?] ](TUTORIAL-FAQ.md#what-is-the-xm-collection-cache)
 was easy (don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`!). **Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
 
 ### Widgets

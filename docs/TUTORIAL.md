@@ -108,7 +108,7 @@ $ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ### ORMs
 
 The xTuple ORMs are a JSON mapping between the SQL tables and the object-oriented world above the database. In this part of the tutorial we need to make an ORM for the IceCreamFlavor business object. 
-[ [WHERE?] ](TUTORIAL-FAQ.md#where-should-I-put-orm-definitions):
+[ [WHERE?] ](TUTORIAL-FAQ.md#where-should-i-put-orm-definitions):
 
 Put the following JSON object in a new file, `database/orm/models/ice_cream_flavor.json`
 
@@ -189,12 +189,12 @@ $ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 Alongside the `database` directory in your extension you'll want to make a second called `client`, which will have four files, `core.js`, `package.js` and `postbooks.js`, as well as four directories, `en`, `models`, `views`, and `widgets`. 
 
 We'll start with `core.js`, in which we create an object to store our extension.
+[ [WHAT ELSE?] ](TUTORIAL-FAQ.md#what-is-wrapping-the-sample-client-code)
 
 ```javascript
 XT.extensions.icecream = {};
 ```
 
-[ [WHAT ELSE?] ](TUTORIAL-FAQ.md#what-is-wrapping-the-sample-client-code):
 
 ### Models
 
