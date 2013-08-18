@@ -62,6 +62,22 @@ There must only be one `XT.extensions.iceCream.initModels`
 [function](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream/client/models/ice_cream_flavor.js#L9), 
 for example. 
 
+### What are the differences between the base model classes?
+We extend `XM.IceCreamFlavor` off of `XM.Document`, 
+which is itself extended off of `XM.Model`, which itself extends 
+Backbone-relational and Backbone models. `XM.Document` has some features 
+on top of `XM.Model`, such as having a user-defined key. This is the 
+most commonly extended base object in `backbone-x`.
+
+For the larger business objects, we'll typically define one or 
+two lighterweight models (and ORMs) to be used in lists or as 
+nested objects within other business objects. So, along with the 
+"editable" model `XM.Quote`, we have `XM.QuoteListItem` and 
+`XM.QuoteRelation`, which have fewer fields and are not editable. 
+These lightweight models are extended from `XM.Info`. In the case 
+of `IceCreamFlavor` our editable model is so light that we don't 
+need to define any others.
+
 ### Why do we need a new table to extend `contact`?
 In a perfect world, we would just go into the `cntct` table and add a 
 column. This is not an option. We're writing a humble extension here! 
@@ -81,3 +97,4 @@ be included in our cache, then it will be fetched when we start the app,
 and will be accessible as `XM.termsTypes`, for example. These caches
 are automatically kept up-to-date if you go to the setup area and change
 their models.
+
