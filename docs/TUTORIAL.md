@@ -14,18 +14,18 @@ If you have not already cloned the [core xtuple repository](http://github.com/xt
 
 As you work through the tutorial you will be putting of your code in the `/path/to/xtuple-extensions/source/icecream` directory. You can find a full version of the final product in a [sample directory](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream). Because it is not in the source directory it is inactive, but it might be useful for reference as you complete the tutorial. By the end of the tutorial your directory structure should look like
 * source
-  * icecream
-    * client
-      * en
-      * models
-      * views
-      * widgets
-    * database
-      * orm
-        * ext
-        * models
-      * source
-    * test
+    * icecream
+        * client
+            * en
+            * models
+            * views
+            * widgets
+        * database
+            * orm
+                * ext
+                * models
+            * source
+        * test
 
 ## Part I: Adding the `IceCreamFlavor` business object
 
