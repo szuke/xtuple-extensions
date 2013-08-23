@@ -29,6 +29,9 @@ As you work through the tutorial you will be putting of your code in the `/path/
             * source
         * test
 
+Do *not* make all of these directories just yet. In particular, the build tool will get confused and upset
+if you have a `client` directory with nothing in it. Just make each directory as we go and you'll be fine.
+
 ## Part I: Adding the `IceCreamFlavor` business object
 
 ### Tables
