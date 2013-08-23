@@ -92,7 +92,9 @@ We don't need to add anything to the model layer. The new field to `Contact` wil
 We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on the Ice Cream Flavor collection to be cached in the browser. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/startup.js`:
 
 ```javascript
-XT.cacheCollection("XM.iceCreamFlavors", "XM.IceCreamFlavorCollection");
+XT.extensions.icecream.initStartup = function () {
+  XT.cacheCollection("XM.iceCreamFlavors", "XM.IceCreamFlavorCollection");
+};
 ```
 
 That 
@@ -117,11 +119,13 @@ enyo.depends(
 And enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/picker.js`:
 
 ```javascript
-enyo.kind({
-  name: "XV.IceCreamFlavorPicker",
-  kind: "XV.PickerWidget",
-  collection: "XM.iceCreamFlavors"
-});
+XT.extensions.icecream.initPicker = function () {
+  enyo.kind({
+    name: "XV.IceCreamFlavorPicker",
+    kind: "XV.PickerWidget",
+    collection: "XM.iceCreamFlavors"
+  });
+};
 ```
 
 Note that we set the collection of the picker to be the cache that we've just set up. This kind is a good illustration of the power of the way that we use Object-Oriented behavior on the client-side. All of the functionality this picker will need is shared among all pickers. The code lives in `XV.PickerWidget`. All we have to do to make a picker widget backed by this particular collection is point that general code at our new cache, and all the details will take care of themselves.
@@ -144,13 +148,15 @@ XV.appendExtension("XV.ContactWorkspace", extensions);
 We can use the same trick to add this picker to the advanced search options for contact. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/parameter.js`.
 
 ```javascript
-extensions = [
-  {kind: "onyx.GroupboxHeader", content: "_iceCreamFlavor".loc()},
-  {name: "iceCreamFlavor", label: "_favoriteFlavor".loc(),
-    attr: "favoriteFlavor", defaultKind: "XV.IceCreamFlavorPicker"}
-];
+XT.extensions.icecream.initParameterWidget = function () {
+  extensions = [
+    {kind: "onyx.GroupboxHeader", content: "_iceCreamFlavor".loc()},
+    {name: "iceCreamFlavor", label: "_favoriteFlavor".loc(),
+      attr: "favoriteFlavor", defaultKind: "XV.IceCreamFlavorPicker"}
+  ];
 
-XV.appendExtension("XV.ContactListParameters", extensions);
+  XV.appendExtension("XV.ContactListParameters", extensions);
+};
 ```
 
 Add update the `package.js` file by uncommenting the `parameter.js` line. **Verify** this step by pressing the magnifying glass icon when you're in the Contact list view, and filtering based on ice cream flavor. Only those contacts that you've set up to have that flavor should get fetched.

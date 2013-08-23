@@ -49,10 +49,13 @@ follow them when writing in our style. Moreover, you'll also
 see that for the extension client-side files (except for `core.js` 
 and the `package.js` files), the code is wrapped in another, named 
 function that is not executed immediately. This allows us to load 
-the code of the extension and actually execute the code at different 
-moments in our setup process. For the sake of concision the code 
-examples in this tutorial will ignore all these wrappers, but you 
-will see them in the actual implementation of this sample extension.
+the code of the extension and actually execute the code later on 
+in our setup process. 
+
+For the sake of concision the code examples in this tutorial will 
+ignore the jsdoc and anonymous function wrappers (your code will
+work without them), but you will see them in the actual 
+implementation of this sample extension.
 
 You might find yourself copying and pasting the tops and bottoms 
 of client-side files, so as to avoid writing the jshint, 

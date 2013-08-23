@@ -237,15 +237,17 @@ XT.extensions.icecream = {};
 xTuple's mobile/web framework uses a model layer based on backbone.js and backbone-relational, and at its simplest the model layer requires very little code. Create a file `ice_cream_flavor.js` in the `/path/to/xtuple-extensions/source/icecream/client/models` directory, with the following:
 
 ```javascript
-XM.IceCreamFlavor = XM.Document.extend({
-  recordType: "XM.IceCreamFlavor",
-  documentKey: "name", // the natural key
-  idAttribute: "name" // the natural key
-});
+XT.extensions.icecream.initModels = function () {
+  XM.IceCreamFlavor = XM.Document.extend({
+    recordType: "XM.IceCreamFlavor",
+    documentKey: "name", // the natural key
+    idAttribute: "name" // the natural key
+  });
 
-XM.IceCreamFlavorCollection = XM.Collection.extend({
-  model: XM.IceCreamFlavor
-});
+  XM.IceCreamFlavorCollection = XM.Collection.extend({
+    model: XM.IceCreamFlavor
+  });
+};
 ```
 
 That's all there is to it. As we'll see later on, though, these model files are a very convenient place to put in business logic, so we'll be coming back to these. All the same, this is all you need to get the application to work. All of the details of the model (columns, relations, privileges, etc.) are loaded reflectively off the server during app startup and are injected into the model. That's one of the things that's going on when you're watching the loading bar when you sign in.
@@ -257,40 +259,44 @@ That's all there is to it. As we'll see later on, though, these model files are 
 Now we start writing the Enyo views, so get your browser ready. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/views/list.js`: 
 
 ```javascript
-enyo.kind({
-  name: "XV.IceCreamFlavorList",
-  kind: "XV.List",
-  label: "_iceCreamFlavors".loc(),
-  collection: "XM.IceCreamFlavorCollection",
-  query: {orderBy: [
-    {attribute: 'name'}
-  ]},
-  components: [
-    {kind: "XV.ListItem", components: [
-      {kind: "FittableColumns", components: [
-        {kind: "XV.ListColumn", classes: "short",
-          components: [
-          {kind: "XV.ListAttr", attr: "name", isKey: true},
-          {kind: "XV.ListAttr", attr: "description"}
-        ]},
-        {kind: "XV.ListColumn", classes: "last", fit: true, components: [
-          {kind: "XV.ListAttr", attr: "calories"}
+XT.extensions.icecream.initList = function () {
+  enyo.kind({
+    name: "XV.IceCreamFlavorList",
+    kind: "XV.List",
+    label: "_iceCreamFlavors".loc(),
+    collection: "XM.IceCreamFlavorCollection",
+    query: {orderBy: [
+      {attribute: 'name'}
+    ]},
+    components: [
+      {kind: "XV.ListItem", components: [
+        {kind: "FittableColumns", components: [
+          {kind: "XV.ListColumn", classes: "short",
+            components: [
+            {kind: "XV.ListAttr", attr: "name", isKey: true},
+            {kind: "XV.ListAttr", attr: "description"}
+          ]},
+          {kind: "XV.ListColumn", classes: "last", fit: true, components: [
+            {kind: "XV.ListAttr", attr: "calories"}
+          ]}
         ]}
       ]}
-    ]}
-  ]
-});
+    ]
+  });
+};
 ```
 
 The architecture of our application as a whole is that there is a central core of functionality which is itself unaware of the existence of the various extensions that can float around it. The core of the application is really quite small; almost all of the models and views are part of extensions. The way we get this to work is that the core exposes methods to let extensions inject panels into it. Enter the following code into the `/path/to/xtuple-extensions/source/icecream/client/postbooks.js` file:
 
 ```javascript
-var panels, relevantPrivileges;
+XT.extensions.icecream.initPostbooks = function () {
+  var panels, relevantPrivileges;
 
-panels = [
-  {name: "iceCreamFlavorList", kind: "XV.IceCreamFlavorList"}
-];
-XT.app.$.postbooks.appendPanels("setup", panels);
+  panels = [
+    {name: "iceCreamFlavorList", kind: "XV.IceCreamFlavorList"}
+  ];
+  XT.app.$.postbooks.appendPanels("setup", panels);
+};
 ```
 
 This will inject the `IceCreamFlavor` list into the `Setup` module of our app. It is all the code we need to start seeing our changes in the client, so before we write any more, let's try to verify our work so far, which will require us to package the client.
@@ -374,6 +380,7 @@ and uncomment `en` as an entry in the file `/path/to/xtuple-extensions/source/ic
 Of course, our lists aren't going to do much good if you can't drill down into a workspace to view more detail or edit an item. Let's build the workspace now. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/views/workspace.js`:
 
 ```
+XT.extensions.icecream.initWorkspace = function () {
   enyo.kind({
     name: "XV.IceCreamFlavorWorkspace",
     kind: "XV.Workspace",
@@ -395,6 +402,7 @@ Of course, our lists aren't going to do much good if you can't drill down into a
   });
 
   XV.registerModelWorkspace("XM.IceCreamFlavor", "XV.IceCreamFlavorWorkspace");
+};
 ```
 
 A few things to note. The `attr` fields need to be the model attribute names. The `XV.registerModelWorkspace` tells the application that this is the workspace that should be drilled down to when a user clicks into an item on the list, or clicks the add button.
