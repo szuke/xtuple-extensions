@@ -78,6 +78,17 @@ These lightweight models are extended from `XM.Info`. In the case
 of `IceCreamFlavor` our editable model is so light that we don't 
 need to define any others.
 
+### How to I update the strings file?
+
+The `/path/to/xtuple-extensions/source/icecream/client/en/strings.js` file 
+provides the English translations for all the visible text in your app. If you're
+diligent about always entering your visible text in the format "_myWord".loc(),
+then you'll notice the underscores onscreen, which will remind you to
+add the English translation into the `strings.js` file.
+
+By the end of your tutorial your `strings.js` file will look like
+[this](https://github.com/xtuple/xtuple-extensions/blob/master/sample/icecream/client/en/strings.js).
+
 ### Why do we need a new table to extend `contact`?
 In a perfect world, we would just go into the `cntct` table and add a 
 column. This is not an option. We're writing a humble extension here! 
