@@ -3,67 +3,9 @@
 
 Let's add some bells and whistles to give you a feel for how to implement advanced functionality onto the base you've already written.
 
-### Tests
-
-Your grandmother always told you to put your code under test. We use mocha for unit and integration testing, and you should run your ice cream model through a simple CRUD test to make sure that you haven't made any mistakes in the ORM code, and that you've set the `idAttribute` appropriately on the model. It's best to do this immediately after writing the model, before you write any views.
-
-To get your testing environment set up, you'll want to refer to our getting started with [testing document](https://github.com/xtuple/xtuple/wiki/Testing-Setup). Your test code for `IceCreamFlavor` can go in `test/ice_cream_flavor.js` and will look something like:
-
-```javascript
-  var crud = require("../../../../xtuple/mocha/test/lib/crud"),
-    data = {
-      recordType: "XM.IceCreamFlavor",
-      autoTestAttributes: true,
-      createHash: {
-        name: "VANILLA" + Math.random(),
-        calories: 1200
-      },
-      updateHash: {
-        calories: 1400
-      }
-    };
-
-  describe('Ice cream flavor crud test', function () {
-    crud.runAllCrud(data);
-  });
-```
-
-To run the test you'll need some node packages, which means you should run `npm install` from the root of the repository. 
-```bash
-cd xtuple-extensions
-sudo npm intall
-```
-
-There are a number of necessary steps that you've probably taken if you've been following along since the beginning. For example, if you haven't built the extension into the database, you'll have to do that, or else you'll get a `undefined is not a function` error.
-```bash
-../xtuple/scripts/build_app.js -e source/icecream/
-```
-And you'll have to make sure the user specified in `login_data.js` (typically `admin`) has access to the extension.
-
-You'll also need to have the core datasource running.
-```bash
-cd xtuple/node-datasource
-sudo ./main.js
-```
-
-You can run the test based on the typical mocha command.
-```bash
-./node_modules/mocha/bin/mocha source/icecream/test/ice_cream_flavor.js
-```
-
-It's a bit awkward to have to type the path out to the binary, so you might want to install mocha globally
-```bash
-sudo npm install -g mocha
-```
-
-and then you can call the tests more concisely.
-```bash
-mocha source/icecream/test/ice_cream_flavor.js
-```
-
 ### Business Logic: Validation
 
-Late breaking requirement from the prospect! Any flavor under 450 calories must start with the word "Lite". This sort of business logic is best put in the model, so let's open up that file.
+Late breaking requirement from the prospect! Any flavor under 450 calories must start with the word "Lite". This sort of business logic is best put in the model, so add the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
 
 ```javascript
 validate: function (attributes) {
@@ -78,7 +20,7 @@ validate: function (attributes) {
 
 The validate function is intended to return undefined if there is no error, and to return an error object if there is an error. What we're doing here is to add a specific check for the business logic. If that passes, we just call the default validation.
 
-See that we're relying on our centralized error registry to understand what `icecream3001` means. Let's register this error in our `client/models/startup.js` file.
+See that we're relying on our centralized error registry to understand what `icecream3001` means. Let's register this error by adding the following code to the file `/path/to/xtuple-extensions/source/icecream/client/models/startup.js`:
 
 ```javascript
 XT.Error.addError({
@@ -87,11 +29,11 @@ XT.Error.addError({
 });
 ```
 
-**Verify** your validation by trying to save an invalid flavor. You'll want to update your `strings.js` file to desplay a descriptive message.
+**Verify** your validation by trying to save an invalid flavor. You'll want to update your `strings.js` file to desplay a descriptive message [ [HOW?] ](TUTORIAL-FAQ.md#how-do-i-update-the-strings-file).
 
 ### Business Logic: Event Binding
 
-We can do better than this, by making the model automatically update the name based on the calorie count. To do this we use event binding, which is one of the most powerful tool we have to drive business logic. We'll use the bindEvents function to listen to changes to the calorie attribute and act accordingly.
+We can do better than this, by making the model automatically update the name based on the calorie count. To do this we use event binding, which is one of the most powerful tools we have to drive business logic. We'll use the bindEvents function to listen to changes to the calorie attribute and act accordingly. Add the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
 
 ```javascript
 bindEvents: function () {
@@ -112,30 +54,20 @@ caloriesDidChange: function () {
 }
 ```
 
-**Verify** this by opening up the workspace and playing with the calorie count. As soon as you tab off of the calorie field, the name field should update itself. This is magically accomplished without any modifications to the Enyo layer. What's happening is that the view is always watching any changes to the model, and will re-render itself if it sees any changes. 
+**Verify** this by opening up the workspace and playing with the calorie count. As soon as you tab off of the calorie field, the name field should update itself. This is magically accomplished without any modifications to the Enyo layer. This is possible because the view is always watching any changes to the model, and will re-render itself if it sees any changes. 
 
-The tests-- _you **are** putting your business logic under test, aren't you?_ -- can be achieved by putting the following function in your data object:
-
-```javascript
-beforeDeleteActions: [{it: "should update the description to and from LITE", action: function (data, done) {
-  var model = data.model;
-  assert.equal(model.get("name").substring(0, 7), "VANILLA");
-  model.set("calories", 200);
-  assert.equal(model.get("name").substring(0, 7), "LITE VA");
-  model.set("calories", 1200);
-  assert.equal(model.get("name").substring(0, 7), "VANILLA");
-}}]
-```
 
 ### Privilege Control
 
 Earlier on we defined the ORM with totally lax privilege enforcement by setting all the privilege attributes to `true`. Let's go back and restrict privileges for creating, reading, updating, and deleting these objects. It would be easy enough to piggyback on a pre-existing set of privileges, such as `MaintainContacts` and `ViewContacts`, but let's be thorough and make a new privilege.
 
-You'll want to start by going back to the `database/source` folder and add a new file `priv.sql` in with the others. (Make sure you add it to the `manifest.js` as well.)
+Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/source/priv.sql`:
 
 ```javascript
 select xt.add_priv('MaintainIceCreamFlavors', 'Maintain Ice Cream Flavors', 'IceCream', 'Contact');
 ```
+
+(Make sure you add this file to the `manifest.js` as well.)
 
 The third parameter here is the name of the extension, and the fourth parameter will be the business object that the privilege should be grouped with in the `UserAccount` profiling screen.
 
@@ -145,7 +77,7 @@ Rebuild the extension and **verify** the change by looking in the public `priv` 
 select * from priv where priv_module = 'IceCream';
 ```
 
-Next, go back to the ORM and update the privilege section. Whereas the booleans `true` (and `false`) represent that anyone (or no one) can perform a certain action, any string value is interpreted to mean that only users with that privilege can perform the action.
+Next, go back to the file `/path/to/xtuple-extensions/source/icecream/database/orm/models/ice_cream_flavor.json` and update the privilege section. Whereas the booleans `true` (and `false`) represent that anyone (or no one) can perform a certain action, any string value is interpreted to mean that only users with that privilege can perform the action.
 
 ```javascript
 "privileges": {
@@ -160,7 +92,7 @@ Next, go back to the ORM and update the privilege section. Whereas the booleans 
 
 **Verify** the privilege enforcement by rebuilding, refreshing the browser, and seeing that you can no longer add, edit, or delete an `IceCreamFlavor` (although you can still view them because that privilege is still set to `true`). 
 
-If you go into the `UserAccount` workspace for the `admin` user you'll notice that this privilege is not visible. There are hundreds of privileges and for any given user only a fraction may be relevant. Because some privileges are relevant to multiple extensions there isn't a strict many-to-one relationship between privileges and extensions, so the privileges relevant to any given extension cannot be inferred. Long story short, we have to add the following to our `postbooks.js` file, which declares the `MaintainIceCreamFlavors` as relevant to the `icecream` extension, as well as the fact that this privilege should be grouped with the ones for `Contact`.
+If you go into the `UserAccount` workspace for the `admin` user you'll notice that this privilege is not visible. There are hundreds of privileges and for any given user only a fraction may be relevant. Because some privileges are relevant to multiple extensions there isn't a strict many-to-one relationship between privileges and extensions, so the privileges relevant to any given extension cannot be inferred. Long story short, we have to add the following to our `postbooks.js` file, which declares the `MaintainIceCreamFlavors` as relevant to the `icecream` extension, as well as the fact that this privilege should be grouped with the ones for `Contact`. Add the following code to the file `/path/to/xtuple-extensions/source/icecream/client/postbooks.js`:
 
 ```javascript
 relevantPrivileges = [
@@ -172,9 +104,60 @@ XT.session.privilegeSegments.Contact.push("MaintainIceCreamFlavors");
 
 When you refresh the browser you'll see this privilege in the `UserAccount` workspace. Grant it to yourself, refresh the browser again and you'll be able to add, edit, and delete an `IceCreamFlavor`.
 
+### Tests
+
+We recommend you use automated testing to ensure that your code does what you want, and to make sure that you're not
+breaking anything else inadvertantly.
+
+We use mocha for unit and integration testing, and you should run your ice cream model through a simple CRUD test to make sure that you haven't made any mistakes in the ORM code, and that you've set the `idAttribute` appropriately on the model. In general we recommend that you do this immediately after writing the model, before you write any views.
+
+To get your testing environment set up, you'll want to refer to [testing documentation](https://github.com/xtuple/xtuple/wiki/Testing-Setup). Make sure that you can run all the tests in the core `xtuple` directory. Once you can do that, then putting the `IceCream` model under test should follow the same process as our other objects. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
+
+```javascript
+  var crud = require("../../../../xtuple/mocha/test/lib/crud"),
+    data = {
+      recordType: "XM.IceCreamFlavor",
+      autoTestAttributes: true,
+      createHash: {
+        name: "VANILLA" + Math.random(),
+        calories: 1200
+      },
+      updateHash: {
+        calories: 1400
+      }
+    };
+
+  describe('Ice cream flavor crud test', function () {
+    crud.runAllCrud(data);
+  });
+```
+
+You can run the test based on the typical mocha command.
+
+```bash
+cd /path/to/xtuple-extensions
+mocha source/icecream/test/ice_cream_flavor.js
+```
+
+The tests for the business logic can be achieved by putting the following function in your data object in `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
+
+```javascript
+beforeDeleteActions: [{it: "should update the description to and from LITE", action: function (data, done) {
+  var model = data.model;
+  assert.equal(model.get("name").substring(0, 7), "VANILLA");
+  model.set("calories", 200);
+  assert.equal(model.get("name").substring(0, 7), "LITE VA");
+  model.set("calories", 1200);
+  assert.equal(model.get("name").substring(0, 7), "VANILLA");
+}}]
+```
+
+It always also a good idea to re-run the core tests as described the testing document before you submit a pull request,
+to make sure that you haven't disrupted any of the existing functionality.
+
 ### Declaring the Version Number
 
-One last thing we should do is to declare the version number for the client. We have already specified the version number in the database `manifest.js` file. We should do the something similar in the client so that users will know how up-to-date their extension code is. Change your `client/core.js` file to the following:
+One last thing we should do is to declare the version number for the client. We have already specified the version number in the database `manifest.js` file. We should do the something similar in the client so that users will know how up-to-date their extension code is. Update the file `/path/to/xtuple-extensions/source/icecream/client/core.js` with the following:
 
 ```javascript
 XT.extensions.icecream = {

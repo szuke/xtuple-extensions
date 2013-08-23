@@ -9,9 +9,11 @@ and click the "fork" button in the upper-right.
 Then, navigate on the command line of your development
 environment to the directory that contains the `xtuple`
 repository. Type
+
 ```bash
-git clone git://github.com/yourusername/xtuple-extensions.git
+git clone git@github.com:yourusername/xtuple-extensions.git
 ```
+
 (with your own username, of course.) 
 
 Congratulations! The `xtuple-extensions` directory is now
@@ -49,18 +51,48 @@ follow them when writing in our style. Moreover, you'll also
 see that for the extension client-side files (except for `core.js` 
 and the `package.js` files), the code is wrapped in another, named 
 function that is not executed immediately. This allows us to load 
-the code of the extension and actually execute the code at different 
-moments in our setup process. For the sake of concision the code 
-examples in this tutorial will ignore all these wrappers, but you 
-will see them in the actual implementation of this sample extension.
+the code of the extension and actually execute the code later on 
+in our setup process. 
+
+For the sake of concision the code examples in this tutorial will 
+ignore the jsdoc and anonymous function wrappers (your code will
+work without them), but you will see them in the actual 
+implementation of this sample extension.
 
 You might find yourself copying and pasting the tops and bottoms 
 of client-side files, so as to avoid writing the jshint, 
 `"use strict"`, and wrapper functions. This is fine to do, 
-but make sure that you rename the XT.extensions functions. 
+but make sure that you rename the `XT.extensions` functions. 
 There must only be one `XT.extensions.iceCream.initModels` 
 [function](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream/client/models/ice_cream_flavor.js#L9), 
 for example. 
+
+### What are the differences between the base model classes?
+We extend `XM.IceCreamFlavor` off of `XM.Document`, 
+which is itself extended off of `XM.Model`, which itself extends 
+Backbone-relational and Backbone models. `XM.Document` has some features 
+on top of `XM.Model`, such as having a user-defined key. This is the 
+most commonly extended base object in `backbone-x`.
+
+For the larger business objects, we'll typically define one or 
+two lighterweight models (and ORMs) to be used in lists or as 
+nested objects within other business objects. So, along with the 
+"editable" model `XM.Quote`, we have `XM.QuoteListItem` and 
+`XM.QuoteRelation`, which have fewer fields and are not editable. 
+These lightweight models are extended from `XM.Info`. In the case 
+of `IceCreamFlavor` our editable model is so light that we don't 
+need to define any others.
+
+### How do I update the strings file?
+
+The `/path/to/xtuple-extensions/source/icecream/client/en/strings.js` file 
+provides the English translations for all the visible text in your app. If you're
+diligent about always entering your visible text in the format "_myWord".loc(),
+then you'll notice the underscores onscreen, which will remind you to
+add the English translation into the `strings.js` file.
+
+By the end of your tutorial your `strings.js` file will look like
+[this](https://github.com/xtuple/xtuple-extensions/blob/master/sample/icecream/client/en/strings.js).
 
 ### Why do we need a new table to extend `contact`?
 In a perfect world, we would just go into the `cntct` table and add a 
@@ -81,3 +113,4 @@ be included in our cache, then it will be fetched when we start the app,
 and will be accessible as `XM.termsTypes`, for example. These caches
 are automatically kept up-to-date if you go to the setup area and change
 their models.
+
