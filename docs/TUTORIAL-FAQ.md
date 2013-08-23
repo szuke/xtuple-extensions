@@ -9,9 +9,11 @@ and click the "fork" button in the upper-right.
 Then, navigate on the command line of your development
 environment to the directory that contains the `xtuple`
 repository. Type
+
 ```bash
-git clone git://github.com/yourusername/xtuple-extensions.git
+git clone git@github.com:yourusername/xtuple-extensions.git
 ```
+
 (with your own username, of course.) 
 
 Congratulations! The `xtuple-extensions` directory is now
@@ -60,7 +62,7 @@ implementation of this sample extension.
 You might find yourself copying and pasting the tops and bottoms 
 of client-side files, so as to avoid writing the jshint, 
 `"use strict"`, and wrapper functions. This is fine to do, 
-but make sure that you rename the XT.extensions functions. 
+but make sure that you rename the `XT.extensions` functions. 
 There must only be one `XT.extensions.iceCream.initModels` 
 [function](http://github.com/xtuple/xtuple-extensions/tree/master/sample/icecream/client/models/ice_cream_flavor.js#L9), 
 for example. 

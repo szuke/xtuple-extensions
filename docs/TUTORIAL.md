@@ -7,9 +7,7 @@ Suppose you are working with a prospect who is excited to use xTuple, but are ba
 
 Getting this to work will touch all of the layers of the xTuple stack. On the server side, we'll have to make a new table and related ORMs. On the client side we'll have to make the model for ice cream flavors, the views and the views to profile them. We'll also have to insert this feature into the pre-existing contact view. 
 
-This tutorial will walk you through setting up this customization in three parts. First, we need to add a new business object, `IceCreamFlavor`. Second, we need to extend the Contact business object to include this field.
-
-In **Part I** we'll start at the bottom and work our way up to create the `IceCreamFlavor` business object. We'll do the same in **Part II**, and revisiting each layer of the stack will feel like seeing an old friend! Lastly, in **Part III** we'll add some bells and whistles to give you a taste of some of the more advanced functionality that's available.
+This tutorial will walk you through setting up this customization in three parts. In **Part I** we'll start at the bottom and work our way up to create the `IceCreamFlavor` business object. We'll do the same in **Part II**, and revisiting each layer of the stack will feel like seeing an old friend! Lastly, in **Part III** we'll add some bells and whistles to give you a taste of some of the more advanced functionality that's available.
 
 If you have not already cloned the [core xtuple repository](http://github.com/xtuple/xtuple) and set up your development environment, do so now by following [our setup instructions](https://github.com/xtuple/xtuple/wiki/Setting-up-an-Ubuntu-Virtual-Machine). You will furthermore want to fork and clone this [xtuple-extensions](http://github.com/xtuple/xtuple-extensions) repository. 
 [ [HOW?] ](TUTORIAL-FAQ.md#how-to-fork-and-clone-xtuple-extensions)
@@ -37,7 +35,7 @@ if you have a `client` directory with nothing in it. Just make each directory as
 ### Tables
 
 We write our database code in plv8, which allows us to use pure javascript even when constructing tables. You won't see any SQL in this tutorial! Don't worry: it's postgres behind the scenes. We'll be putting four files in the `/path/to/xtuple-extensions/source/icecream/database/source` directory. (You'll have to `mkdir` as necessary here and elsewhere.)
-* 'create_ic_schema.sql' (to create the schema) [ [WHY?] ](TUTORIAL-FAQ.md#why-create-a-new-schema)
+* `create_ic_schema.sql` (to create the schema) [ [WHY?] ](TUTORIAL-FAQ.md#why-create-a-new-schema)
 * `icflav.sql` (to define the table)
 * `register.sql` (to register the extension in the database)
 * `manifest.js` (as a single point of entry to call the other two and any other files we make)
@@ -58,7 +56,7 @@ do $$
 $$ language plv8;
 ```
 
-Next, we'll define a table named `ic.icflav`, with four columns, by entering the following code into the file `/path/to/xtuple-extensions/source/icecream/database/source/icflav.sql`:
+Next, we'll define a table named `ic.icflav`, by entering the following code into the file `/path/to/xtuple-extensions/source/icecream/database/source/icflav.sql`:
 
 ```javascript
 select xt.create_table('icflav', 'ic');
@@ -71,7 +69,7 @@ select xt.add_column('icflav','icflav_calories', 'integer', '', 'ic');
 comment on table ic.icflav is 'Ice cream flavors';
 ```
 
-This will create a table using our own table and column creation functions 
+This will create a table with four columns using our own table and column creation functions 
 [ [WHY?] ](TUTORIAL-FAQ.md#why-not-use-native-postgres-functions-to-create-tables):
 * `icflav_id` (the primary key)
 * `icflav_name` (the natural key)
@@ -86,7 +84,7 @@ $ psql -U admin -d dev -f create_ic_schema.sql
 $ psql -U admin -d dev -f icflav.sql
 ```
 
-**Verify** your work so far by finding the icflav table in the ic schema of your development database using pgadmin3 or psql.
+**Verify** your work so far by finding the `icflav` table in the `ic` schema of your development database using pgadmin3 or psql.
 
 ```bash
 $ psql -U admin -d dev -c "select * from ic.icflav;"
@@ -126,6 +124,7 @@ We can put these files together in our `manifest.js` file, which as a convention
   "version": "1.4.1",
   "comment": "Ice Cream Flavor sample extension",
   "databaseScripts": [
+    "create_ic_schema.sql",
     "icflav.sql",
     "register.sql"
   ]
@@ -142,7 +141,7 @@ $ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ### ORMs
 
 The xTuple ORMs are a JSON mapping between the SQL tables and the object-oriented world above the database. In this part of the tutorial we need to make an ORM for the IceCreamFlavor business object. 
-[ [WHERE?] ](TUTORIAL-FAQ.md#where-should-i-put-orm-definitions):
+[ [WHERE?] ](TUTORIAL-FAQ.md#where-should-i-put-orm-definitions)
 
 Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/orm/models/ice_cream_flavor.json`:
 
@@ -205,9 +204,9 @@ A lot of the ORM is self-explanatory; you just have to follow the conventions in
 
 You'll notice that the privileges are all true. Anyone can do any action to this object. This is the default behavior, and we could have left this out of the map altogether. However, soon enough we'll be putting real privileges behind this business object, so it's useful to see it in action.
 
-The name of the idSequence follows the postgres convention and was created automatically when you set the icflav_id field to be of type serial.
+The name of the `idSequence` follows the postgres convention and was created automatically when you set the `icflav_id` field to be of type serial.
 
-Currently, all ORMs in the application are isSystem:true.
+Currently, all ORMs in the application are `isSystem:true`.
 
 The same core build tool that ran the files referenced in `manifest.js` will also find and run any orms in the ORM directory.
 
@@ -216,7 +215,7 @@ $ cd /path/to/xtuple
 $ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ```
 
-**Verify** your work by finding a new view called ice_cream_flavor in the xm schema of your database. 
+**Verify** your work by finding a new view called ice_cream_flavor in the `xm` schema of your database. 
 
 ```bash
 $ psql -U admin -d dev -c "select * from xm.ice_cream_flavor;"
@@ -237,7 +236,7 @@ XT.extensions.icecream = {};
 
 ### Models
 
-xTuple's mobile/web framework uses a model layer based on backbone.js and backbone-relational, and at its simplest the model layer requires very little code. Create a file `ice_cream_flavor.js` in the `/path/to/xtuple-extensions/source/icecream/client/models` directory, with the following:
+xTuple's mobile/web framework uses a model layer based on backbone.js and backbone-relational, and at its simplest the model layer requires very little code. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
 
 ```javascript
 XT.extensions.icecream.initModels = function () {
@@ -366,7 +365,7 @@ var lang = XT.stringsFor("en_US", {
 });
 ```
 
-Of course, you'll need to add a `package.js` file into that directory
+Of course, you'll also need to enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/en/package.js`:
 
 ```javascript
 enyo.depends(
