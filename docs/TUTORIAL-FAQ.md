@@ -78,7 +78,7 @@ These lightweight models are extended from `XM.Info`. In the case
 of `IceCreamFlavor` our editable model is so light that we don't 
 need to define any others.
 
-### How to I update the strings file?
+### How do I update the strings file?
 
 The `/path/to/xtuple-extensions/source/icecream/client/en/strings.js` file 
 provides the English translations for all the visible text in your app. If you're

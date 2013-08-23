@@ -7,7 +7,7 @@ Having completed **Part I** of our tutorial, we can now manage `IceCreamFlavors`
 
 Let's create a new table that will function as a link table between `contact` and `icflav`, and then extend the `Contact` ORM.
 [ [WHY?] ](TUTORIAL-FAQ.md#why-do-we-need-a-new-table-to-extend-contact)
-Open a new file `database/source/cntcticflav.sql`:
+Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/source/cntcticflav.sql`:
 
 
 ```javascript
@@ -24,7 +24,7 @@ Don't forget to add this new file to the `manifest.js` file, underneath the defi
 
 ### ORMs
 
-We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFlavor` as a new field. By convention, ORM definitions which extend existing ORMs should go in the `database/orm/ext` directory. Make that directory and add into it a file named `contact.json`:
+We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFlavor` as a new field. By convention, ORM definitions which extend existing ORMs should go in the `/path/to/xtuple-extensions/source/icecream/database/orm/ext` directory. Make that directory and enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/orm/ext/contact.json`:
 
 ```javascript
 
@@ -89,7 +89,7 @@ We don't need to add anything to the model layer. The new field to `Contact` wil
 
 ### The Cache
 
-We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on the Ice Cream Flavor collection to be cached in the browser. Let's set that up now, in the file `client/models/startup.js`
+We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on the Ice Cream Flavor collection to be cached in the browser. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/startup.js`:
 
 ```javascript
 XT.cacheCollection("XM.iceCreamFlavors", "XM.IceCreamFlavorCollection");
@@ -103,7 +103,18 @@ was easy (don't forget reference this in the `package.js` file, underneath `ice_
 
 Next is to create a widget for the selection of `IceCreamFlavors`. In this case, we choose a `XV.Picker` over an `XV.RelationalWidget` because there will be a limited number of options and we will not need full-fledged search capabilites.
 
-Create a new directory in `client/widgets`. The directory will need to be referenced by the root `package.js`, and it should have its own `package.js`, pointing to a new file `picker.js`, with the following contents:
+Create a new directory `/path/to/xtuple-extensions/source/icecream/client/widgets`, and update the file `/path/to/xtuple-extensions/source/icecream/client/package.js` file by uncommenting the `widgets` entry.
+
+Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/package.js`:
+
+```javascript
+enyo.depends(
+  "picker.js",
+  //"parameter.js" // We'll get to this one later on.
+);
+```
+
+And enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/picker.js`:
 
 ```javascript
 enyo.kind({
@@ -117,7 +128,7 @@ Note that we set the collection of the picker to be the cache that we've just se
 
 ### Extending views
 
-The last step is to add the new `IceCreamFlavorPicker` to the `Contact` workspace, by adding it into the component array. Of course, we're not allowed to change the core source of `XV.ContactWorkspace`. We have to inject it in from the extension. Luckily, our core workspaces give you an easy way to do this. We can add the following code to `client/views/workspace.js`.
+The last step is to add the new `IceCreamFlavorPicker` to the `Contact` workspace, by adding it into the component array. Of course, we're not allowed to change the core source of `XV.ContactWorkspace`. We have to inject it in from the extension. Luckily, our core workspaces give you an easy way to do this. Add the following code to `/path/to/xtuple-extensions/source/icecream/client/views/workspace.js`.
 
 ```javascript
 var extensions = [
@@ -130,7 +141,7 @@ XV.appendExtension("XV.ContactWorkspace", extensions);
 
 **Verify** this step by setting some flavors in with the contacts and making seeing that they stick if you back out and go back into them.
 
-We can use the same trick to add this picker to the advanced search options for contact, by adding the following code into a new file `client/widgets/parameter.js` file.
+We can use the same trick to add this picker to the advanced search options for contact. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/parameter.js`.
 
 ```javascript
 extensions = [
@@ -142,6 +153,6 @@ extensions = [
 XV.appendExtension("XV.ContactListParameters", extensions);
 ```
 
-Add it to the `package.js` file underneath `picker.js`. **Verify** this step by pressing the magnifying glass icon when you're in the Contact list view, and filtering based on ice cream flavor. Only those contacts that you've set up to have that flavor should get fetched.
+Add update the `package.js` file by uncommenting the `parameter.js` line. **Verify** this step by pressing the magnifying glass icon when you're in the Contact list view, and filtering based on ice cream flavor. Only those contacts that you've set up to have that flavor should get fetched.
 
 Congratulations! You've added the new business object to `Contact`. If you're still hungry to learn more about the capabilities of the xTuple stack, read on to [Part III](TUTORIAL3.md) to see what sorts of bells and whistles we can add to what we've built.

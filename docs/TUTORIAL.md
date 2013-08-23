@@ -66,7 +66,7 @@ select xt.add_column('icflav','icflav_calories', 'integer', '', 'ic');
 comment on table ic.icflav is 'Ice cream flavors';
 ```
 
-This will create a talbe using our own table and column creation functions 
+This will create a table using our own table and column creation functions 
 [ [WHY?] ](TUTORIAL-FAQ.md#why-not-use-native-postgres-functions-to-create-tables):
 * `icflav_id` (the primary key)
 * `icflav_name` (the natural key)

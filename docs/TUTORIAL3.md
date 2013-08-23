@@ -7,7 +7,7 @@ Let's add some bells and whistles to give you a feel for how to implement advanc
 
 Your grandmother always told you to put your code under test. We use mocha for unit and integration testing, and you should run your ice cream model through a simple CRUD test to make sure that you haven't made any mistakes in the ORM code, and that you've set the `idAttribute` appropriately on the model. It's best to do this immediately after writing the model, before you write any views.
 
-To get your testing environment set up, you'll want to refer to our getting started with [testing document](https://github.com/xtuple/xtuple/wiki/Testing-Setup). Your test code for `IceCreamFlavor` can go in `test/ice_cream_flavor.js` and will look something like:
+To get your testing environment set up, you'll want to refer to our getting started with [testing document](https://github.com/xtuple/xtuple/wiki/Testing-Setup). Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
 
 ```javascript
   var crud = require("../../../../xtuple/mocha/test/lib/crud"),
@@ -35,9 +35,11 @@ sudo npm intall
 ```
 
 There are a number of necessary steps that you've probably taken if you've been following along since the beginning. For example, if you haven't built the extension into the database, you'll have to do that, or else you'll get a `undefined is not a function` error.
+
 ```bash
 ../xtuple/scripts/build_app.js -e source/icecream/
 ```
+
 And you'll have to make sure the user specified in `login_data.js` (typically `admin`) has access to the extension.
 
 You'll also need to have the core datasource running.
@@ -47,23 +49,26 @@ sudo ./main.js
 ```
 
 You can run the test based on the typical mocha command.
+
 ```bash
 ./node_modules/mocha/bin/mocha source/icecream/test/ice_cream_flavor.js
 ```
 
 It's a bit awkward to have to type the path out to the binary, so you might want to install mocha globally
+
 ```bash
 sudo npm install -g mocha
 ```
 
 and then you can call the tests more concisely.
+
 ```bash
 mocha source/icecream/test/ice_cream_flavor.js
 ```
 
 ### Business Logic: Validation
 
-Late breaking requirement from the prospect! Any flavor under 450 calories must start with the word "Lite". This sort of business logic is best put in the model, so let's open up that file.
+Late breaking requirement from the prospect! Any flavor under 450 calories must start with the word "Lite". This sort of business logic is best put in the model, so add the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
 
 ```javascript
 validate: function (attributes) {
@@ -78,7 +83,7 @@ validate: function (attributes) {
 
 The validate function is intended to return undefined if there is no error, and to return an error object if there is an error. What we're doing here is to add a specific check for the business logic. If that passes, we just call the default validation.
 
-See that we're relying on our centralized error registry to understand what `icecream3001` means. Let's register this error in our `client/models/startup.js` file.
+See that we're relying on our centralized error registry to understand what `icecream3001` means. Let's register this error by adding the following code to the file `/path/to/xtuple-extensions/source/icecream/client/models/startup.js`:
 
 ```javascript
 XT.Error.addError({
@@ -87,11 +92,11 @@ XT.Error.addError({
 });
 ```
 
-**Verify** your validation by trying to save an invalid flavor. You'll want to update your `strings.js` file to desplay a descriptive message.
+**Verify** your validation by trying to save an invalid flavor. You'll want to update your `strings.js` file to desplay a descriptive message [ [HOW?] ](TUTORIAL-FAQ.md#how-do-i-update-the-strings-file).
 
 ### Business Logic: Event Binding
 
-We can do better than this, by making the model automatically update the name based on the calorie count. To do this we use event binding, which is one of the most powerful tool we have to drive business logic. We'll use the bindEvents function to listen to changes to the calorie attribute and act accordingly.
+We can do better than this, by making the model automatically update the name based on the calorie count. To do this we use event binding, which is one of the most powerful tool we have to drive business logic. We'll use the bindEvents function to listen to changes to the calorie attribute and act accordingly. Add the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
 
 ```javascript
 bindEvents: function () {
@@ -114,7 +119,7 @@ caloriesDidChange: function () {
 
 **Verify** this by opening up the workspace and playing with the calorie count. As soon as you tab off of the calorie field, the name field should update itself. This is magically accomplished without any modifications to the Enyo layer. What's happening is that the view is always watching any changes to the model, and will re-render itself if it sees any changes. 
 
-The tests-- _you **are** putting your business logic under test, aren't you?_ -- can be achieved by putting the following function in your data object:
+The tests-- _you **are** putting your business logic under test, aren't you?_ -- can be achieved by putting the following function in your data object in `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
 
 ```javascript
 beforeDeleteActions: [{it: "should update the description to and from LITE", action: function (data, done) {
