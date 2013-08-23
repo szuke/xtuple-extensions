@@ -33,7 +33,7 @@ XT.Error.addError({
 
 ### Business Logic: Event Binding
 
-We can do better than this, by making the model automatically update the name based on the calorie count. To do this we use event binding, which is one of the most powerful tool we have to drive business logic. We'll use the bindEvents function to listen to changes to the calorie attribute and act accordingly. Add the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
+We can do better than this, by making the model automatically update the name based on the calorie count. To do this we use event binding, which is one of the most powerful tools we have to drive business logic. We'll use the bindEvents function to listen to changes to the calorie attribute and act accordingly. Add the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/ice_cream_flavor.js`:
 
 ```javascript
 bindEvents: function () {
@@ -54,7 +54,7 @@ caloriesDidChange: function () {
 }
 ```
 
-**Verify** this by opening up the workspace and playing with the calorie count. As soon as you tab off of the calorie field, the name field should update itself. This is magically accomplished without any modifications to the Enyo layer. What's happening is that the view is always watching any changes to the model, and will re-render itself if it sees any changes. 
+**Verify** this by opening up the workspace and playing with the calorie count. As soon as you tab off of the calorie field, the name field should update itself. This is magically accomplished without any modifications to the Enyo layer. This is possible because the view is always watching any changes to the model, and will re-render itself if it sees any changes. 
 
 
 ### Privilege Control
@@ -109,7 +109,7 @@ When you refresh the browser you'll see this privilege in the `UserAccount` work
 We recommend you use automated testing to ensure that your code does what you want, and to make sure that you're not
 breaking anything else inadvertantly.
 
-We use mocha for unit and integration testing, and you should run your ice cream model through a simple CRUD test to make sure that you haven't made any mistakes in the ORM code, and that you've set the `idAttribute` appropriately on the model. We recommend that you do this immediately after writing the model, before you write any views.
+We use mocha for unit and integration testing, and you should run your ice cream model through a simple CRUD test to make sure that you haven't made any mistakes in the ORM code, and that you've set the `idAttribute` appropriately on the model. In general we recommend that you do this immediately after writing the model, before you write any views.
 
 To get your testing environment set up, you'll want to refer to [testing documentation](https://github.com/xtuple/xtuple/wiki/Testing-Setup). Make sure that you can run all the tests in the core `xtuple` directory. Once you can do that, then putting the `IceCream` model under test should follow the same process as our other objects. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
 
@@ -139,7 +139,7 @@ cd /path/to/xtuple-extensions
 mocha source/icecream/test/ice_cream_flavor.js
 ```
 
-The tests for the business logic-- _you **are** putting your business logic under test, aren't you?_ -- can be achieved by putting the following function in your data object in `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
+The tests for the business logic can be achieved by putting the following function in your data object in `/path/to/xtuple-extensions/source/icecream/test/ice_cream_flavor.js`:
 
 ```javascript
 beforeDeleteActions: [{it: "should update the description to and from LITE", action: function (data, done) {

@@ -24,7 +24,7 @@ Don't forget to add this new file to the `manifest.js` file, underneath the defi
 
 ### ORMs
 
-We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFlavor` as a new field. By convention, ORM definitions which extend existing ORMs should go in the `/path/to/xtuple-extensions/source/icecream/database/orm/ext` directory. Make that directory and enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/orm/ext/contact.json`:
+We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFlavor` as a new field. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/orm/ext/contact.json`:
 
 ```javascript
 
@@ -89,7 +89,7 @@ We don't need to add anything to the model layer. The new field to `Contact` wil
 
 ### The Cache
 
-We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on the Ice Cream Flavor collection to be cached in the browser. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/startup.js`:
+We are going to use a `XV.Picker` in the `Contact` workspace, which will rely on the `XM.IceCreamFlavorCollection` to be cached in the browser. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/models/startup.js`:
 
 ```javascript
 XT.extensions.icecream.initStartup = function () {
@@ -99,15 +99,18 @@ XT.extensions.icecream.initStartup = function () {
 
 That 
 [ [WHAT?] ](TUTORIAL-FAQ.md#what-is-the-xm-collection-cache)
-was easy (don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`!). **Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
+was easy! (Don't forget reference this in the `package.js` file, underneath `ice_cream_flavor.js`)
+[ [HOW?] ](https://github.com/xtuple/xtuple-extensions/blob/master/sample/icecream/client/models/package.js)
+
+**Verify** that this worked by refreshing the browser, opening up the Javascript console, and entering the line `XM.iceCreamFlavors`. The console should display the collection with all the flavors you added in **Part I**. 
 
 ### Widgets
 
-Next is to create a widget for the selection of `IceCreamFlavors`. In this case, we choose a `XV.Picker` over an `XV.RelationalWidget` because there will be a limited number of options and we will not need full-fledged search capabilites.
+Next is to create a widget for the selection of `IceCreamFlavors`. In this case, we choose a `XV.Picker` over a `XV.RelationalWidget` because there will be a limited number of options and we will not need full-fledged search capabilites.
 
 Create a new directory `/path/to/xtuple-extensions/source/icecream/client/widgets`, and update the file `/path/to/xtuple-extensions/source/icecream/client/package.js` file by uncommenting the `widgets` entry.
 
-Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/package.js`:
+Then, enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/widgets/package.js`:
 
 ```javascript
 enyo.depends(
