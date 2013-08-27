@@ -1,7 +1,7 @@
 /*jshint indent:2, curly:true, eqeqeq:true, immed:true, latedef:true,
 newcap:true, noarg:true, regexp:true, undef:true, strict:true, trailing:true,
 white:true*/
-/*global XT:true, XM:true, Backbone:true, _:true, console:true */
+/*global XT:true, XM:true, _:true */
 
 (function () {
   "use strict";
@@ -20,16 +20,16 @@ white:true*/
         switch (value)
         {
         case K.OPEN:
-          value = '_open'.loc();
+          value = "_open".loc();
           break;
         case K.APPROVED:
-          value = '_approved'.loc();
+          value = "_approved".loc();
           break;
         case K.CLOSED:
-          value = '_closed'.loc();
+          value = "_closed".loc();
           break;
         default:
-          value = '_error'.loc();
+          value = "_error".loc();
         }
         return value;
       }
@@ -43,7 +43,7 @@ white:true*/
     XM.Worksheet = XM.Document.extend(
       /** @scope XM.Worksheet.prototype */ {
 
-      recordType: 'XM.Worksheet',
+      recordType: "XM.Worksheet",
 
       numberPolicy: XM.Document.AUTO_NUMBER,
 
@@ -57,7 +57,7 @@ white:true*/
 
       bindEvents: function () {
         XM.Document.prototype.bindEvents.apply(this, arguments);
-        this.on('change:employee', this.employeeDidChange);
+        this.on("change:employee", this.employeeDidChange);
       },
 
       readOnlyAttributes: [
@@ -78,9 +78,9 @@ white:true*/
           options = {};
         options.success = function (resp) {
           that._number = resp.toString();
-          that.set('number', that._number);
+          that.set("number", that._number);
         };
-        this.dispatch('XM.Worksheet', 'fetchNumber', null, options);
+        this.dispatch("XM.Worksheet", "fetchNumber", null, options);
         return this;
       },
 
@@ -112,7 +112,7 @@ white:true*/
         @type String
         @default O
       */
-      OPEN: 'O',
+      OPEN: "O",
 
       /**
         Approved status for worksheet.
@@ -122,7 +122,7 @@ white:true*/
         @type String
         @default A
       */
-      APPROVED: 'A',
+      APPROVED: "A",
 
       /**
         Closed status for worksheet.
@@ -131,7 +131,7 @@ white:true*/
         @type String
         @default C
       */
-      CLOSED: 'C'
+      CLOSED: "C"
 
     });
 
@@ -193,9 +193,9 @@ white:true*/
           };
           this.dispatch("XM.Worksheet", "getBillingRate", params, options);
         } else {
-          this.off('change:' + this.ratioKey, this.detailDidChange);
+          this.off("change:" + this.ratioKey, this.detailDidChange);
           this.set(this.ratioKey, 0);
-          this.on('change:' + this.ratioKey, this.detailDidChange);
+          this.on("change:" + this.ratioKey, this.detailDidChange);
           this.detailDidChange();
         }
       },
@@ -205,23 +205,23 @@ white:true*/
         var events = "change:billable change:customer change:project " +
           "change:item change:task";
         this.on(events, this.billableDidChange);
-        this.on('change:worksheet', this.worksheetDidChange);
-        this.on('change:' + this.valueKey, this.detailDidChange);
-        this.on('change:' + this.ratioKey, this.detailDidChange);
-        this.on('change:item', this.itemDidChange);
-        this.on('change:customer', this.customerDidChange);
-        this.on('change:task', this.taskDidChange);
-        this.on('statusChange', this.statusDidChange);
+        this.on("change:worksheet", this.worksheetDidChange);
+        this.on("change:" + this.valueKey, this.detailDidChange);
+        this.on("change:" + this.ratioKey, this.detailDidChange);
+        this.on("change:item", this.itemDidChange);
+        this.on("change:customer", this.customerDidChange);
+        this.on("change:task", this.taskDidChange);
+        this.on("statusChange", this.statusDidChange);
       },
 
       customerDidChange: function () {
-        var hasCustomer = !_.isEmpty(this.get('customer')),
+        var hasCustomer = !_.isEmpty(this.get("customer")),
           billable = this.get("billable");
         if (!hasCustomer && billable) {
           this.set(this.ratioKey, 0);
         }
         this.set("billable", hasCustomer);
-        this.setReadOnly('billable', !hasCustomer);
+        this.setReadOnly("billable", !hasCustomer);
       },
 
       detailDidChange: function () {
@@ -230,7 +230,7 @@ white:true*/
         if (this.isDirty()) {
           value = this.get(this.valueKey) || 0;
           ratio = this.get(this.ratioKey) || 0;
-          this.set('billingTotal', value * ratio);
+          this.set("billingTotal", value * ratio);
         }
       },
 
@@ -264,27 +264,27 @@ white:true*/
       },
 
       taskDidChange: function () {
-        var task = this.get('task'),
+        var task = this.get("task"),
           project,
           item,
           customer;
         if (task) {
-          item = task.get('item');
-          if (item) { this.set('item', item); }
-          project = task.get('project');
-          customer = task.get('customer') || project.get('customer');
-          if (customer) { this.set('customer', customer); }
+          item = task.get("item");
+          if (item) { this.set("item", item); }
+          project = task.get("project");
+          customer = task.get("customer") || project.get("customer");
+          if (customer) { this.set("customer", customer); }
         }
       },
 
       worksheetDidChange: function () {
         var K = XM.Model,
           status = this.getStatus(),
-          worksheet = this.get('worksheet'),
-          lineNumber = this.get('lineNumber'),
+          worksheet = this.get("worksheet"),
+          lineNumber = this.get("lineNumber"),
           key = this.lineNumberKey;
         if (worksheet && status === K.READY_NEW && !lineNumber) {
-          this.set('lineNumber', worksheet.get(key).length);
+          this.set("lineNumber", worksheet.get(key).length);
         }
       }
 
@@ -298,7 +298,7 @@ white:true*/
     XM.WorksheetTime = XM.WorksheetDetail.extend(
       /** @scope XM.WorksheetTime.prototype */ {
 
-      recordType: 'XM.WorksheetTime',
+      recordType: "XM.WorksheetTime",
 
       defaults: function () {
         return {
@@ -306,17 +306,17 @@ white:true*/
           billingRate: 0,
           billingTotal: 0,
           billingCurrency: XT.baseCurrency(),
-          purchaseOrderNumber: ''
+          purchaseOrderNumber: ""
         };
       },
 
       isTime: true,
 
-      lineNumberKey: 'time',
+      lineNumberKey: "time",
 
-      valueKey: 'hours',
+      valueKey: "hours",
 
-      ratioKey: 'billingRate'
+      ratioKey: "billingRate"
 
     });
 
@@ -328,7 +328,7 @@ white:true*/
     XM.WorksheetExpense = XM.WorksheetDetail.extend(
       /** @scope XM.WorksheetExpense.prototype */ {
 
-      recordType: 'XM.WorksheetExpense',
+      recordType: "XM.WorksheetExpense",
 
       defaults: function () {
         return {
@@ -337,15 +337,15 @@ white:true*/
           unitCost: 0,
           billingTotal: 0,
           billingCurrency: XT.baseCurrency(),
-          purchaseOrderNumber: ''
+          purchaseOrderNumber: ""
         };
       },
 
-      lineNumberKey: 'expenses',
+      lineNumberKey: "expenses",
 
-      valueKey: 'quantity',
+      valueKey: "quantity",
 
-      ratioKey: 'unitCost'
+      ratioKey: "unitCost"
 
     });
 
@@ -357,7 +357,7 @@ white:true*/
     XM.WorksheetAccount = XM.Model.extend({
      /** @scope XM.WorksheetAccount.prototype */
 
-      recordType: 'XM.WorksheetAccount',
+      recordType: "XM.WorksheetAccount",
 
       isDocumentAssignment: true
 
@@ -371,7 +371,7 @@ white:true*/
     XM.WorksheetContact = XM.Model.extend({
      /** @scope XM.WorksheetContact.prototype */
 
-      recordType: 'XM.WorksheetContact',
+      recordType: "XM.WorksheetContact",
 
       isDocumentAssignment: true
 
@@ -385,7 +385,7 @@ white:true*/
     XM.WorksheetIncident = XM.Model.extend({
      /** @scope XM.WorksheetIncident.prototype */
 
-      recordType: 'XM.WorksheetIncident',
+      recordType: "XM.WorksheetIncident",
 
       isDocumentAssignment: true
 
@@ -399,7 +399,7 @@ white:true*/
     XM.WorksheetItem = XM.Model.extend({
      /** @scope XM.WorksheetItem.prototype */
 
-      recordType: 'XM.WorksheetItem',
+      recordType: "XM.WorksheetItem",
 
       isDocumentAssignment: true
 
@@ -413,7 +413,7 @@ white:true*/
     XM.WorksheetFile = XM.Model.extend({
      /** @scope XM.WorksheetFile.prototype */
 
-      recordType: 'XM.WorksheetFile',
+      recordType: "XM.WorksheetFile",
 
       isDocumentAssignment: true
 
@@ -427,7 +427,7 @@ white:true*/
     XM.WorksheetUrl = XM.Model.extend({
      /** @scope XM.WorksheetUrl.prototype */
 
-      recordType: 'XM.WorksheetUrl',
+      recordType: "XM.WorksheetUrl",
 
       isDocumentAssignment: true
 
@@ -441,7 +441,7 @@ white:true*/
     XM.WorksheetProject = XM.Model.extend({
      /** @scope XM.WorksheetProject.prototype */
 
-      recordType: 'XM.WorksheetProject',
+      recordType: "XM.WorksheetProject",
 
       isDocumentAssignment: true
 
@@ -455,9 +455,9 @@ white:true*/
     XM.WorksheetListItem = XM.Info.extend(
       /** @scope XM.WorksheetListItem.prototype */ {
 
-      recordType: 'XM.WorksheetListItem',
+      recordType: "XM.WorksheetListItem",
 
-      editableModel: 'XM.Worksheet',
+      editableModel: "XM.Worksheet",
 
       canApprove: function (callback) {
         return _canDo.call(this, "CanApprove", XM.Worksheet.OPEN, callback);
