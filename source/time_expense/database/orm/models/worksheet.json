@@ -8,9 +8,19 @@
     "privileges": {
      "all": {
        "create": false,
-       "read": true,
+       "read": "MaintainTimeExpenseOthers",
        "update": false,
        "delete": false
+     },
+     "personal": {
+       "create": false,
+       "read": "MaintainTimeExpenseSelf",
+       "update": false,
+       "delete": false,
+       "properties": [
+         "owner.username",
+         "employee.code"
+       ]
      }
     },
     "properties": [
@@ -131,7 +141,7 @@
          "type": "Number",
          "column": "vouchered_value"
        }
-     }   
+     }
     ],
     "isSystem": true
   },
@@ -148,15 +158,16 @@
        "create": "MaintainTimeExpenseOthers",
        "read": "MaintainTimeExpenseOthers",
        "update": "MaintainTimeExpenseOthers",
-       "delete": "MaintainTimeExpenseOthers"
+       "delete": "MaintainTimeExpense"
      },
      "personal": {
        "create": "MaintainTimeExpenseSelf",
        "read": "MaintainTimeExpenseSelf",
        "update": "MaintainTimeExpenseSelf",
-       "delete": "MaintainTimeExpenseSelf",
+       "delete": "MaintainTimeExpense",
        "properties": [
-         "owner"
+         "owner.username",
+         "employee.code"
        ]
      }
     },
