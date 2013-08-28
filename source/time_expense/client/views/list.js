@@ -40,7 +40,9 @@ trailing:true white:true*/
             {kind: "XV.ListColumn", classes: "first", components: [
               {kind: "FittableColumns", components: [
                 {kind: "XV.ListAttr", attr: "number", isKey: true},
-                {kind: "XV.ListAttr", attr: "getWorksheetStatusString"},
+                {kind: "XV.ListAttr", attr: "getWorksheetStatusString",
+                  formatter: "formatStatus"},
+                {kind: "XV.ListAttr", attr: "posted", formatter: "formatPosted"},
                 {kind: "XV.ListAttr", attr: "weekOf", fit: true,
                   classes: "right"}
               ]},
@@ -66,6 +68,15 @@ trailing:true white:true*/
         view.addRemoveClass("placeholder", invoiced !== false);
         var scale = XT.session.locale.attributes.currencyScale;
         return invoiced === false ? Globalize.format(value, "c" + scale) : "_noInvoice".loc();
+      },
+      formatPosted: function (value) {
+        return value ? "_posted".loc() : "";
+      },
+      formatStatus: function (value, view, model) {
+        var status = model.get("worksheetStatus");
+        view.addRemoveClass("warn", status === XM.Worksheet.OPEN);
+        view.addRemoveClass("emphasis", status === XM.Worksheet.APPROVED);
+        return value;
       },
       formatVoucher: function (value, view, model) {
         var vouchered = model.get("vouchered");
