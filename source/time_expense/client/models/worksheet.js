@@ -253,11 +253,12 @@ white:true*/
         if (status === K.READY_CLEAN) {
           worksheet = this.getParent();
           worksheetStatus = worksheet.get("worksheetStatus");
-          if (worksheet.get("worksheetStatus") !== XM.Worksheet.OPEN) {
-            this.setReadOnly(true);
-          } else {
+          if (worksheetStatus === XM.Worksheet.OPEN) {
+            this.setReadOnly(false);
             hasNoCustomer = _.isEmpty(this.get("customer"));
             this.setReadOnly("billable", hasNoCustomer);
+          } else {
+            this.setReadOnly(true);
           }
         }
         if (this.isReady()) {
