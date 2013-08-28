@@ -34,6 +34,7 @@ XT.stringsFor("en_US", {
   "_notUsed": "Not Used",
   "_TE": "Time Expense",
   "_tE": "Time Expense",
+  "_posted": "Posted",
   "_projectBilling": "Project Billing",
   "_rate": "Rate",
   "_site": "Site",
