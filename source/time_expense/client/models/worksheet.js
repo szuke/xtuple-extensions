@@ -247,6 +247,7 @@ white:true*/
       statusDidChange: function () {
         var K = XM.Model,
           status = this.getStatus(),
+          hasNoCustomer,
           worksheet,
           worksheetStatus;
         if (status === K.READY_CLEAN) {
@@ -255,7 +256,8 @@ white:true*/
           if (worksheet.get("worksheetStatus") !== XM.Worksheet.OPEN) {
             this.setReadOnly(true);
           } else {
-            this.customerDidChange();
+            hasNoCustomer = _.isEmpty(this.get("customer"));
+            this.setReadOnly("billable", hasNoCustomer);
           }
         }
         if (this.isReady()) {
