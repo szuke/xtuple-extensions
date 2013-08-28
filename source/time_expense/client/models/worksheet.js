@@ -247,15 +247,18 @@ white:true*/
       statusDidChange: function () {
         var K = XM.Model,
           status = this.getStatus(),
+          hasNoCustomer,
           worksheet,
           worksheetStatus;
         if (status === K.READY_CLEAN) {
           worksheet = this.getParent();
           worksheetStatus = worksheet.get("worksheetStatus");
-          if (worksheet.get("worksheetStatus") !== XM.Worksheet.OPEN) {
-            this.setReadOnly(true);
+          if (worksheetStatus === XM.Worksheet.OPEN) {
+            this.setReadOnly(false);
+            hasNoCustomer = _.isEmpty(this.get("customer"));
+            this.setReadOnly("billable", hasNoCustomer);
           } else {
-            this.customerDidChange();
+            this.setReadOnly(true);
           }
         }
         if (this.isReady()) {

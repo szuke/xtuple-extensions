@@ -55,7 +55,7 @@ trailing:true white:true*/
         } else if (inEvent.originator.name === 'tasks') {
           tasks = project.get('tasks');
           task = tasks.get(inEvent.value);
-          inEvent = { originator: this, value: task.attributes };
+          inEvent = { originator: this, value: task.toJSON() };
           this.doValueChange(inEvent);
           return true;
         }
