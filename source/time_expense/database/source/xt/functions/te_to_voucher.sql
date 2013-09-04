@@ -7,4 +7,5 @@ create or replace function xt.te_to_voucher(tehead_id integer) returns numeric s
     join emp on (tehead_emp_id=emp_id)
     left outer join te.teitem on (tehead_id=teitem_tehead_id)
     left outer join te.teemp on (tehead_emp_id=teemp_emp_id)
+  where tehead_id=$1
 $$ language sql;
