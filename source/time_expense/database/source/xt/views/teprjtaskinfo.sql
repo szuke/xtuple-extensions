@@ -16,7 +16,7 @@ insert into te.teprjtask (
   teprjtask_rate,
   teprjtask_curr_id
 ) values (
-  new.teprjtask_id,
+  coalesce(new.teprjtask_id, nextval('te.teprjtask_teprjtask_id_seq')),
   new.teprjtask_cust_id,
   new.teprjtask_item_id,
   new.teprjtask_prjtask_id,
