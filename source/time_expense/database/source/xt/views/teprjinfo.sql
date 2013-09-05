@@ -15,7 +15,7 @@ insert into te.teprj (
   teprj_rate,
   teprj_curr_id
 ) values (
-  new.teprj_id,
+  coalesce(new.teprj_id, nextval('te.teprj_teprj_id_seq')),
   new.teprj_cust_id,
   new.teprj_prj_id,
   new.teprj_rate,
