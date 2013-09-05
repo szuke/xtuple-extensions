@@ -1,7 +1,7 @@
-/*jshint indent:2, curly:true eqeqeq:true, immed:true, latedef:true,
-newcap:true, noarg:true, regexp:true, undef:true, strict:true, trailing:true
+/*jshint indent:2, curly:true, eqeqeq:true, immed:true, latedef:true,
+newcap:true, noarg:true, regexp:true, undef:true, strict:true, trailing:true,
 white:true*/
-/*global XT:true, XM:true, Backbone:true, _:true, console:true */
+/*global XT:true, XM:true*/
 
 (function () {
   "use strict";
@@ -25,7 +25,7 @@ white:true*/
 
       bindEvents: function () {
         _bindEvents.apply(this, arguments);
-        this.on('change:isSpecifiedRate', this.isSpecifiedRateDidChange);
+        this.on("change:isSpecifiedRate", this.isSpecifiedRateDidChange);
       },
 
       isSpecifiedRateDidChange: function () {
@@ -64,7 +64,13 @@ white:true*/
 
       bindEvents: function () {
         _ptBindEvents.apply(this, arguments);
-        this.on('change:isSpecifiedRate', this.isSpecifiedRateDidChange);
+        this.on("change:isSpecifiedRate", this.isSpecifiedRateDidChange);
+      },
+
+      formatNumber: function () {
+        var number = this.get("number"),
+          name = this.get("name");
+        return name ? number + " - " + name : number;
       },
 
       isSpecifiedRateDidChange: function () {
@@ -89,6 +95,16 @@ white:true*/
       }
 
     });
+
+    XM.ProjectTaskRelation = XM.ProjectTaskRelation.extend({
+
+      formatNumber: function () {
+        var number = this.get("number"),
+          name = this.get("name");
+        return name ? number + " - " + name : number;
+      }
+
+    });
     
     // ..........................................................
     // TASK
@@ -102,7 +118,7 @@ white:true*/
 
       bindEvents: function () {
         _tBindEvents.apply(this, arguments);
-        this.on('change:isSpecifiedRate', this.isSpecifiedRateDidChange);
+        this.on("change:isSpecifiedRate", this.isSpecifiedRateDidChange);
       },
 
       isSpecifiedRateDidChange: function () {
