@@ -4,7 +4,7 @@
     "nameSpace": "XM",
     "type": "IceCreamFlavor",
     "table": "ic.icflav",
-    "idSequenceName": "icflav_icflav_id_seq",
+    "idSequenceName": "xt.icflav_icflav_id_seq",
     "lockable": true,
     "comment": "Ice Cream Flavor Map",
     "privileges": {

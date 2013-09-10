@@ -152,7 +152,7 @@ Enter the following code into the file `/path/to/xtuple-extensions/source/icecre
     "nameSpace": "XM",
     "type": "IceCreamFlavor",
     "table": "ic.icflav",
-    "idSequenceName": "icflav_icflav_id_seq",
+    "idSequenceName": "xt.icflav_icflav_id_seq",
     "lockable": true,
     "comment": "Ice Cream Flavor Map",
     "privileges": {
@@ -332,7 +332,8 @@ And lastly enter the following code into the file `/path/to/xtuple-extensions/so
 
 ```javascript
 enyo.depends(
-  "list.js"
+  "list.js",
+  // "workspace.js" // you'll be uncommenting this later on as well
 );
 ```
 
@@ -375,7 +376,14 @@ enyo.depends(
 
 and uncomment `en` as an entry in the file `/path/to/xtuple-extensions/source/icecream/client/package.js` array.
 
-**Verify** your work by rebuilding the extension and refreshing the app. Now the label of the list should be nicely formatted, like the other menu items.
+**Verify** your work by rebuilding the extension:
+
+```bash
+$ cd /path/to/xtuple
+$ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
+```
+
+and refreshing the app. Now the label of the list should be nicely formatted, like the other menu items.
 
 ### Workspaces
 
@@ -411,6 +419,13 @@ A few things to note. The `attr` fields need to be the model attribute names. Th
 
 By now you're hopefully getting the hang of the `package.js` system, so update these files as appropriate. 
 
-**Verify** this works by refreshing the app, going to the empty list, and clicking the add button in the toolbar. This workspace should load. Add some data, and save. The item should show up in the list. The data should be in the `ic.icflav` table. You should be able to go back into the workspace and edit the data. You'll notice some more untranslated fields, so put these into `strings.js` [ [HOW?] ](TUTORIAL-FAQ.md#how-do-i-update-the-strings-file) and rebuild.
+**Verify** your work by rebuilding the extension:
+
+```bash
+$ cd /path/to/xtuple
+$ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
+```
+
+and refreshing the app, going to the empty list, and clicking the add button in the toolbar. This workspace should load. Add some data, and save. The item should show up in the list. The data should be in the `ic.icflav` table. You should be able to go back into the workspace and edit the data. You'll notice some more untranslated fields, so put these into `strings.js` [ [HOW?] ](TUTORIAL-FAQ.md#how-do-i-update-the-strings-file) and rebuild.
 
 Congratulations! You've made a new business object in the xTuple application. In [Part II](TUTORIAL2.md) we're going to start putting it to use.
