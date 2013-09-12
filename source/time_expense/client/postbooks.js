@@ -16,7 +16,7 @@ trailing:true white:true*/
 
     setupPanels = [
       {name: "departmentList", kind: "XV.DepartmentList"},
-      {name: "expeneseCategoryList", kind: "XV.ExpenseCategoryList"},
+      {name: "expenseCategoryList", kind: "XV.ExpenseCategoryList"},
       {name: "shiftList", kind: "XV.ShiftList"}
     ];
     XT.app.$.postbooks.appendPanels("setup", setupPanels);
@@ -28,7 +28,7 @@ trailing:true white:true*/
     ];
 
     XT.app.$.postbooks.appendPanels("project", projectPanels);
-    
+
     relevantPrivileges = [
       "MaintainDepartments",
       "MaintainEmployees",
