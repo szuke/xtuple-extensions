@@ -28,7 +28,7 @@ trailing:true white:true*/
         {kind: "FittableRows", components: [
           {kind: "XV.ProjectWidget", name: "project", label: "_project".loc()},
           {kind: "XV.PickerWidget", name: "tasks", label: "_task".loc(),
-            nameAttribute: "number", orderBy: [{ attribute: "number" }]}
+            nameAttribute: "formatNumber", orderBy: [{ attribute: "number" }]}
         ]}
       ],
       clear: function () {
@@ -40,9 +40,9 @@ trailing:true white:true*/
          tasksPicker = this.$.tasks,
          tasks,
          task;
-        if (inEvent.originator.name === 'project') {
+        if (inEvent.originator.name === "project") {
           if (project) {
-            tasks = project.get('tasks');
+            tasks = project.get("tasks");
             tasksPicker._collection = tasks;
             tasksPicker.orderByChanged();
             tasksPicker._collection.sort();
@@ -52,8 +52,8 @@ trailing:true white:true*/
           tasksPicker.buildList();
           tasksPicker.clear({silent: true});
           return true;
-        } else if (inEvent.originator.name === 'tasks') {
-          tasks = project.get('tasks');
+        } else if (inEvent.originator.name === "tasks") {
+          tasks = project.get("tasks");
           task = tasks.get(inEvent.value);
           inEvent = { originator: this, value: task.toJSON() };
           this.doValueChange(inEvent);
@@ -86,7 +86,7 @@ trailing:true white:true*/
             var options = {};
             that.$.project.setValue(project, {silent: true});
             options.success = function () {
-              tasks = project.get('tasks');
+              tasks = project.get("tasks");
               tasksPicker._collection = tasks;
               tasksPicker.orderByChanged();
               tasksPicker._collection.sort();
@@ -94,10 +94,10 @@ trailing:true white:true*/
               tasksPicker.clear({silent: true});
               tasksPicker.setValue(value, {silent: true});
             };
-            project.fetchRelated('tasks', options);
+            project.fetchRelated("tasks", options);
           };
         if (value) {
-          number = value.get('project');
+          number = value.get("project");
           if (number instanceof XM.Model) { number = number.id; }
           project = this.$.project.getValue();
           if (!project || !project.id || project.id !== number) {

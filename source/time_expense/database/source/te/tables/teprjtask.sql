@@ -13,5 +13,6 @@ select xt.add_constraint('teprjtask', 'teprjtask_teprjtask_item_id_fkey','foreig
 --select xt.add_constraint('teprjtask', 'teprjtask_teprjtask_prjtask_id_fkey','foreign key (teprjtask_prjtask_id) references prjtask (prjtask_id) ', 'te');
 select xt.add_constraint('teprjtask', 'teprjtask_teprjtask_prjtask_id_key','unique (teprjtask_prjtask_id )', 'te');
 alter table te.teprjtask drop constraint if exists teprjtask_teprjtask_prjtask_id_fkey;
+alter table te.teprjtask alter column teprjtask_prjtask_id set not null;
 
 comment on table te.teprjtask is 'Time Expense Project Task';
