@@ -62,7 +62,9 @@ white:true*/
 
       readOnlyAttributes: [
         "time",
-        "expenses"
+        "expenses",
+        "totalHours",
+        "totalExpenses"
       ],
 
       employeeDidChange: function () {

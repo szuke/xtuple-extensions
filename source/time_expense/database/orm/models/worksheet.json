@@ -149,7 +149,7 @@
     "context": "time_expense",
     "nameSpace": "XM",
     "type": "Worksheet",
-    "table": "te.tehead",
+    "table": "xt.teheadinfo",
     "lockable": true,
     "idSequenceName": "te.tehead_tehead_id_seq",
     "comment": "Worksheet Map",
@@ -248,12 +248,26 @@
        }
      },
      {
+       "name": "currency",
+       "toOne": {
+         "type": "Currency",
+         "column": "curr_id"
+       }
+     },
+     {
        "name": "time",
        "toMany": {
          "isNested": true,
          "type": "WorksheetTime",
          "column": "tehead_id",
          "inverse": "worksheet"
+       }
+     },
+    {
+       "name": "totalHours",
+       "attr": {
+         "type": "Number",
+         "column": "total_hours"
        }
      },
      {
@@ -263,6 +277,13 @@
          "type": "WorksheetExpense",
          "column": "tehead_id",
          "inverse": "worksheet"
+       }
+     },
+     {
+       "name": "totalExpenses",
+       "attr": {
+         "type": "Number",
+         "column": "total_expenses"
        }
      },
      {
