@@ -378,6 +378,20 @@ white:true*/
       ],
 
       defaults: function () {
+        var that = this,
+          hasPriv = XT.session.privileges.get("MaintainEmpCostAll"),
+          options = {},
+          employee = this.getParent().get("employee");
+        if (hasPriv) {
+          //Fetch employee hourly rate asynchronously
+          options.success = function (rate) {
+            that.off("change:hourlyRate", that.costDidChange);
+            that.set("hourlyRate", rate);
+            that.on("change:hourlyRate", that.costDidChange);
+            that.costDidChange();
+          };
+          this.dispatch("XM.Worksheet", "getHourlyRate", [employee.id], options);
+        }
         return {
           billable: false,
           billingRate: 0,
