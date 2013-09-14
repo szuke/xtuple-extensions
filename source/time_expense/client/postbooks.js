@@ -39,7 +39,6 @@ trailing:true white:true*/
       "MaintainTimeExpense",
       "CanViewRates",
       "MaintainEmpCostAll",
-      "MaintainEmpCostSelf",
       "CanApprove",
       "allowInvoicing",
       "allowVouchering",

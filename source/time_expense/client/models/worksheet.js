@@ -370,6 +370,13 @@ white:true*/
 
       recordType: "XM.WorksheetTime",
 
+      readOnlyAttributes: [
+        "billable",
+        "billingTotal",
+        "lineNumber",
+        "hourlyTotal"
+      ],
+
       defaults: function () {
         return {
           billable: false,
@@ -388,7 +395,19 @@ white:true*/
 
       ratioKey: "billingRate",
 
-      totalsMethod: "calculateHours"
+      totalsMethod: "calculateHours",
+
+      bindEvents: function () {
+        XM.WorksheetDetail.prototype.bindEvents.apply(this, arguments);
+        this.on("change:hours", this.costDidChange);
+        this.on("change:hourlyRate", this.costDidChange);
+      },
+
+      costDidChange: function () {
+        var hours = this.get("hours") || 0,
+          hourlyRate = this.get("hourlyRate") || 0;
+        this.set("hourlyTotal", hours * hourlyRate);
+      }
 
     });
 

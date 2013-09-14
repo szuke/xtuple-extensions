@@ -856,7 +856,7 @@
     "context": "time_expense",
     "nameSpace": "XM",
     "type": "WorksheetTime",
-    "table": "te.teitem",
+    "table": "xt.teiteminfo",
     "idSequenceName": "te.teitem_teitem_id_seq",
     "comment": "Worksheet Time Map",
     "privileges": {
@@ -867,14 +867,26 @@
         "delete": true
       },
       "attribute": {
-        "employeeRate": {
-          "view": "MaintainEmpCostAll"
-        },
         "billingRate": {
           "view": "CanViewRates"
         },
         "billingTotal": {
           "view": "CanViewRates"
+        },
+        "hourlyRate": {
+          "create": "MaintainEmpCostAll",
+          "update": "MaintainEmpCostAll",
+          "view": "MaintainEmpCostAll"
+        },
+        "hourlyTotal": {
+          "create": "MaintainEmpCostAll",
+          "update": "MaintainEmpCostAll",
+          "view": "MaintainEmpCostAll"
+        },
+        "hourlyCurrency": {
+          "create": "MaintainEmpCostAll",
+          "update": "MaintainEmpCostAll",
+          "view": "MaintainEmpCostAll"
         }
       }
     },
@@ -923,7 +935,6 @@
        "attr": {
          "type": "Number",
          "column": "teitem_linenumber",
-         "required": true,
          "required": true
        }
      },
@@ -1015,10 +1026,24 @@
        }
      },
      {
-       "name": "employeeRate",
+       "name": "hourlyRate",
        "attr": {
          "type": "Number",
          "column": "teitem_empcost"
+       }
+     },
+     {
+       "name": "hourlyTotal",
+       "attr": {
+         "type": "Number",
+         "column": "hourly_total"
+       }
+     },
+     {
+       "name": "hourlyCurrency",
+       "toOne": {
+         "type": "Currency",
+         "column": "hourly_curr_id"
        }
      },
      {
@@ -1034,7 +1059,7 @@
          "type": "Date",
          "column": "teitem_lastupdated"
        }
-     }     
+     }
     ],
     "isNestedOnly": true,
     "isSystem": true
