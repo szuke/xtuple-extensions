@@ -152,7 +152,7 @@ Enter the following code into the file `/path/to/xtuple-extensions/source/icecre
     "nameSpace": "XM",
     "type": "IceCreamFlavor",
     "table": "ic.icflav",
-    "idSequenceName": "xt.icflav_icflav_id_seq",
+    "idSequenceName": "ic.icflav_icflav_id_seq",
     "lockable": true,
     "comment": "Ice Cream Flavor Map",
     "privileges": {
@@ -332,7 +332,7 @@ And lastly enter the following code into the file `/path/to/xtuple-extensions/so
 
 ```javascript
 enyo.depends(
-  "list.js",
+  "list.js"//,
   // "workspace.js" // you'll be uncommenting this later on as well
 );
 ```
