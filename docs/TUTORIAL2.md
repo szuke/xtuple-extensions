@@ -114,7 +114,7 @@ Then, enter the following code into the file `/path/to/xtuple-extensions/source/
 
 ```javascript
 enyo.depends(
-  "picker.js",
+  "picker.js"//,
   //"parameter.js" // We'll get to this one later on.
 );
 ```
