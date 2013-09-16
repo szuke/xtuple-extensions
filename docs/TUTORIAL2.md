@@ -27,7 +27,7 @@ Don't forget to add this new file to the `manifest.js` file, underneath the defi
 We need to extend the pre-existing `Contact` ORM to have it include `IceCreamFlavor` as a new field. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/orm/ext/contact.json`:
 
 ```javascript
-
+[
   {
     "context": "icecream",
     "nameSpace": "XM",
