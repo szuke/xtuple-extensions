@@ -200,7 +200,7 @@ select xt.install_js('XM','Worksheet','xtte', $$
     });
     if (res && res.data.wage) {
       if (DEBUG) { plv8.elog(NOTICE, "Found employee rate."); }
-      return { rate: res.data.wage };
+      return res.data.wage;
     }
 
     if (DEBUG) { plv8.elog(NOTICE, "No rate found."); }

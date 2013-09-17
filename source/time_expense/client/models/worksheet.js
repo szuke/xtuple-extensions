@@ -378,20 +378,6 @@ white:true*/
       ],
 
       defaults: function () {
-        var that = this,
-          hasPriv = XT.session.privileges.get("MaintainEmpCostAll"),
-          options = {},
-          employee = this.getParent().get("employee");
-        if (hasPriv) {
-          //Fetch employee hourly rate asynchronously
-          options.success = function (rate) {
-            that.off("change:hourlyRate", that.costDidChange);
-            that.set("hourlyRate", rate);
-            that.on("change:hourlyRate", that.costDidChange);
-            that.costDidChange();
-          };
-          this.dispatch("XM.Worksheet", "getHourlyRate", [employee.id], options);
-        }
         return {
           billable: false,
           billingRate: 0,
@@ -421,6 +407,29 @@ white:true*/
         var hours = this.get("hours") || 0,
           hourlyRate = this.get("hourlyRate") || 0;
         this.set("hourlyTotal", hours * hourlyRate);
+      },
+
+      worksheetDidChange: function () {
+        XM.WorksheetDetail.prototype.worksheetDidChange.apply(this, arguments);
+        var that = this,
+          hasPriv = XT.session.privileges.get("MaintainEmpCostAll"),
+          options = {},
+          worksheet = this.get("worksheet"),
+          employee = worksheet ? worksheet.get("employee") : null;
+        if (employee && hasPriv &&
+            this.getStatus() === XM.Model.READY_NEW) {
+          //Fetch employee hourly rate asynchronously
+          options.success = function (rate) {
+            var hourlyRate = that.get("hourlyRate");
+            if (hourlyRate === undefined) {
+              that.off("change:hourlyRate", that.costDidChange);
+              that.set("hourlyRate", rate);
+              that.on("change:hourlyRate", that.costDidChange);
+              that.costDidChange();
+            }
+          };
+          this.dispatch("XM.Worksheet", "getHourlyRate", [employee.id], options);
+        }
       }
 
     });
