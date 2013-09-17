@@ -52,7 +52,9 @@ white:true*/
           worksheetStatus: XM.Worksheet.OPEN,
           owner: XM.currentUser,
           site: XT.defaultSite(),
-          currency: XT.baseCurrency()
+          currency: XT.baseCurrency(),
+          totalHours: 0,
+          totalExpenses: 0
         };
       },
 
