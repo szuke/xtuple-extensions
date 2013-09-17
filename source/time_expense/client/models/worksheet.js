@@ -154,9 +154,25 @@ white:true*/
 
       statusDidChange: function () {
         XM.Document.prototype.statusDidChange.apply(this, arguments);
-        var isNotOpen = this.get("worksheetStatus") !== XM.Worksheet.OPEN;
+        var isNotOpen = this.get("worksheetStatus") !== XM.Worksheet.OPEN,
+          status = this.getStatus(),
+          id = XM.currentUser.id.toUpperCase(),
+          that = this,
+          K = XM.Model,
+          collection,
+          options = {};
         this.setReadOnly(isNotOpen);
-        if (this.getStatus() === XM.Model.READY_CLEAN) {
+        if (status === K.READY_NEW) {
+          // See if this user is an employee, and if so set as default
+          collection = new XM.EmployeeRelationCollection();
+          options.query = {parameters: [{attribute: "code", value: id}]};
+          options.success = function () {
+            if (collection.length && !that.get("employee")) {
+              that.set("employee", collection.at(0));
+            }
+          };
+          collection.fetch(options);
+        } else if (status === K.READY_CLEAN) {
           this.setReadOnly("time", false);
           this.setReadOnly("expenses", false);
         }
