@@ -61,6 +61,13 @@ trailing:true white:true*/
           {kind: "XV.MoneyWidget",
             attr: {localValue: "billingTotal", currency: "billingCurrency"},
             label: "_total".loc(), currencyDisabled: true },
+          {kind: "onyx.GroupboxHeader", content: "_cost".loc()},
+          {kind: "XV.MoneyWidget",
+            attr: {localValue: "hourlyRate", currency: "hourlyCurrency"},
+            label: "_hourly".loc(), currencyDisabled: true },
+          {kind: "XV.MoneyWidget",
+            attr: {localValue: "hourlyTotal", currency: "hourlyCurrency"},
+            label: "_total".loc(), currencyDisabled: true },
           {kind: "onyx.GroupboxHeader", content: "_notes".loc()},
           {kind: "XV.TextArea", attr: "notes", fit: true}
         ]}

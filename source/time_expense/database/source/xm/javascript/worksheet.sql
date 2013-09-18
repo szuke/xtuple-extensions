@@ -176,6 +176,37 @@ select xt.install_js('XM','Worksheet','xtte', $$
     return 0;
   };
 
+   /**
+    Return the hourly rate of the employee.
+
+    @param {String} Employee code
+    @returns Number
+  */
+  XM.Worksheet.getHourlyRate = function(employee) {
+    var data = Object.create(XT.Data),
+      privs = 'MaintainEmpCostAll',
+      res;
+
+    if (!data.checkPrivilege(privs)) {
+      plv8.elog(ERROR, "Access Denied.");
+    }
+
+    /* Fetch Employee */
+    res = data.retrieveRecord({
+      nameSpace: "XM",
+      type: "Employee",
+      id: employee,
+      superUser: true
+    });
+    if (res && res.data.wage) {
+      if (DEBUG) { plv8.elog(NOTICE, "Found employee rate."); }
+      return res.data.wage;
+    }
+
+    if (DEBUG) { plv8.elog(NOTICE, "No rate found."); }
+    return 0;
+  };
+
   /**
     Invoice one or many Worksheets
 
