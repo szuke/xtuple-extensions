@@ -22,7 +22,7 @@ create or replace function xt.teitem_did_change() returns trigger as $$
      if (!data.checkPrivilege("CanViewRates")) {
        if (NEW.teitem_billable) {
          sql = "select prj_number, " +
-               " prjtask.obj_uuid as task_uuid " +
+               " prjtask.obj_uuid as task_uuid, " +
                " emp_code, cust_number, item_number " +
                "from te.teitem " +
                " join prjtask on teitem_prjtask_id=prjtask_id " +
@@ -30,6 +30,7 @@ create or replace function xt.teitem_did_change() returns trigger as $$
                " join te.tehead on teitem_tehead_id=tehead_id " +
                " join emp on tehead_emp_id=emp_id " +
                " join custinfo on teitem_cust_id=cust_id " +
+               " join item on teitem_item_id=item_id " +
                "where teitem_id=$1 ";
 
          row = plv8.execute(sql, [NEW.teitem_id])[0];
@@ -41,11 +42,11 @@ create or replace function xt.teitem_did_change() returns trigger as $$
            customerId: row.cust_number,
            itemId: row.item_number
          };
-         rate = XM.Worksheet.getBillingRate(params);
+         rate = XM.Worksheet.getBillingRate(params).rate;
        } else {
          rate = 0;
        }
-       sql = "update te.teitem set teitem_rate = $1, teitem_total = $1 * teitem_qty "
+       sql = "update te.teitem set teitem_rate = $1, teitem_total = $1 * teitem_qty " +
              "where teitem_id = $2;"
        plv8.execute(sql, [rate, NEW.teitem_id]);
      }
