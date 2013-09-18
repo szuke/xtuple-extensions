@@ -1,6 +1,8 @@
 {
+  "name": "time_expense",
   "version": "1.4.4",
-  "comment": "This is the time and expense schema as implemented in the Desktop client",
+  "comment": "Time Expense Management extension",
+  "loadOrder": 100,
   "dependencies": ["crm"],
   "databaseScripts": [
     "te/schema/create_te_schema.sql",
@@ -39,7 +41,6 @@
     "xt/views/teexpinfo.sql",
     "xt/views/teheadinfo.sql",
     "xm/javascript/worksheet.sql",
-    "priv.sql",
-    "register.sql"
+    "priv.sql"
   ]
 }
