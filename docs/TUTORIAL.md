@@ -123,6 +123,7 @@ We can put these files together in our `manifest.js` file, which as a convention
 {
   "version": "1.4.1",
   "comment": "Ice Cream Flavor sample extension",
+  "dependencies": ["crm"],
   "databaseScripts": [
     "create_ic_schema.sql",
     "icflav.sql",

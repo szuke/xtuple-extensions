@@ -1,6 +1,7 @@
 {
   "version": "1.4.4",
   "comment": "This is the time and expense schema as implemented in the Desktop client",
+  "dependencies": ["crm"],
   "databaseScripts": [
     "te/schema/create_te_schema.sql",
     "te/functions/calcrate.sql",
