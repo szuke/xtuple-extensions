@@ -16,7 +16,7 @@ XT.stringsFor("en_US", {
   // ********
   // Labels
   // ********
- 
+
   "_approve": "Approve",
   "_approved": "Approved",
   "_byAccount": "by Account",
@@ -40,6 +40,7 @@ XT.stringsFor("en_US", {
   "_site": "Site",
   "_task": "Task",
   "_time": "Time",
+  "_timeExpense": "Time Expense",
   "_unapprove": "Unapprove",
   "_unitCost": "Unit Cost",
   "_vouchered": "Vouchered",
@@ -54,7 +55,7 @@ XT.stringsFor("en_US", {
   "_postWorksheetFor": "Post Time Sheet for ",
   "_toProject": " to Project",
   "_closeWorksheet?": "Are you sure you want to close the worksheet? This action can not be undone.",
-  
+
   // ********
   // Privileges
   // ********
@@ -71,5 +72,5 @@ XT.stringsFor("en_US", {
   "_viewTimeExpenseHistory": "View Worksheet History",
   "_allowInvoicing": "Invoice Worksheets",
   "_allowVouchering": "Voucher Worksheets"
-  
+
 });
