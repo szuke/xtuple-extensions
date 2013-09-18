@@ -8,6 +8,7 @@ white:true*/
 
   XT.extensions.timeExpense.initStartup = function () {
     XT.cacheCollection("XM.expenseCategories", "XM.ExpenseCategoryCollection", "code");
+    XT.cacheCollection("XM.siteRelations", "XM.SiteRelationCollection", "code");
   };
 
 }());
