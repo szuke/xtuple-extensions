@@ -173,7 +173,7 @@ select xt.install_js('XM','Worksheet','xtte', $$
     }
 
     if (DEBUG) { plv8.elog(NOTICE, "No rate found."); }
-    return 0;
+    return { rate: 0 };
   };
 
   /**
