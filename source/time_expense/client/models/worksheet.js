@@ -51,7 +51,10 @@ white:true*/
         return {
           worksheetStatus: XM.Worksheet.OPEN,
           owner: XM.currentUser,
-          site: XT.defaultSite()
+          site: XT.defaultSite(),
+          currency: XT.baseCurrency(),
+          totalHours: 0,
+          totalExpenses: 0
         };
       },
 
@@ -62,8 +65,75 @@ white:true*/
 
       readOnlyAttributes: [
         "time",
-        "expenses"
+        "expenses",
+        "totalHours",
+        "totalExpenses"
       ],
+
+      /**
+        Calculate total expenses in base currency and set on `totalExpenses`
+        attribute.
+
+        returns {Object} Receiver
+      */
+      calculateExpenses: function () {
+        var expenses = this.get("expenses").models,
+          add = XT.math.add,
+          scale = XT.MONEY_SCALE,
+          that = this,
+          total = 0,
+          ary = [],
+          i;
+
+        // Keep track of requests, we'll ignore stale ones
+        this._counter = _.isNumber(this._counter) ? this._counter + 1 : 0;
+        i = this._counter;
+
+        if (expenses.length) {
+          _.each(expenses, function (expense) {
+            // Currency conversion is asynchronous
+            var quantity = expense.get("quantity") || 0,
+              unitCost = expense.get("unitCost") || 0,
+              currency = expense.get("billingCurrency"),
+              workDate = expense.get("workDate"),
+              options = {};
+            options.success = function (baseUnitCost) {
+              // If request is stale, forget about the whole thing
+              if (i < that._counter) { return; }
+              ary.push(quantity * baseUnitCost);
+              
+              // When all expenses accounted for, add 'em up
+              if (ary.length === expenses.length) {
+                total = add(ary, scale);
+                that.set("totalExpenses", total);
+              }
+            };
+            currency.toBase(unitCost, workDate, options);
+          });
+        }
+        return this;
+      },
+
+      /**
+        Calculate total hours and set on `totalHours` attribute.
+
+        returns {Object} Receiver
+      */
+      calculateHours: function () {
+        var time = this.get("time").models,
+          add = XT.math.add,
+          scale = XT.QTY_SCALE,
+          hours = 0,
+          ary = [];
+        if (time.length) {
+          _.each(time, function (t) {
+            ary.push(t.get("hours") || 0);
+          });
+          hours = add(ary, scale);
+        }
+        this.set("totalHours", hours);
+        return this;
+      },
 
       employeeDidChange: function () {
         var employee = this.get("employee"),
@@ -86,9 +156,25 @@ white:true*/
 
       statusDidChange: function () {
         XM.Document.prototype.statusDidChange.apply(this, arguments);
-        var isNotOpen = this.get("worksheetStatus") !== XM.Worksheet.OPEN;
+        var isNotOpen = this.get("worksheetStatus") !== XM.Worksheet.OPEN,
+          status = this.getStatus(),
+          id = XM.currentUser.id.toUpperCase(),
+          that = this,
+          K = XM.Model,
+          collection,
+          options = {};
         this.setReadOnly(isNotOpen);
-        if (this.getStatus() === XM.Model.READY_CLEAN) {
+        if (status === K.READY_NEW) {
+          // See if this user is an employee, and if so set as default
+          collection = new XM.EmployeeRelationCollection();
+          options.query = {parameters: [{attribute: "code", value: id}]};
+          options.success = function () {
+            if (collection.length && !that.get("employee")) {
+              that.set("employee", collection.at(0));
+            }
+          };
+          collection.fetch(options);
+        } else if (status === K.READY_CLEAN) {
           this.setReadOnly("time", false);
           this.setReadOnly("expenses", false);
         }
@@ -225,13 +311,12 @@ white:true*/
       },
 
       detailDidChange: function () {
-        var value,
-          ratio;
-        if (this.isDirty()) {
-          value = this.get(this.valueKey) || 0;
-          ratio = this.get(this.ratioKey) || 0;
-          this.set("billingTotal", value * ratio);
-        }
+        var value = this.get(this.valueKey) || 0,
+          ratio = this.get(this.ratioKey) || 0,
+          parent = this.getParent();
+        // Update totals
+        this.set("billingTotal", value * ratio);
+        parent[this.totalsMethod]();
       },
 
       initialize: function () {
@@ -303,6 +388,13 @@ white:true*/
 
       recordType: "XM.WorksheetTime",
 
+      readOnlyAttributes: [
+        "billable",
+        "billingTotal",
+        "lineNumber",
+        "hourlyTotal"
+      ],
+
       defaults: function () {
         return {
           billable: false,
@@ -319,7 +411,44 @@ white:true*/
 
       valueKey: "hours",
 
-      ratioKey: "billingRate"
+      ratioKey: "billingRate",
+
+      totalsMethod: "calculateHours",
+
+      bindEvents: function () {
+        XM.WorksheetDetail.prototype.bindEvents.apply(this, arguments);
+        this.on("change:hours", this.costDidChange);
+        this.on("change:hourlyRate", this.costDidChange);
+      },
+
+      costDidChange: function () {
+        var hours = this.get("hours") || 0,
+          hourlyRate = this.get("hourlyRate") || 0;
+        this.set("hourlyTotal", hours * hourlyRate);
+      },
+
+      worksheetDidChange: function () {
+        XM.WorksheetDetail.prototype.worksheetDidChange.apply(this, arguments);
+        var that = this,
+          hasPriv = XT.session.privileges.get("MaintainEmpCostAll"),
+          options = {},
+          worksheet = this.get("worksheet"),
+          employee = worksheet ? worksheet.get("employee") : null;
+        if (employee && hasPriv &&
+            this.getStatus() === XM.Model.READY_NEW) {
+          //Fetch employee hourly rate asynchronously
+          options.success = function (rate) {
+            var hourlyRate = that.get("hourlyRate");
+            if (hourlyRate === undefined) {
+              that.off("change:hourlyRate", that.costDidChange);
+              that.set("hourlyRate", rate);
+              that.on("change:hourlyRate", that.costDidChange);
+              that.costDidChange();
+            }
+          };
+          this.dispatch("XM.Worksheet", "getHourlyRate", [employee.id], options);
+        }
+      }
 
     });
 
@@ -348,7 +477,9 @@ white:true*/
 
       valueKey: "quantity",
 
-      ratioKey: "unitCost"
+      ratioKey: "unitCost",
+
+      totalsMethod: "calculateExpenses"
 
     });
 
