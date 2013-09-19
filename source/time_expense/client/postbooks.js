@@ -1,6 +1,6 @@
-/*jshint bitwise:true, indent:2, curly:true eqeqeq:true, immed:true,
+/*jshint bitwise:true, indent:2, curly:true, eqeqeq:true, immed:true,
 latedef:true, newcap:true, noarg:true, regexp:true, undef:true,
-trailing:true white:true*/
+trailing:true, white:true*/
 /*global XT:true, XV:true, enyo:true*/
 
 (function () {
@@ -22,9 +22,9 @@ trailing:true white:true*/
     XT.app.$.postbooks.appendPanels("setup", setupPanels);
 
     projectPanels = [
-      {name: "worksheets", kind: "XV.WorksheetList"},
-      {name: "employees", kind: "XV.EmployeeList"},
-      {name: "employeeGroups", kind: "XV.EmployeeGroupList"}
+      {name: "worksheetList", kind: "XV.WorksheetList"},
+      {name: "employeeList", kind: "XV.EmployeeList"},
+      {name: "employeeGroupList", kind: "XV.EmployeeGroupList"}
     ];
 
     XT.app.$.postbooks.appendPanels("project", projectPanels);
