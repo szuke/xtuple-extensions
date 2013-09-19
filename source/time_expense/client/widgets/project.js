@@ -107,6 +107,8 @@ trailing:true white:true*/
             } else {
               processTasks();
             }
+          } else {
+            processTasks();
           }
         } else {
           this.$.project.clear();
