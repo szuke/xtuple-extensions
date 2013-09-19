@@ -26,7 +26,8 @@ trailing:true white:true*/
       },
       components: [
         {kind: "FittableRows", components: [
-          {kind: "XV.ProjectWidget", name: "project", label: "_project".loc()},
+          {kind: "XV.ProjectWidget", name: "project", label: "_project".loc(),
+            query: {parameters: [{attribute: "status", value: XM.Project.IN_PROCESS}]}},
           {kind: "XV.PickerWidget", name: "tasks", label: "_task".loc(),
             nameAttribute: "formatNumber", orderBy: [{ attribute: "number" }]}
         ]}
