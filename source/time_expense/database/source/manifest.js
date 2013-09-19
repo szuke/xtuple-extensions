@@ -3,7 +3,7 @@
   "version": "1.4.4",
   "comment": "Time Expense Management extension",
   "loadOrder": 100,
-  "dependencies": ["crm"],
+  "dependencies": ["project"],
   "databaseScripts": [
     "te/schema/create_te_schema.sql",
     "te/functions/calcrate.sql",
