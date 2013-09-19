@@ -66,6 +66,7 @@ white:true*/
       readOnlyAttributes: [
         "time",
         "expenses",
+        "number",
         "totalHours",
         "totalExpenses"
       ],
