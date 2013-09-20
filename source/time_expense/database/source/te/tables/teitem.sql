@@ -30,6 +30,11 @@ select xt.add_column('teitem','teitem_invcitem_id', 'integer', '', 'te');
 select xt.add_column('teitem','teitem_vodist_id', 'integer', '', 'te');
 select xt.add_column('teitem','teitem_postedvalue', 'numeric', 'not null default 0', 'te');
 select xt.add_column('teitem','teitem_empcost', 'numeric', '', 'te');
+
+select xt.add_column('teitem','obj_uuid', 'text', 'default xt.generate_uuid()', 'te');
+select xt.add_inheritance('te.teitem', 'xt.obj');
+select xt.add_constraint('teitem', 'teitem_obj_uuid','unique(obj_uuid)', 'te');
+
 select xt.add_primary_key('teitem', 'teitem_id', 'te');
 select xt.add_constraint('teitem', 'teitem_teitem_curr_id_fkey','foreign key (teitem_curr_id) references curr_symbol (curr_id) on delete set default', 'te');
 select xt.add_constraint('teitem', 'teitem_teitem_invcitem_id_fkey','foreign key (teitem_invcitem_id) references invcitem (invcitem_id) on delete set null', 'te');
