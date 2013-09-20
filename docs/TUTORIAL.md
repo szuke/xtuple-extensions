@@ -121,8 +121,11 @@ We can put these files together in our `manifest.js` file, which as a convention
 
 ```javascript
 {
+  "name": "icecream",
   "version": "1.4.1",
-  "comment": "Ice Cream Flavor sample extension",
+  "comment": "Ice Cream extension",
+  "loadOrder": 999,
+  "dependencies": ["crm"],
   "databaseScripts": [
     "create_ic_schema.sql",
     "icflav.sql",
