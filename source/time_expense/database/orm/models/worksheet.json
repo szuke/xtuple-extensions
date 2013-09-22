@@ -207,7 +207,7 @@
      {
        "name": "worksheetStatus",
        "attr": {
-         "type": "status",
+         "type": "String",
          "column": "tehead_status",
          "required": true
        }
