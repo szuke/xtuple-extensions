@@ -16,7 +16,7 @@
      {
        "name": "isContractor",
        "attr": {
-         "type": "Number",
+         "type": "Boolean",
          "column": "teemp_contractor"
        }
      }
@@ -40,7 +40,7 @@
      {
        "name": "isContractor",
        "attr": {
-         "type": "Number",
+         "type": "Boolean",
          "column": "teemp_contractor"
        }
      }
