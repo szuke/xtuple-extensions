@@ -1,11 +1,12 @@
 /*jshint node:true, indent:2, curly:false, eqeqeq:true, immed:true,
 latedef:true, newcap:true, noarg:true, regexp:true, undef:true,
 strict:true, trailing:true, white:true */
+/*global XT:true */
 
 (function () {
   "use strict";
 
-  exports.strings = {
+  var lang = XT.stringsFor("en_US", {
     // ********
     // Labels
     // ********
@@ -65,5 +66,9 @@ strict:true, trailing:true, white:true */
     "_viewTimeExpenseHistory": "View Worksheet History",
     "_allowInvoicing": "Invoice Worksheets",
     "_allowVouchering": "Voucher Worksheets"
-  };
+  });
+
+  if (typeof exports !== 'undefined') {
+    exports.language = lang;
+  }
 }());

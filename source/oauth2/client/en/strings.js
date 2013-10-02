@@ -1,11 +1,12 @@
 /*jshint node:true, indent:2, curly:false, eqeqeq:true, immed:true,
 latedef:true, newcap:true, noarg:true, regexp:true, undef:true,
 strict:true, trailing:true, white:true */
+/*global XT:true */
 
 (function () {
   "use strict";
 
-  exports.strings = {
+  var lang = XT.stringsFor("en_US", {
     "_authURI": "Auth URI",
     "_clientName": "Client Name",
     "_clientEmail": "Client Email",
@@ -35,5 +36,9 @@ strict:true, trailing:true, white:true */
     "_webServer": "Web Server",
     "_website": "Website",
     "_x509PubCert": "X.509 Public Key Certificate"
-  };
+  });
+
+  if (typeof exports !== 'undefined') {
+    exports.language = lang;
+  }
 }());
