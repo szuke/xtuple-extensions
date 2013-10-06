@@ -61,6 +61,8 @@ white:true*/
       bindEvents: function () {
         XM.Document.prototype.bindEvents.apply(this, arguments);
         this.on("change:employee", this.employeeDidChange);
+        this.get("time").on("relational:remove", this.renumberLines, this);
+        this.get("expenses").on("relational:remove", this.renumberLines, this);
       },
 
       readOnlyAttributes: [
@@ -153,6 +155,21 @@ white:true*/
         };
         this.dispatch("XM.Worksheet", "fetchNumber", null, options);
         return this;
+      },
+
+      renumberLines: function () {
+        var renumber = function (models) {
+            var lineNumber = 1;
+            _.each(models, function (model) {
+              if (!model.isDestroyed()) {
+                model.set("lineNumber", lineNumber);
+                lineNumber++;
+              }
+            });
+          };
+        // Renumber time and expenses
+        renumber(this.get("time").models);
+        renumber(this.get("expenses").models);
       },
 
       statusDidChange: function () {
@@ -311,6 +328,18 @@ white:true*/
         this.setReadOnly("billable", !hasCustomer);
       },
 
+      destroy: function () {
+        var isNotNew = !this.isNew();
+        XM.Model.prototype.destroy.apply(this, arguments);
+
+        // If it was new the relation will be removed which kicks
+        // over renumber from worksheet bindings. If not new the relation
+        // has to stick around until we save so trigger renumber from here.
+        if (isNotNew) {
+          this.worksheetDidChange();
+        }
+      },
+
       detailDidChange: function () {
         var value = this.get(this.valueKey) || 0,
           ratio = this.get(this.ratioKey) || 0,
@@ -367,14 +396,8 @@ white:true*/
       },
 
       worksheetDidChange: function () {
-        var K = XM.Model,
-          status = this.getStatus(),
-          worksheet = this.get("worksheet"),
-          lineNumber = this.get("lineNumber"),
-          key = this.lineNumberKey;
-        if (worksheet && status === K.READY_NEW && !lineNumber) {
-          this.set("lineNumber", worksheet.get(key).length);
-        }
+        var worksheet = this.get("worksheet");
+        if (worksheet) { worksheet.renumberLines(); }
       }
 
     });
