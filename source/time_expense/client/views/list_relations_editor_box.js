@@ -80,7 +80,16 @@ trailing:true white:true*/
       title: "_time".loc(),
       editor: "XV.WorksheetTimeEditor",
       parentKey: "worksheet",
-      listRelations: "XV.WorksheetTimeListRelations"
+      listRelations: "XV.WorksheetTimeListRelations",
+      /**
+        Copies current task into next entry if applicable.
+      */
+      newItem: function () {
+        var widget = this.$.editor.$.taskWidget,
+          task = widget.getValue();
+        this.inherited(arguments);
+        if (task) { widget.setValue(task); }
+      }
     });
 
     enyo.kind({
@@ -123,7 +132,16 @@ trailing:true white:true*/
       title: "_expenses".loc(),
       editor: "XV.WorksheetExpenseEditor",
       parentKey: "worksheet",
-      listRelations: "XV.WorksheetExpenseListRelations"
+      listRelations: "XV.WorksheetExpenseListRelations",
+      /**
+        Copies current task into next entry if applicable.
+      */
+      newItem: function () {
+        var widget = this.$.editor.$.taskWidget,
+          task = widget.getValue();
+        this.inherited(arguments);
+        if (task) { widget.setValue(task); }
+      }
     });
 
   };
