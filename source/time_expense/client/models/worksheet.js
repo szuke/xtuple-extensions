@@ -271,6 +271,11 @@ white:true*/
           i;
         this.setReadOnly("billingRate", !billable);
         if (!XT.session.privileges.get("CanViewRates")) { return; }
+
+        // Keep track of requests, we'll ignore stale ones
+        this._counter = _.isNumber(this._counter) ? this._counter + 1 : 0;
+        i = this._counter;
+
         if (billable) {
           params = {
             isTime: this.isTime,
@@ -280,10 +285,6 @@ white:true*/
             customerId: customer ? customer.id : undefined,
             itemId: item ? item.id : undefined
           };
-
-          // Keep track of requests, we'll ignore stale ones
-          this._counter = _.isNumber(this._counter) ? this._counter + 1 : 0;
-          i = this._counter;
 
           options.success = function (resp) {
             var data = {};
@@ -319,12 +320,12 @@ white:true*/
       },
 
       customerDidChange: function () {
-        var hasCustomer = !_.isEmpty(this.get("customer")),
-          billable = this.get("billable");
-        if (!hasCustomer && billable) {
+        var hasCustomer = !_.isEmpty(this.get("customer"));
+        if (!hasCustomer) {
           this.set(this.ratioKey, 0);
+          this.set("billable", false);
+          this.unset("purchaseOrderNumber");
         }
-        this.set("billable", hasCustomer);
         this.setReadOnly("billable", !hasCustomer);
       },
 
