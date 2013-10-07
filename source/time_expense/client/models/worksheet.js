@@ -158,7 +158,9 @@ white:true*/
       },
 
       renumberLines: function () {
-        var renumber = function (models) {
+        var time = this.get("time"),
+          expenses = this.get("expenses"),
+          renumber = function (models) {
             var lineNumber = 1;
             _.each(models, function (model) {
               if (!model.isDestroyed()) {
@@ -167,6 +169,10 @@ white:true*/
               }
             });
           };
+
+        time.sort();
+        expenses.sort();
+        
         // Renumber time and expenses
         renumber(this.get("time").models);
         renumber(this.get("expenses").models);
