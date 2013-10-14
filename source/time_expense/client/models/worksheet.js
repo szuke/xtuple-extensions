@@ -170,6 +170,11 @@ white:true*/
             });
           };
 
+        // We've got a relational binding that could
+        // bring us here that, unfortunately, doesn't
+        // honor the `silence` option. So check manually.
+        if (!this.isReady()) { return; }
+
         time.sort();
         expenses.sort();
         
