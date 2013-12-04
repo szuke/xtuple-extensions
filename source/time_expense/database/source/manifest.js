@@ -40,7 +40,6 @@
     "xt/views/teprjtaskinfo.sql",
     "xt/views/teexpinfo.sql",
     "xt/views/teheadinfo.sql",
-    "xt/views/teiteminfo.sql",
     "xm/javascript/project.sql",
     "xm/javascript/worksheet.sql",
     "priv.sql"
