@@ -9,7 +9,7 @@ install:
   - "git clone git://github.com/xtuple/xtuple.git --recursive"
   - "cd xtuple"
   - "bash scripts/install_xtuple.sh -ipn"
-  - "./scripts/build_app -d dev -e ../xtuple-extensions/source/time_expense"
+  - "./scripts/build_app.sh -d dev -e ../xtuple-extensions/source/time_expense"
 
 before_script:
   - "cd node-datasource"
