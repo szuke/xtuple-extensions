@@ -39,7 +39,7 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
       @memberof EmployeeGroup
       @description Used in the Time and expense module
     */
-    extensions: [],
+    extensions: ["time_expense"],
     /**
       @member -
       @memberof EmployeeGroup
