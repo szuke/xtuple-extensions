@@ -8,6 +8,7 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
   "use strict";
 
   /**
+  Employee Groups are used for categorizing groups of related Employees
     @class
     @alias EmployeeGroup
     @property {String} Name
@@ -28,7 +29,7 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
     /**
       @member -
       @memberof EmployeeGroup
-      @description The ID attribute is "name", which will not be automatically uppercased.
+      @description The ID attribute is "name", which will be automatically uppercased.
     */
     idAttribute: "name",
     enforceUpperKey: true,
@@ -36,7 +37,7 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
     /**
       @member -
       @memberof EmployeeGroup
-      @description Used in the Project module
+      @description Used in the Time and expense module
     */
     extensions: [],
     /**
