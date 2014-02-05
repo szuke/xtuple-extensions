@@ -43,19 +43,43 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
       @memberof Employee
       @description Used in the setup module
     */
-    extensions: ["setup"], 
+    extensions: ["setup"],
     /**
       @member -
       @memberof Employee
-      @description Employees can be read by users with "ViewEmployees" privilege and can be created, updated,
-        or deleted by users with the "MaintainEmployees" privilege.
+      @description Employees can be read by users with "ViewEmployees" privilege and can be
+      created, updated, or deleted by users with the "MaintainEmployees" privilege.
     */
     privileges: {
       createUpdateDelete: "MaintainEmployees",
       read: "ViewEmployees"
-    },
+    }
   };
   var additionalTests = function () {
+    /**
+      @member -
+      @memberof Employee
+      @description Employee screen contains a Comment panel to add comments to Employee record
+    */
+    it.skip("Employee screen contains a Comment panel to add comments to Employee record",
+    function () {
+    });
+    /**
+      @member -
+      @memberof Employee
+      @description Employees could be attached/detached to Groups from the Employee screen
+    */
+    it.skip("Employees could be attached/detached to Groups from the Employee screen",
+    function () {
+    });
+    /**
+      @member -
+      @memberof Employee
+      @description Employees with history and employees attached to groups cannot be deleted
+    */
+    it.skip("Employees with history and employees attached to groups cannot be deleted",
+    function () {
+    });
   };
   exports.spec = spec;
   exports.additionalTests = additionalTests;
