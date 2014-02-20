@@ -11,7 +11,9 @@ install:
   - "./scripts/build_app.js -d dev -e ../xtuple-extensions/source/time_expense"
 
 before_script:
-  - "cd node-datasource"
+  - "cd ../xtuple-extensions"
+  - "npm install"
+  - "cd ../xtuple/node-datasource"
   - "node main.js &"
   - "sleep 10"
   - "cd .."
@@ -19,3 +21,5 @@ before_script:
 script:
   - "npm run-script test"
   - "npm run-script test-datasource"
+  - "cd ../xtuple-extensions"
+  - "npm run-script test"
