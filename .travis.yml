@@ -9,6 +9,7 @@ install:
   - "cd xtuple"
   - "bash scripts/install_xtuple.sh -ipn"
   - "./scripts/build_app.js -d dev -e ../xtuple-extensions/source/time_expense"
+  - "cp test/lib/login_data.js ../xtuple-extensions/test/lib/login_data.js"
 
 before_script:
   - "cd ../xtuple-extensions"
