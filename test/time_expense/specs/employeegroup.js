@@ -39,14 +39,14 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
       @memberof EmployeeGroup
       @description Used in the Time and expense module
     */
-    extensions: ["time_expense"],
+    extensions: ["project"],
     /**
       @member -
       @memberof EmployeeGroup
       @description Employee Groups can be read by users with "ViewEmployeeGroups" privilege and can be created, updated,
         or deleted by users with the "MaintainEmployeeGroups" privilege.
     */
-    /*privileges: {
+    /*privileges: { //22834
       createUpdateDelete: "MaintainEmployeeGroups",
       read: "ViewEmployeeGroups"
     },*/
