@@ -41,9 +41,10 @@ setTimeout:true, before:true, clearTimeout:true, exports:true, it:true, describe
     /**
       @member -
       @memberof Employee
-      @description Used in the setup module
+      @description Used in the Project module
     */
-    extensions: ["setup"],
+    extensions: ["project"],
+    relevantPrivilegeModule: "setup",
     /**
       @member -
       @memberof Employee
