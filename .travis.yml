@@ -4,11 +4,9 @@ node_js:
 
 install:
   - "cd .."
-  - "ls -l"
   - "git clone git://github.com/xtuple/xtuple.git --recursive"
   - "cd xtuple"
   - "bash scripts/install_xtuple.sh -ipn"
-  - "./scripts/build_app.js -d dev -e ../xtuple-extensions/source/time_expense"
   - "cp test/lib/login_data.js ../xtuple-extensions/test/lib/login_data.js"
   - "cd ../xtuple-extensions"
   - "npm install"
