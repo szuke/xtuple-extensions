@@ -12,6 +12,7 @@ install:
   - "cp test/lib/login_data.js ../xtuple-extensions/test/lib/login_data.js"
   - "cd ../xtuple-extensions"
   - "npm install"
+  - "npm run-script test-build"
 
 before_script:
   - "cd ../xtuple/node-datasource"
