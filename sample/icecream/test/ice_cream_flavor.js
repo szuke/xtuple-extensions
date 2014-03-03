@@ -10,8 +10,8 @@
 
   var spec = {
     recordType: "XM.IceCreamFlavor",
-    collectionType: null,
-    cacheName: null,
+    collectionType: "XM.IceCreamFlavorCollection",
+    cacheName: "XM.iceCreamFlavors",
     listKind: "XV.IceCreamFlavorList",
     instanceOf: "XM.Document",
     isLockable: true,

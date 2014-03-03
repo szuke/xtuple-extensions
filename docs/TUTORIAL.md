@@ -92,35 +92,6 @@ $ psql -U admin -d dev -f icflav.sql
 $ psql -U admin -d dev -c "select * from ic.icflav;"
 ```
 
-***
-
-While we're here, let's write the command that will register this extension into the database. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/source/register.sql`:
-
-```javascript
-select xt.register_extension('icecream', 'Ice Cream extension', '/xtuple-extensions', '', 999);
-```
-
-999 is the load order, and just has to be any number higher than the load order of the CRM extension, which is 10.
-
-Apply this file to the database as with the others:
-
-```bash
-$ cd /path/to/xtuple-extensions/source/icecream/database/source
-$ psql -U admin -d dev -f register.sql
-```
-
-And **verify** this step by seeing this extension as a new row in the `xt.ext` table, using pgadmin3 or psql.
-
-```bash
-$ psql -U admin -d dev -c "select * from xt.ext;"
-```
-
-Now is also a good time to associate this extension with the admin. Any extension can be turned off and on for any user, but by default they're turned off. Load up the webapp and navigate to `Setup`->`User Accounts`->`admin`. You'll see that admin has some extensions already turned on. Click the `icecream` checkbox as well, and save the workspace.
-
-Note: If the client prompts, "you do not have sufficient permissions to ...", check user privileges to make sure the extention is allowed. If the error persists, logout of the client and log back in to finish extention installation.
-
-***
-
 We can put these files together in our `manifest.js` file, which as a convention will be run by the xTuple build process when the database needs to be updated. Another function of the `manifest.js` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/manifest.js`:
 
 ```javascript
@@ -138,12 +109,22 @@ We can put these files together in our `manifest.js` file, which as a convention
 }
 ```
 
-From now on, you can just update the database by running the core build tool. All of these files are idempotent, so you don't have to worry about anything being installed in duplicate.
+From now on, you can just update the database by running the core build tool. All of these files are idempotent, so you don't have to worry about anything being installed in duplicate. Once you run the extension once, it will get registered into the database, so a general `build_app` will always automatically update it.
 
 ```bash
 $ cd /path/to/xtuple
 $ ./scripts/build_app.js -d dev -e ../xtuple-extensions/source/icecream
 ```
+
+**Verify** this step by seeing this extension as a new row in the `xt.ext` table, using pgadmin3 or psql.
+
+```bash
+$ psql -U admin -d dev -c "select * from xt.ext;"
+```
+
+Now is also a good time to associate this extension with the admin. Any extension can be turned off and on for any user, but by default they're turned off. Load up the webapp and navigate to `Setup`->`User Accounts`->`admin`. You'll see that admin has some extensions already turned on. Click the `icecream` checkbox as well, and save the workspace.
+
+Note: If the client prompts, "you do not have sufficient permissions to ...", check user privileges to make sure the extention is allowed. If the error persists, logout of the client and log back in to finish extention installation.
 
 ### ORMs
 
@@ -320,8 +301,7 @@ Enter the following code into the file `/path/to/xtuple-extensions/source/icecre
 enyo.depends(
   "core.js",
   "models",
-  // "en", // TODO: we'll get to these lower down in the tutorial
-  // "widgets",
+  // "widgets", // TODO: we'll get to this lower down in the tutorial
   "views",
   "postbooks.js"
 );
@@ -368,24 +348,18 @@ You should add the English translation of the key, and our global team of lingui
 Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/en/strings.js`.
 
 ```javascript
-var lang = XT.stringsFor("en_US", {
-  "_iceCreamFlavors": "Ice Cream Flavors"
-});
+(function () {
+  "use strict";
+
+  var lang = XT.stringsFor("en_US", {
+    "_iceCreamFlavors": "Ice Cream Flavors"
+  });
+
+  if (typeof exports !== 'undefined') {
+    exports.language = lang;
+  }
+}());
 ```
-
-Of course, you'll also need to enter the following code into the file `/path/to/xtuple-extensions/source/icecream/client/en/package.js`:
-
-```javascript
-enyo.depends(
-  "strings.js"
-);
-```
-
-and uncomment `en` as an entry in the file `/path/to/xtuple-extensions/source/icecream/client/package.js` array.
-
-Starting in version 1.4.6, you will not need to reference this file in the package.js system. Both the build tool 
-and the debug mode will know to look for it in `en/strings.js`. When you're in production mode
-these strings will be served out of the database; this makes possible multi-language support.
 
 **Verify** your work by rebuilding the extension:
 
