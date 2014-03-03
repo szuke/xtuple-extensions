@@ -8,7 +8,6 @@
     "create_ic_schema.sql",
     "icflav.sql",
     "priv.sql",
-    "cntcticflav.sql",
-    "register.sql"
+    "cntcticflav.sql"
   ]
 }
