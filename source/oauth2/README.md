@@ -75,7 +75,7 @@ stop the datasource, enter the main "xtuple" directory and run this command:
 
 Make sure you have created a `private` folder at this location:
 
-    `path-to-xtuple/node-datasource/lib/private`
+    path-to-xtuple/node-datasource/lib/private
 
 You can now start the datasource.
 
