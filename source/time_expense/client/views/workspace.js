@@ -58,7 +58,7 @@ latedef:true, newcap:true, noarg:true, regexp:true, undef:true, trailing:true, w
     XV.appendExtension("XV.ProjectWorkspace", projectExtensions);
 
     // ..........................................................
-    // TASK
+    // PROJECT TASK
     //
 
     var taskExtensions = [
@@ -77,7 +77,7 @@ latedef:true, newcap:true, noarg:true, regexp:true, undef:true, trailing:true, w
        label: "_rate".loc() }
     ];
 
-    XV.appendExtension("XV.TaskWorkspace", taskExtensions);
+    XV.appendExtension("XV.ProjectTaskWorkspace", taskExtensions);
 
     // ..........................................................
     // EMPLOYEE
