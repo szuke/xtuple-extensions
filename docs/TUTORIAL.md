@@ -92,7 +92,7 @@ $ psql -U admin -d dev -f icflav.sql
 $ psql -U admin -d dev -c "select * from ic.icflav;"
 ```
 
-We can put these files together in our `manifest.js` file, which as a convention will be run by the xTuple build process when the database needs to be updated. Another function of the `manifest.js` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/manifest.js`:
+We can put these files together in our `manifest.js` file, which as a convention will be run by the xTuple build process when the database needs to be updated. Another function of the `manifest.js` is to ensure that files get installed in the correct order. In this case so far it doesn't matter because our two scripts are independent. Enter the following code into the file `/path/to/xtuple-extensions/source/icecream/database/source/manifest.js`:
 
 ```javascript
 {
