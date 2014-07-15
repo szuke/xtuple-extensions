@@ -18,7 +18,7 @@
     idAttribute: "name",
     enforceUpperKey: true,
     attributes: ["name", "description", "calories"],
-    extensions: ["icecream"],
+    extensions: ["xtuple-ice-cream"],
     createHash: {
       name: "VANILLA" + Math.random(),
       calories: 1200

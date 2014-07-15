@@ -8,7 +8,7 @@ white:true*/
 
   XT.extensions.icecream = {
     setVersion: function () {
-      XT.setVersion("0.0.2", "xtuple-ice-cream");
+      XT.setVersion("0.1.1", "xtuple-ice-cream");
     }
   };
 
