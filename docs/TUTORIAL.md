@@ -39,7 +39,6 @@ if you have a `client` directory with nothing in it. Just make each directory as
 We write our database code in plv8, which allows us to use pure javascript even when constructing tables. You won't see any SQL in this tutorial! Don't worry: it's postgres behind the scenes. We'll be putting four files in the `/path/to/xtuple-extensions/source/icecream/database/source` directory. (You'll have to `mkdir` as necessary here and elsewhere.)
 * `create_ic_schema.sql` (to create the schema) [ [WHY?] ](TUTORIAL-FAQ.md#why-create-a-new-schema)
 * `icflav.sql` (to define the table)
-* `register.sql` (to register the extension in the database)
 * `manifest.js` (as a single point of entry to call the other two and any other files we make)
 
 Let's start by creating the file `/path/to/xtuple-extensions/source/icecream/database/source/create_ic_schema.sql`. 
@@ -103,8 +102,7 @@ We can put these files together in our `manifest.js` file, which as a convention
   "dependencies": ["crm"],
   "databaseScripts": [
     "create_ic_schema.sql",
-    "icflav.sql",
-    "register.sql"
+    "icflav.sql"
   ]
 }
 ```
