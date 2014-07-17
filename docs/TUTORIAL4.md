@@ -1,17 +1,17 @@
 ## xTuple Extension Tutorial
 ### Part IV: Production deployment
 
-Writing a bit of code on your own laptop is one thing, but it won't do you much good if you can't deploy it into pruduction. Unlike previous iterations of field dev, you can't feasibly use a tool like `pgadmin`, or even the classic xTuple `installer`, to get all of this code onto a production database. You might be tempted to ssh into the production server and recreate all of this work there, but that won't work either, as doing so will break upgrades.
+Writing a bit of code on your own laptop is one thing, but it won't do you much good if you can't deploy it into pruduction. Unlike previous iterations of field dev, you can't feasibly use a tool like `pgadmin`, or even the classic xTuple `installer`, to get all of this code onto a production database. You might be tempted to ssh into the production server and recreate all of this work there, but that's not a good idea either, as doing so will make clean upgrades impossible.
 
 The appropriate way to deploy your code into production is to go by way of npm. The process is quite easy, actually, and has the added benefit of properly memorializing your source code for maximum reliability and reusability.
 
 ### A bit about npm
 
-You can think about npm as providing two services. It is a datacenter in California, with mirrors around the world, that hosts packages of code for free. It is also the software that provides nodejs-based project and dependency management. We rely on it heavily in every part of our app, and so using it for custom extension control is a good fit.
+You can think about npm as providing two services. It is a datacenter in California, with mirrors around the world, that hosts packages of code. It is also the software that provides nodejs-based project and dependency management. We rely on it heavily in every part of our app, and so using it for custom extension control was a natural fit.
 
-### This sounds complicated
+### It's breathtakingly simple. 
 
-It's breathtakingly simple. We've already published `xtuple-ice-cream` to npm, so starting in xTuple version 4.6, all you have to do to install `xtuple-ice-cream` is the following:
+We at xTuple have already published `xtuple-ice-cream` to npm, so starting in xTuple version 4.6, all you have to do to install `xtuple-ice-cream` into your app is the following:
 
 - Boot up a new database without any of the work you've done so far, to mimic the production database
 - From the app home, click `Setup` -> `Configure` -> `Database`
@@ -21,11 +21,73 @@ It's breathtakingly simple. We've already published `xtuple-ice-cream` to npm, s
 
 ### How would I publish my own npm package?
 
-TODO: document
+Each npm package is defined by its `package.json` file. Look at code in the file `/path/to/xtuple-extensions/sample/xtuple-ice-cream/package.json`:
+```js
+{
+  "author": "xTuple <dev@xtuple.com>",
+  "name": "xtuple-ice-cream",
+  "description": "xTuple ice cream extension",
+  "version": "0.1.1",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "xtuple": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/xtuple/xtuple-ice-cream"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}
+```
 
-Of course, you're not allowed to publish over our `xtuple-ice-cream` package. 
+Of course, you're not allowed to publish over our `xtuple-ice-cream` package, so if you copy this code into the file
+`/path/to/xtuple-extensions/source/xtuple-ice-cream/package.json` and try to publish, npm will not let you. Npm is a 
+global registry, so if you want to practice publishing, choose another value for the `name` field in `package.json`.
 
-### What about code I want to keep private
+Publishing to npm is a process that's well-documented, and we do it the same way everyone else does. In short:
+
+```bash
+cd /path/to/xtuple-extensions/source/xtuple-ice-cream
+npm publish ./
+```
+
+At this point, npm will probably tell you to create an account and execute a few CLI commands, which you should do.
+Once you've published, your module will be immediately available on npmjs.org, and you'll be able to pull it into
+any xTuple app!
+
+Note as well that the production use of npm for xTuple extension deployment also saves you from the requirement
+that all your work be done in your fork of the `xtuple-extensions` repository. All npm cares about is that the code
+is in a directory with a `package.json` file, so if you want to have a different Github (or not-Github) repository
+for each custom extension, you can do that too.
+
+### Version control
+
+Connecting the appropriate mainline version with the various versions of your extension as you update them
+is something that npm excels at, without the need for a human-readable dependency matrix to sweat over. This is
+done using `peerDependencies`.
+
+Let's say that some future version of the app (v4.30.0) forces or entices you to make a change to your extension.
+All you have to do is, once you've 
+
+- Write the new code
+- Bump the extension version appropriately in `package.json` (say, to `0.1.2`)
+- Change the `xtuple` `peerDependency` version from `"*"` to `"^4.30.0"`
+- `npm publish`
+
+Now there are two usable versions of your extension, and npm will prefer to install the latest version for 
+which the peerDependencies match legally to the version of the main app. So if one user is on version `4.20`
+and installs your extension, npm will recognize your `0.1.2` as being off-limits, and will install `0.1.1`.
+But if at the same time another user is up to date at `4.30.0`, then npm will know to install your version 
+`0.1.2`.
+
+It's furthermore possible to add *other* xTuple extensions into `peerDependencies`, with their own version
+requirements. However, so long as we keep our core extensions moving forward in lockstep with our core (a
+habit we don't intend to keep forever), this probably won't be necessary.
+
+### Deploying private/proprietary custom extensions
 
 We're still working on that! We'll have a private solution, based around private github repos, available soon.
 
