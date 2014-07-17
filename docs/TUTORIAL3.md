@@ -197,6 +197,6 @@ XT.extensions.icecream = {
 };
 ```
 
-**Verify** your work by refreshing the browser, and selecting the `About` item from the gear menu. "Ice Cream 1.4.1" should display alongside your other extensions.
+**Verify** your work by refreshing the browser, and selecting the `About` item from the gear menu. "Ice Cream 0.1.1" should display alongside your other extensions.
 
-That's it! Hopefully you have a sense of how to work within the xTuple Web/Mobile platform, and you're excited to start developing your own work. Drop us a line to let us know what you think, or if you have anything else you'd like to be better documented, at dev at xtuple dot com.
+Good work so far! You've been able to develop a custom extension. Deployability into a production environment is just a few steps away, as you'll see in [Part IV](TUTORIAL4.md) of the tutorial.
