@@ -12,7 +12,7 @@ require:true, __dirname:true, console:true */
     path = require('path'),
     extDirs = _.filter(fs.readdirSync(path.join(__dirname, "..")), function (filename) {
       return fs.statSync(path.join(__dirname, "..", filename)).isDirectory() &&
-        !_.contains(["lib", "build"], filename);
+        !_.contains(["lib", "build", "routes"], filename);
     }),
     specFiles = _.flatten(_.map(extDirs, function (dir) {
       var specDir = path.join(__dirname, "..", dir, "specs"),
@@ -32,9 +32,6 @@ require:true, __dirname:true, console:true */
       return fileContents;
     }),
     runSpec = require("../../../xtuple/test/lib/runner_engine").runSpec;
-
-  console.log(fs.readdirSync(path.join(__dirname, "..")));
-  console.log(extDirs);
 
   _.each(specs, runSpec);
 
