@@ -8,7 +8,7 @@ trailing:true, white:true*/
 
   XT.extensions.bi_open = {
     setVersion: function () {
-      XT.setVersion("4.5.0", "bi_open");
+      XT.setVersion("4.6.0-beta", "bi_open");
     }
   };
 
@@ -20,35 +20,35 @@ trailing:true, white:true*/
     chartActions: [],
     /*
      * MDX Query Class
-     */   
+     */
     /*
      * MDX Query Class
      */
     mdxQuery: function () {
     },
     /*
-     * Time Series Query 
+     * Time Series Query
      */
     mdxQueryTimeSeries: function () {
     },
     /*
-     * Top List Query 
+     * Top List Query
      */
     mdxQueryTopList: function () {
     },
     /*
-     * Sum Periods Query 
+     * Sum Periods Query
      */
     mdxQuerySumPeriods: function () {
     },
     /*
-     * Map Periods Query 
+     * Map Periods Query
      */
     mdxQueryMapPeriods: function () {
     }
-  
+
   });
-  
+
   XT.mdxQuery.prototype = Object.create({
     /*
      *   Generate MDX query string based on queryTemplate.  members are optional.
@@ -93,11 +93,11 @@ trailing:true, white:true*/
       if (query.indexOf(" WHERE (") !== -1) {
         query += ")";
       }
-      
+
       return query;
     }
   });
-  
+
   XT.mdxQueryTimeSeries.prototype = _.extend(Object.create(XT.mdxQuery.prototype), {
       members: [
         {name: "[Measures].[KPI]",
@@ -107,7 +107,7 @@ trailing:true, white:true*/
            value: "([Measures].[$measure] , ParallelPeriod([Issue Date.Calendar Months].[$year]))"
         },
         {name: "[Measures].[prevYearKPI]",
-           value: "iif(Measures.[prevKPI] = 0 or Measures.[prevKPI] = NULL or IsEmpty(Measures.[prevKPI]), 0.000, Measures.[prevKPI])"
+           value: "iif (Measures.[prevKPI] = 0 or Measures.[prevKPI] = NULL or IsEmpty(Measures.[prevKPI]), 0.000, Measures.[prevKPI])"
         },
       ],
       columns: [
@@ -120,8 +120,8 @@ trailing:true, white:true*/
       cube: "",
       where: []
     });
-  
-  
+
+
   XT.mdxQueryTopList.prototype = _.extend(Object.create(XT.mdxQuery.prototype), {
       members: [
         {name: "[Measures].[NAME]",
@@ -141,7 +141,7 @@ trailing:true, white:true*/
       cube: "",
       where: []
     });
-  
+
   XT.mdxQuerySumPeriods.prototype = _.extend(Object.create(XT.mdxQuery.prototype), {
       members: [
         {name: "[Measures].[THESUM]",
@@ -157,7 +157,7 @@ trailing:true, white:true*/
       cube: "",
       where: []
     });
-  
+
   XT.mdxQueryMapPeriods.prototype = _.extend(Object.create(XT.mdxQuery.prototype), {
       members: [
         {name: "[Measures].[Longitude]",
