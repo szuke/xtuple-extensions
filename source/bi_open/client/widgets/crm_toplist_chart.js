@@ -3,7 +3,7 @@ latedef:true, newcap:true, noarg:true, regexp:true, undef:true,
 trailing:true, white:true*/
 /*global XT:true, XM:true, XV:true, _:true, window: true, enyo:true, nv:true, d3:true, dimple:true, console:true */
 
-/* 
+/*
  *  Implementation of charts.  Responsible for:
  *  -  defining collection class
  *  -  providing values for pickers
@@ -66,7 +66,7 @@ trailing:true, white:true*/
           _.extend(new XT.mdxQueryTopList(), {cube: "CRQuote"})
         ],
       });
-    
+
     enyo.kind({
       name: "XV.Period12QuoteActiveToplistChart",
       kind: "XV.BiToplistChart",
@@ -112,7 +112,7 @@ trailing:true, white:true*/
           ]
         },
         ],
-        // Query properties  
+        // Query properties
         cube : "CRQuote",
         schema: new XM.CRMMetadata(),
         queryTemplates: [
@@ -132,7 +132,7 @@ trailing:true, white:true*/
           })
           ],
         });
-    
+
     enyo.kind({
       name: "XV.Period12OpportunityToplistChart",
       kind: "XV.BiToplistChart",
@@ -141,43 +141,46 @@ trailing:true, white:true*/
       chartTitle: "_toplistTrailing12".loc(),
       parameterWidget: "XV.OpportunityChartParameters",
       drillDown: [
-        {dimension: "account",
-         attr: "number",
-         recordType: "XM.AccountRelation",
-         collection: "XM.AccountRelationCollection",
-         workspace: "XM.AccountRelation",
-         parameters: [
-          {name: "number", operator: "MATCHES", value: ""},
-        ]
-        },
-        {dimension: "user",
-           attr: "number",
-           recordType: "XM.UserAccountRelation",
-           collection: "XM.UserAccountRelationCollection",
-           workspace: "XM.UserAccountRelation",
-           parameters: [
+        {
+          dimension: "account",
+          attr: "number",
+          recordType: "XM.AccountRelation",
+          collection: "XM.AccountRelationCollection",
+          workspace: "XM.AccountRelation",
+          parameters: [
             {name: "number", operator: "MATCHES", value: ""},
           ]
         },
-        {dimension: "opportunity",
-           attr: "number",
-           recordType: "XM.OpportunityRelation",
-           collection: "XM.OpportunityRelationCollection",
-           workspace: "XM.OpportunityRelation",
-           parameters: [
+        {
+          dimension: "user",
+          attr: "number",
+          recordType: "XM.UserAccountRelation",
+          collection: "XM.UserAccountRelationCollection",
+          workspace: "XM.UserAccountRelation",
+          parameters: [
+            {name: "number", operator: "MATCHES", value: ""},
+          ]
+        },
+        {
+          dimension: "opportunity",
+          attr: "number",
+          recordType: "XM.OpportunityRelation",
+          collection: "XM.OpportunityRelationCollection",
+          workspace: "XM.OpportunityRelation",
+          parameters: [
             {name: "number", operator: "MATCHES", value: ""},
             {name: "showInactive", operator: "=", value: true}
           ]
         }
-        ],
-        // Query properties  
-        cube : "CROpportunity",
-        schema: new XM.CRMMetadata(),
-        queryTemplates: [
-          _.extend(new XT.mdxQueryTopList(), {cube: "CROpportunity"})
-        ],
-      });
-    
+      ],
+      // Query properties
+      cube : "CROpportunity",
+      schema: new XM.CRMMetadata(),
+      queryTemplates: [
+        _.extend(new XT.mdxQueryTopList(), {cube: "CROpportunity"})
+      ],
+    });
+
     enyo.kind({
       name: "XV.Period12OpportunityActiveToplistChart",
       kind: "XV.BiToplistChart",
@@ -187,44 +190,47 @@ trailing:true, white:true*/
       prefixChartTitle: "_active".loc(),
       parameterWidget: "XV.OpportunityChartParameters",
       drillDown: [
-        {dimension: "account",
-         attr: "number",
-         recordType: "XM.AccountRelation",
-         collection: "XM.AccountRelationCollection",
-         workspace: "XM.AccountRelation",
-         parameters: [
-          {name: "number", operator: "MATCHES", value: ""},
-        ]
-        },
-        {dimension: "user",
-           attr: "number",
-           recordType: "XM.UserAccountRelation",
-           collection: "XM.UserAccountRelationCollection",
-           workspace: "XM.UserAccountRelation",
-           parameters: [
+        {
+          dimension: "account",
+          attr: "number",
+          recordType: "XM.AccountRelation",
+          collection: "XM.AccountRelationCollection",
+          workspace: "XM.AccountRelation",
+          parameters: [
             {name: "number", operator: "MATCHES", value: ""},
           ]
         },
-        {dimension: "opportunity",
-           attr: "number",
-           recordType: "XM.OpportunityRelation",
-           collection: "XM.OpportunityRelationCollection",
-           workspace: "XM.OpportunityRelation",
-           parameters: [
+        {
+          dimension: "user",
+          attr: "number",
+          recordType: "XM.UserAccountRelation",
+          collection: "XM.UserAccountRelationCollection",
+          workspace: "XM.UserAccountRelation",
+          parameters: [
+            {name: "number", operator: "MATCHES", value: ""},
+          ]
+        },
+        {
+          dimension: "opportunity",
+          attr: "number",
+          recordType: "XM.OpportunityRelation",
+          collection: "XM.OpportunityRelationCollection",
+          workspace: "XM.OpportunityRelation",
+          parameters: [
             {name: "number", operator: "MATCHES", value: ""}
           ]
         }
-        ],
-        // Query properties
-        cube : "CROpportunity",
-        schema: new XM.CRMMetadata(),
-        queryTemplates: [
-          _.extend(new XT.mdxQueryTopList(),
-            {cube: "CROpportunity",
-               where: ["[Opportunity.Opportunity by Status by Stage].[Active]"]
-            }
-          )
-        ],
-      });
+      ],
+      // Query properties
+      cube : "CROpportunity",
+      schema: new XM.CRMMetadata(),
+      queryTemplates: [
+        _.extend(new XT.mdxQueryTopList(),
+          {cube: "CROpportunity",
+             where: ["[Opportunity.Opportunity by Status by Stage].[Active]"]
+          }
+        )
+      ],
+    });
 
   }());

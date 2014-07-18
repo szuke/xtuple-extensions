@@ -12,7 +12,7 @@ trailing:true, white:true*/
     -  plotting (rendering) with Enyo
     /**
       Process the data from xmla4js format to list
-      
+
       Input format:
       [
         {
@@ -35,7 +35,7 @@ trailing:true, white:true*/
       ]
 
     */
-  
+
   enyo.kind(
     /** @lends XV.TimeSeriesChart # */{
     name: "XV.BiToplistChart",
@@ -49,7 +49,7 @@ trailing:true, white:true*/
       plotDimension1 : "",
       plotDimension2 : "",
     },
-    
+
     /*
      * Set up items in top list on render and handle onTap
      */
@@ -57,20 +57,20 @@ trailing:true, white:true*/
       onSetupItem: "setupItem",
       ontap: "clickDrill"
     },
- 
+
     /**
-      Any initialization 
+      Any initialization
     */
     create: function () {
       this.inherited(arguments);
     },
-    
+
     /**
       Update Queries based on pickers using cube meta data.  Replace cube name, measure
       name, dimension info.  Use current year & month or next periods if nextPeriods set.
      */
     updateQueries: function () {
-      // pickers[1] will be dimension 
+      // pickers[1] will be dimension
       var date = this.getEndDate();
       _.each(this.queryTemplates, function (template, i) {
         var measure = this.schema.getMeasureName(template.cube, this.getMeasure()),
@@ -88,26 +88,28 @@ trailing:true, white:true*/
       }, this
       );
     },
-    
+
     processData: function () {
       var formattedData = [],
         collection = this.collections[0],
         that = this;
-      
+
       if (collection.models.length > 0) {
         var values = [],
           measure = this.schema.getMeasureName(this.getCube(), this.getMeasure()),
           code = "",
           theSum = 0,
-          sumFormatted = "";
-        for (var i = 0; i < collection.models.length; i++) {
-          
-          _.map(collection.models[i].attributes, function (value, key) {
+          sumFormatted = "",
+          correctCode = function (value, key) {
             if (key.indexOf("[MEMBER_CAPTION]") !== -1) {
               code = value;
             }
-          });
-          
+          };
+
+        for (var i = 0; i < collection.models.length; i++) {
+
+          _.map(collection.models[i].attributes, correctCode);
+
           theSum = Number(collection.models[i].attributes["[Measures].[THESUM]"]);
           if (measure.indexOf("Amount") !== -1  || measure.indexOf("Average") !== -1) {
             sumFormatted = XV.FormattingMixin.formatMoney(theSum, this);
@@ -115,7 +117,7 @@ trailing:true, white:true*/
           else {
             sumFormatted = XV.FormattingMixin.formatQuantity(theSum, this);
           }
-          
+
           var entry = { "Code": code,
                         "Name": collection.models[i].attributes["[Measures].[NAME]"],
                         "Measure": sumFormatted};
@@ -127,9 +129,9 @@ trailing:true, white:true*/
       this.$.chartSubTitle.setContent(this.getChartSubTitle()); // Set the chart sub title
       this.setProcessedData(formattedData); // This will drive processDataChanged which will call plot
     },
-    
+
     /**
-      If the user clicks on a bar or circle list with the appropriate filter. 
+      If the user clicks on a bar or circle list with the appropriate filter.
       When the user clicks on an list item we drill down further into item.
      */
     clickDrill: function (iSender, iEvent) {
@@ -149,17 +151,17 @@ trailing:true, white:true*/
             that.doWorkspace({workspace: XV.getWorkspace(drilldown.workspace), id: id});
           }
         };
-        
+
       /*
        *  We only handle events from ListAttr.  Others are bubbled up to parent
        *  as we don't return true.
        */
       if (iEvent.originator.kind === "XV.ListAttr") {
-        
+
         _.each(this.drillDown, function (item) {
           drilldown = item.dimension === that.getDimension() ? item : drilldown;
         });
-        
+
         /*
          * We only handle drill downs if a drilldown entry is defined for this dimension
          * in the implementor.
@@ -170,7 +172,7 @@ trailing:true, white:true*/
           params = drilldown.parameters;
           params[0].value = selected;
           listKind = XV.getList(drilldown.recordType);
-                
+
           this.doSearch({
             list: listKind,
             searchText: "",
@@ -184,7 +186,7 @@ trailing:true, white:true*/
       }
     },
 
-    plot: function (type) {      
+    plot: function (type) {
       var list = this.$.chart.$.svg.createComponent(
             {name: "toplist",
               kind: "XV.Toplist"
@@ -197,18 +199,18 @@ trailing:true, white:true*/
       list.setCount(count);
       list.render();
     },
-    
+
     setupItem: function (inSender, inEvent) {
       this.$.chart.$.svg.$.toplist.$.code.setContent(this.getProcessedData()[0].values[inEvent.index].Code);
       this.$.chart.$.svg.$.toplist.$.name.setContent(this.getProcessedData()[0].values[inEvent.index].Name);
       this.$.chart.$.svg.$.toplist.$.measure.setContent(this.getProcessedData()[0].values[inEvent.index].Measure);
     },
-    
+
     itemTap: function (inSender, inEvent) {
       var row = inEvent.index;
       var selected = this.$.chart.$.svg.$.toplist.getSelection().getSelected();
     },
-    
+
     /**
       Set chart plot size using max sizes from dashboard.
      */
@@ -244,7 +246,7 @@ trailing:true, white:true*/
         date.getFullYear() + "-" + (date.getMonth() + 1);
       return title;
     },
-    
+
   });
 
 }());

@@ -12,7 +12,7 @@ trailing:true, white:true*/
     -  plotting with Leaflet
 
       ProcessData changes the data from xmla4js format to Leaflet format.
-      
+
       Input format:
       [
         {"[Account Rep.Account Reps by Code].[Account Rep Code].[MEMBER_CAPTION]":"2000",
@@ -28,7 +28,7 @@ trailing:true, white:true*/
       [
         {
           "values": [
-          { 
+          {
             "dimension": "2000",
             "geoDimension": "Vienna",
             "latitude": "42.12",
@@ -39,7 +39,7 @@ trailing:true, white:true*/
         }
       ]
     */
-  
+
   enyo.kind(
     /** @lends XV.BiMapChart # */{
     name: "XV.BiMapChart",
@@ -57,15 +57,15 @@ trailing:true, white:true*/
       theMap: null,  // need to remember the map as it needs to be destroyed before recreated.
       geoDimension: "[Ship City].[City Name]" // todo move to a button
     },
-    
+
     /**
-      Any initialization 
+      Any initialization
     */
     create: function () {
       this.inherited(arguments);
       this.updatedLabels = [];           //we modify labels with data so we make a this object
     },
-    
+
     /**
       Update Queries based on pickers using cube meta data.  Replace cube name, measure
       name, dimension info.  Use current year & month or next periods if nextPeriods set.
@@ -121,7 +121,7 @@ trailing:true, white:true*/
       this.$.chartSubTitle.setContent(this.getChartSubTitle()); // Set the chart sub title
       this.setProcessedData(formattedData); // This will drive processDataChanged which will call plot
     },
-    
+
     clickDrill: function (event, figure) {
       var thisEnyo = figure[0].properties["chart.caller"], // We save the object reference in "caller property
         that = thisEnyo,
@@ -154,7 +154,7 @@ trailing:true, white:true*/
       // TODO: the parameter widget sometimes has trouble finding our query requests
 
       listKind = XV.getList(recordType);
-      
+
       thisEnyo.doSearch({
         list: listKind,
         searchText: "",
@@ -164,40 +164,40 @@ trailing:true, white:true*/
         query: null
       });
     },
-    
+
     hover: function (e, shape) {
       var event = e;
     },
-    
+
     /*
-     * Plot seems to only work with leaflet-8dev.js.  But leaflet site is using leaflet72.js in 
+     * Plot seems to only work with leaflet-8dev.js.  But leaflet site is using leaflet72.js in
      *
 
     plot: function (type) {
-      
+
       var divId = this.$.chart.$.svg.hasNode().id,
         chartId = this.$.chart.hasNode().id,
         that = this;
-           
+
       if (this.getProcessedData().length > 0) {
-        
+
         if (this.getTheMap()) {
           this.getTheMap().remove();
         }
         this.setTheMap(new L.Map(chartId));
-      
+
         // create the tile layer with correct attribution
-        
+
         //var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var osmUrl = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
-        
-        //var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+
+        //var osmAttrib='Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
         var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 100, id: 'examples.map-i86knfo3'});
-      
+
         // start the map in South-East England
         this.getTheMap().setView(new L.LatLng(36, -76), 9);
         this.getTheMap().addLayer(osm);
-        
+
         _.each(this.getProcessedData()[0].values, function (value) {
           L.marker([value.latitude, value.longitude])
             .addTo(that.getTheMap())
@@ -208,17 +208,17 @@ trailing:true, white:true*/
 
       }
     },
-    
+
 */
-    
+
 /*
  *  See file:///Z:/xtuple-fork/private-extensions/lib/leaflet-markercluster/example/marker-clustering-custom.html
  *  Errors if used with leaflet-8dev.js.
  *  Stalls on this.getTheMap().addLayer(markers) using leaflet7.js
- * 
+ *
  * */
     plot: function (type) {
-      
+
       var divId = this.$.chart.$.svg.hasNode().id,
         chartId = this.$.chart.hasNode().id,
         that = this,
@@ -240,7 +240,7 @@ trailing:true, white:true*/
           showCoverageOnHover: false,
           zoomToBoundsOnClick: false
         });
-      
+
       function removePolygon() {
         if (shownLayer) {
           shownLayer.setOpacity(1);
@@ -251,36 +251,36 @@ trailing:true, white:true*/
           polygon = null;
         }
       }
-           
+
       if (this.getProcessedData().length > 0) {
-        
+
         if (this.getTheMap()) {
           this.getTheMap().remove();
         }
         this.setTheMap(new L.Map(chartId), {zoom: 50});
-      
+
         //var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         var osmUrl = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
-        
-        //var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+
+        //var osmAttrib='Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
         var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 50, id: 'examples.map-i86knfo3'});
-      
+
         this.getTheMap().setView(new L.LatLng(36, -76), 9);
         this.getTheMap().addLayer(osm);
-        
+
         _.each(this.getProcessedData()[0].values, function (value) {
           //L.marker([value.latitude, value.longitude])
           //  .addTo(that.getTheMap())
           //  .bindPopup("<b>" + value.dimension + "</br>" +
           //             "<b>" + value.geoDimension + "</br>" +
           //             "<b>" + value.measure + "</br>");
-       
+
           var m = L.marker([value.latitude, value.longitude], { title: value.measure });
           //m.number = value.measure;
-          m.number = 10;          
+          m.number = 10;
           markers.addLayer(m);
         });
-        
+
         this.getTheMap().addLayer(markers);
         markers.on('clustermouseover', function (a) {
           removePolygon();
@@ -294,7 +294,7 @@ trailing:true, white:true*/
 
       }
     },
-    
+
     /**
       Set chart plot size using max sizes from dashboard.
      */
@@ -310,7 +310,7 @@ trailing:true, white:true*/
        * Maps are actually rendered in the chart and not the svg.  No idea why they
        * won't render in the svg.  We can not create and recreate the chart, we must
        * use map.remove() to destroy the map.  We also have to careful to only render
-       * the chart once or the map.destroy() fails.  So we keep the svg to remember 
+       * the chart once or the map.destroy() fails.  So we keep the svg to remember
        * we already rendered.
        */
 
@@ -336,7 +336,7 @@ trailing:true, white:true*/
         date.getFullYear() + "-" + (date.getMonth() + 1);
       return title;
     },
-    
+
   });
 
 }());

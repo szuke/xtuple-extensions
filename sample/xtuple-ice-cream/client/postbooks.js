@@ -17,7 +17,7 @@ white:true*/
     relevantPrivileges = [
       "MaintainIceCreamFlavors"
     ];
-    XT.session.addRelevantPrivileges("icecream", relevantPrivileges);
+    XT.session.addRelevantPrivileges("xtuple-ice-cream", relevantPrivileges);
     XT.session.privilegeSegments.Contact.push("MaintainIceCreamFlavors");
 
   };

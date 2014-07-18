@@ -29,7 +29,7 @@ trailing:true, white:true*/
       where: [],
       year: "current",
       month: "current",
-      // May want to override these in the implementation 
+      // May want to override these in the implementation
       parameterWidget: "XV.SalesChartParameters",
       initialChartTitle: "_chooseMeasure".loc()
     },
@@ -52,19 +52,19 @@ trailing:true, white:true*/
         var that = this,
           model = this.getModel();
         this.inherited(arguments);
-        
+
         // Add controls to components.  owner:this makes this the owner instead of
         // chartWrapper so the onSelect is handled by this.
         this.$.chartWrapper.createComponent({owner: this}, this.chartControls);
-  
+
         // Populate the Measure picker from cubeMetaOverride or cubeMeta
         this.setMeasures(this.schema.getMeasures(this.getCube()));
         _.each(this.getMeasures(), function (item) {
           var pickItem = {name: item, content: ("_" + item).loc()};
           that.$.measurePicker.createComponent(pickItem);
         });
-        
-        // Set the measure and chart type from model    
+
+        // Set the measure and chart type from model
         if (model.get("measure")) {
           this.setMeasure(model.get("measure"));
         }
@@ -91,7 +91,7 @@ trailing:true, white:true*/
         this.$.chartWrapper.setStyle("width:" + width + "px;height:" + (height - 32) + "px;");
         this.$.chartTitle.setStyle("width:" + width + "px;height:28px;");
         this.$.chart.setStyle("width:" + width + "px;height:" + (height - 96) + "px;");
-      },  
+      },
       /**
         When the measure value changes, set the selected value
         in the picker widget, fetch the data and re-process the data.
@@ -122,7 +122,7 @@ trailing:true, white:true*/
         this.createChartComponent();
         this.plot(this.getChartType());
       },
-      
+
     });
 
 }());
