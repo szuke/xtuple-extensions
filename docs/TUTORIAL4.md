@@ -62,7 +62,9 @@ install it from the database configuration screen.
 Note as well that the production use of npm for xTuple extension deployment also saves you from the requirement
 that all your work be done in your fork of the `xtuple-extensions` repository. All npm cares about is that the code
 is in a directory with a `package.json` file, so if you want to have a different Github (or not-Github) repository
-for each custom extension, you can do that too.
+for each custom extension, you can do that too. See the [xtuple-morpheus](https://github.com/shackbarth/xtuple-morpheus) 
+extension as an example of this kind of deployment strategy, and as an example for how to use the xTuple
+extension system to deploy third-party HTML and javascript libraries into the xTuple app.
 
 ### Version control
 
