@@ -29,5 +29,6 @@ script:
   - "npm run-script test"
   - "npm run-script test-datasource"
   - "cd ../xtuple-extensions"
+  - "ls -l test"
   - "npm run-script test"
   - "../xtuple/node_modules/.bin/jshint source"

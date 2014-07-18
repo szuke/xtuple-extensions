@@ -33,6 +33,9 @@ require:true, __dirname:true, console:true */
     }),
     runSpec = require("../../../xtuple/test/lib/runner_engine").runSpec;
 
+  console.log(fs.readdirSync(path.join(__dirname, "..")));
+  console.log(extDirs);
+
   _.each(specs, runSpec);
 
 }());
