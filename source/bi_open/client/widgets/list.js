@@ -18,7 +18,7 @@ trailing:true, white:true, strict: false*/
     },
     onSetupItem: "setupItem",
     components: [
-     {kind: "XV.ListItem", name: "theitems", classes: "xv-list-item",  components: [
+      {kind: "XV.ListItem", name: "theitems", classes: "xv-list-item",  components: [
         {kind: "FittableColumns", components: [
           {kind: "XV.ListColumn", classes: "short", components: [
             {kind: "XV.ListAttr", name: "code", ontap: "clickDrill", classes: "hyperlink bold" },

@@ -9,10 +9,10 @@ trailing:true, white:true*/
     Generic implementation of customizable analytic chart.  Responsible for:
      - handling collections
      - saves
-     - common components - title, subtitle, parameterWidget    
+     - common components - title, subtitle, parameterWidget
      Note support for multiple collections corresponding to multiple queryTemplates.
      Most charts just use one MDX query and the one collection (collections[0]).  But
-     as Pentaho does not yet support multiple queries (or subqueries) we can join 
+     as Pentaho does not yet support multiple queries (or subqueries) we can join
      multiple query results ourselves.
   */
   enyo.kind(
@@ -90,7 +90,7 @@ trailing:true, white:true*/
                 components: [{classes: "xv-header", content: "_chartFilters".loc()}]
               },
             ]},
-  
+
             {name: "chartWrapper", classes: "chart-bottom", components: [
               {name: "chart"},
             ]}
@@ -99,7 +99,7 @@ trailing:true, white:true*/
         ],
         /**
           Remove this chart from it's parent (if applicable)
-          todo: remove log when we figure out browser freeze on 
+          todo: remove log when we figure out browser freeze on
           removing last chart.
         */
         chartRemoved: function (inSender, inEvent) {
@@ -110,8 +110,8 @@ trailing:true, white:true*/
           this.doChartRemove(inEvent);
         },
         /**
-         * Implementer calls this to fetch each collection. This will drive 
-         * the collection's synch method.  On success of last collection, processData 
+         * Implementer calls this to fetch each collection. This will drive
+         * the collection's synch method.  On success of last collection, processData
          * will drive processDataChanged which calls plot.
         */
         fetchCollection: function () {
@@ -145,19 +145,19 @@ trailing:true, white:true*/
             });
           }, this);
         },
-    
+
         /**
           Create collections, setup icon, title and parameterWidget.
-          Implementer is responsible for updating the queryTemplates, fetching the 
+          Implementer is responsible for updating the queryTemplates, fetching the
           collections and creating the chart area.
          */
         create: function () {
           this.inherited(arguments);
-    
+
           var that = this,
             collection = this.getCollection(),
             Klass = collection ? XT.getObjectByName(collection) : false;
-    
+
           //
           // Make collection object for each queryTemplate.  Create this object
           // for collections so they are not shared across all charts.
@@ -170,16 +170,16 @@ trailing:true, white:true*/
           _.each(this.queryTemplates, function () {
             this.collections.push(new Klass());
           }, this);
-          
+
           // Show/Hide remove icon
           this.$.removeIcon.setShowing(this.removeIconShowing);
-    
+
           // Set the chart title
           this.$.chartTitle.setContent(this.getInitialChartTitle());
-          
+
           // Set the parameterWidget for filters with last filter used
           this.$.filterDrawer.createComponent({name: "parms", kind: this.getParameterWidget()});
-          this.$.filterDrawer.$.parms.setLastFilterUuid(this.model.get("uuidFilter"));      
+          this.$.filterDrawer.$.parms.setLastFilterUuid(this.model.get("uuidFilter"));
         },
         /**
           Save the model that has been changed.
@@ -198,7 +198,7 @@ trailing:true, white:true*/
          */
         filterTapped: function () {
           var drawerHeight = this.getMaxHeight() - 40; //adjust for title size +
-          
+
           this.$.filterDrawer.applyStyle("width", this.getMaxWidth() + "px");
           if (!this.$.filterDrawer.open) {
             this.$.scrollableDrawer.applyStyle("height", drawerHeight + "px");
@@ -211,7 +211,7 @@ trailing:true, white:true*/
         /*
          * Construct where filters based on parameterWidget filter settings.
          * Set End Year and Month based on filter settings.
-         * Save the uuid of the current filter chosen.  
+         * Save the uuid of the current filter chosen.
          * Update the query and fetch.
          */
         parameterDidChange: function (inSender, inEvent) {
@@ -222,14 +222,14 @@ trailing:true, white:true*/
             that = this,
             comma = "";
           this.setWhere([]);
-            
+
           //  If the event is just to select a filter (and no parameters are received) we ignore as we
-          //  will get another event with the parameters 
+          //  will get another event with the parameters
           if (!(lastFilter && (parameters.length === 0))) {
             this.setChartSubTitle("");
             this.getModel().set("uuidFilter", lastFilter);
             this.save(this.getModel());
-            
+
             // the endyearpicker & endmonthpicker do not get reset to current when the filter is set to default!
             if (parameters.length === 0) {
               this.setYear("current");
@@ -271,7 +271,7 @@ trailing:true, white:true*/
           }
           return date;
         },
-    
+
         orderChanged: function () {
           this.getModel().set("order", this.getOrder());
         },
@@ -286,17 +286,17 @@ trailing:true, white:true*/
         setPlotSize: function (maxHeight, maxWidth) {
         },
         /**
-          Drill down to list or item - up to implementer. 
+          Drill down to list or item - up to implementer.
          */
         drillDown: function (field, key) {
         },
         /**
-          Make the chart - up to chart implementer. 
+          Make the chart - up to chart implementer.
          */
         plot: function (type) {
         },
         /**
-          Update Queries based on pickers - up to chart implementer. 
+          Update Queries based on pickers - up to chart implementer.
          */
         updateQueries: function (pickers) {
         },
@@ -305,7 +305,7 @@ trailing:true, white:true*/
          */
         modelChanged: function () {
         },
-        
+
         /*
          * Destroy and re-plot the chart area when the data changes - up to chart implementer
          */
