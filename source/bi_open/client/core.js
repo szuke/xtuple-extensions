@@ -20,7 +20,10 @@ trailing:true, white:true*/
     chartActions: [],
     /*
      * MDX Query Class
+     * All BI extensions add their collection of maps to this list.  So all maps are
+     * available to all mapboards.
      */
+    mapActions: [],
     /*
      * MDX Query Class
      */
