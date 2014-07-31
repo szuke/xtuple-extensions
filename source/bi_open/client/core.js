@@ -8,7 +8,7 @@ trailing:true, white:true*/
 
   XT.extensions.bi_open = {
     setVersion: function () {
-      XT.setVersion("4.6.0-beta", "bi_open");
+      XT.setVersion("4.6.0", "bi_open");
     }
   };
 
@@ -124,8 +124,8 @@ trailing:true, white:true*/
       where: []
     });
   /*
-   *   Top list query.  
-   *   
+   *   Top list query.
+   *
    *   Note we are given a dimension's level, but we want the children, so we
    *   go back up to the hierarchy and then get the children.
    */
@@ -166,10 +166,10 @@ trailing:true, white:true*/
     });
   /*
    * Map Query.
-   * 
+   *
    * Note that cross joins of large dimensions like dimensionGeo are performance problems.  Check that all
    * cross join options in mondrian.properties are set.  Make sure heap space is sufficient in start_bi.sh
-   * A cross joins of members performs well, but a cross join of children does not (mondrian bug?).  
+   * A cross joins of members performs well, but a cross join of children does not (mondrian bug?).
    * "CrossJoin($dimensionHier.Children, $dimensionGeo.Members)" - bad
    * "CrossJoin($dimensionHier.Members, $dimensionGeo.Members)" - good
    * All queries should be written as using members.
