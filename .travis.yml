@@ -15,7 +15,6 @@ install:
   - "mkdir -p test/xtuple-ice-cream/specs"
   - "cp source/xtuple-ice-cream/test/* test/xtuple-ice-cream/specs"
   - "../xtuple/scripts/build_app.js -e source/xtuple-ice-cream"
-  
 
 before_script:
   - "cd ../xtuple/node-datasource"
@@ -28,4 +27,4 @@ script:
   - "npm run-script test-datasource"
   - "cd ../xtuple-extensions"
   - "npm test"
-  - "../xtuple/node_modules/.bin/jshint source"
+  - "../xtuple/node_modules/.bin/jshint --exclude source/bi_open/client/lib source"
