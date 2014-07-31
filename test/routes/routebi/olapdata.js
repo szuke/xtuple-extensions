@@ -17,6 +17,7 @@ var options = require("../../../../xtuple/node-datasource/lib/options");
 
 // build X with the options needed by olapcatalog
 X.setup(options);
+X.options.datasource.debugging = true;
 
 var assert = require("chai").assert,
   olapRoute = require("../../../source/bi_open/node-datasource/routes/olapdata"),
