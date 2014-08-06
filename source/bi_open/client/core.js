@@ -8,7 +8,7 @@ trailing:true, white:true*/
 
   XT.extensions.bi_open = {
     setVersion: function () {
-      XT.setVersion("4.6.0-beta", "bi_open");
+      XT.setVersion("4.6.0", "bi_open");
     }
   };
 
@@ -20,7 +20,10 @@ trailing:true, white:true*/
     chartActions: [],
     /*
      * MDX Query Class
+     * All BI extensions add their collection of maps to this list.  So all maps are
+     * available to all mapboards.
      */
+    mapActions: [],
     /*
      * MDX Query Class
      */
@@ -120,8 +123,12 @@ trailing:true, white:true*/
       cube: "",
       where: []
     });
-
-
+  /*
+   *   Top list query.
+   *
+   *   Note we are given a dimension's level, but we want the children, so we
+   *   go back up to the hierarchy and then get the children.
+   */
   XT.mdxQueryTopList.prototype = _.extend(Object.create(XT.mdxQuery.prototype), {
       members: [
         {name: "[Measures].[NAME]",
@@ -136,7 +143,7 @@ trailing:true, white:true*/
         "[Measures].[NAME]"
       ],
       rows: [
-        "ORDER({filter(TopCount($dimensionHier.Children, 50, [Measures].[THESUM]),[Measures].[THESUM]>0) }, [Measures].[THESUM], DESC)"
+        "ORDER({filter(TopCount($dimensionHier.Hierarchy.Children, 50, [Measures].[THESUM]),[Measures].[THESUM]>0) }, [Measures].[THESUM], DESC)"
       ],
       cube: "",
       where: []
@@ -157,24 +164,33 @@ trailing:true, white:true*/
       cube: "",
       where: []
     });
-
+  /*
+   * Map Query.
+   *
+   * Note that cross joins of large dimensions like dimensionGeo are performance problems.  Check that all
+   * cross join options in mondrian.properties are set.  Make sure heap space is sufficient in start_bi.sh
+   * A cross joins of members performs well, but a cross join of children does not (mondrian bug?).
+   * "CrossJoin($dimensionHier.Children, $dimensionGeo.Members)" - bad
+   * "CrossJoin($dimensionHier.Members, $dimensionGeo.Members)" - good
+   * All queries should be written as using members.
+   */
   XT.mdxQueryMapPeriods.prototype = _.extend(Object.create(XT.mdxQuery.prototype), {
       members: [
-        {name: "[Measures].[Longitude]",
-           value: 'iif ([Measures].[$measure] is empty, null, $dimensionGeo.CurrentMember.Properties("Longitude"))'
-        },
-        {name: "[Measures].[Latitude]",
-           value: 'iif ([Measures].[$measure] is empty, null, $dimensionGeo.CurrentMember.Properties("Latitude"))'
-        },
         {name: "[Measures].[TheSum]",
            value: 'SUM({LASTPERIODS(12, [Issue Date.Calendar].[$year].[$month])}, [Measures].[Amount, Order Gross])'
+        },
+        {name: "[Measures].[Longitude]",
+           value: 'iif ([Measures].[TheSum] is empty, null, $dimensionGeo.CurrentMember.Properties("Longitude"))'
+        },
+        {name: "[Measures].[Latitude]",
+           value: 'iif ([Measures].[TheSum] is empty, null, $dimensionGeo.CurrentMember.Properties("Latitude"))'
         },
       ],
       columns: [
         "[Measures].[Latitude]", "[Measures].[Longitude]", "[Measures].[TheSum]",
       ],
       rows: [
-        "CrossJoin($dimensionHier.Children, $dimensionGeo.Members)"
+        "CrossJoin($dimensionHier.Members, $dimensionGeo.Members)"
       ],
       cube: "",
       where: []
