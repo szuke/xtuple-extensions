@@ -269,51 +269,8 @@ white:true*/
       isTime: false,
 
       billableDidChange: function () {
-        var billable = this.get("billable"),
-          worksheet = this.getParent(),
-          task =  this.get("task"),
-          project = task ? task.get("project") : undefined,
-          employee = worksheet ? worksheet.get("employee") : undefined,
-          customer = this.get("customer"),
-          item = this.get("item"),
-          that = this,
-          options = {isJSON: true},
-          params,
-          i;
+        var billable = this.get("billable");
         this.setReadOnly("billingRate", !billable);
-        if (!XT.session.privileges.get("CanViewRates")) { return; }
-
-        // Keep track of requests, we'll ignore stale ones
-        this._counter = _.isNumber(this._counter) ? this._counter + 1 : 0;
-        i = this._counter;
-
-        if (billable) {
-          params = {
-            isTime: this.isTime,
-            taskId: task ? task.id : undefined,
-            projectId: project ? project.id : undefined,
-            employeeId: employee ? employee.id : undefined,
-            customerId: customer ? customer.id : undefined,
-            itemId: item ? item.id : undefined
-          };
-
-          options.success = function (resp) {
-            var data = {};
-            if (i < that._counter) { return; }
-            that.off("change:" + that.ratioKey, that.detailDidChange);
-            data[that.ratioKey] = resp.rate;
-            data.billingCurrency = resp.currency || XT.baseCurrency();
-            that.set(data);
-            that.on("change:" + that.ratioKey, that.detailDidChange);
-            that.detailDidChange();
-          };
-          this.dispatch("XM.Worksheet", "getBillingRate", params, options);
-        } else {
-          this.off("change:" + this.ratioKey, this.detailDidChange);
-          this.set(this.ratioKey, 0);
-          this.on("change:" + this.ratioKey, this.detailDidChange);
-          this.detailDidChange();
-        }
       },
 
       bindEvents: function () {
@@ -450,6 +407,54 @@ white:true*/
       ratioKey: "billingRate",
 
       totalsMethod: "calculateHours",
+      
+      billableDidChange: function () {
+        var billable = this.get("billable"),
+          worksheet = this.getParent(),
+          task =  this.get("task"),
+          project = task ? task.get("project") : undefined,
+          employee = worksheet ? worksheet.get("employee") : undefined,
+          customer = this.get("customer"),
+          item = this.get("item"),
+          that = this,
+          options = {isJSON: true},
+          params,
+          i;
+        this.setReadOnly("billingRate", !billable);
+        if (!XT.session.privileges.get("CanViewRates")) { return; }
+
+        // Keep track of requests, we'll ignore stale ones
+        this._counter = _.isNumber(this._counter) ? this._counter + 1 : 0;
+        i = this._counter;
+
+        if (billable) {
+          params = {
+            isTime: this.isTime,
+            taskId: task ? task.id : undefined,
+            projectId: project ? project.id : undefined,
+            employeeId: employee ? employee.id : undefined,
+            customerId: customer ? customer.id : undefined,
+            itemId: item ? item.id : undefined
+          };
+
+          options.success = function (resp) {
+            var data = {};
+            if (i < that._counter) { return; }
+            that.off("change:" + that.ratioKey, that.detailDidChange);
+            data[that.ratioKey] = resp.rate;
+            data.billingCurrency = resp.currency || XT.baseCurrency();
+            that.set(data);
+            that.on("change:" + that.ratioKey, that.detailDidChange);
+            that.detailDidChange();
+          };
+          this.dispatch("XM.Worksheet", "getBillingRate", params, options);
+        } else {
+          this.off("change:" + this.ratioKey, this.detailDidChange);
+          this.set(this.ratioKey, 0);
+          this.on("change:" + this.ratioKey, this.detailDidChange);
+          this.detailDidChange();
+        }
+      },
 
       bindEvents: function () {
         XM.WorksheetDetail.prototype.bindEvents.apply(this, arguments);
@@ -630,39 +635,39 @@ white:true*/
       editableModel: "XM.Worksheet",
 
       canApprove: function (callback) {
-        return _canDo.call(this, "CanApprove", XM.Worksheet.OPEN, callback);
+        return _canDo.call(this, true, XM.Worksheet.OPEN, callback);
       },
 
       canClose: function (callback) {
-        return _canDo.call(this, "MaintainTimeExpense", XM.Worksheet.APPROVED, callback);
+        return _canDo.call(this, true, XM.Worksheet.APPROVED, callback);
       },
 
       canInvoice: function (callback) {
-        var priv = this.get("invoiced") === false ? "allowInvoicing" : false;
-        return _canDo.call(this, priv, XM.Worksheet.APPROVED, callback);
+        var qualifed = this.get("invoiced") === false;
+        return _canDo.call(this, qualifed, XM.Worksheet.APPROVED, callback);
       },
 
       canPost: function (callback) {
-        var priv = this.getValue("employee.isContractor") ||
-                   this.get("posted") ? false : "PostTimeSheets";
-        return _canDo.call(this, priv, XM.Worksheet.APPROVED, callback);
+        var qualifed = this.getValue("employee.isContractor") ||
+                   this.get("posted") ? false : true;
+        return _canDo.call(this, qualifed, XM.Worksheet.APPROVED, callback);
       },
 
       canUnapprove: function (callback) {
-        var priv = this.get("postedValue") || this.get("posted") ||
+        var qualifed = this.get("postedValue") || this.get("posted") ||
                    this.get("invoicedValue") || this.get("invoiced") ||
                    this.get("voucheredValue") || this.get("vouchered") ?
-                   false : "CanApprove";
-        return _canDo.call(this, priv, XM.Worksheet.APPROVED, callback);
+                   false : true;
+        return _canDo.call(this, qualifed, XM.Worksheet.APPROVED, callback);
       },
 
       canVoucher: function (callback) {
-        var priv = this.get("toVoucher") ? "allowVouchering" : false;
-        return _canDo.call(this, priv, XM.Worksheet.APPROVED, callback);
+        var qualifed = this.get("toVoucher") > 0;
+        return _canDo.call(this, qualifed, XM.Worksheet.APPROVED, callback);
       },
 
       couldDestroy: function (callback) {
-        return _canDo.call(this, "MaintainTimeExpense", XM.Worksheet.OPEN, callback);
+        return _canDo.call(this, true, XM.Worksheet.OPEN, callback);
       },
 
       doApprove: function (callback) {
@@ -695,9 +700,9 @@ white:true*/
     XM.WorksheetListItem = XM.WorksheetListItem.extend(XM.WorksheetMixin);
 
     /** @private */
-    var _canDo = function (priv, reqStatus, callback) {
+    var _canDo = function (qualified, reqStatus, callback) {
       var status = this.get("worksheetStatus"),
-        ret = XT.session.privileges.get(priv) && status === reqStatus;
+        ret = qualified && status === reqStatus;
       if (callback) {
         callback(ret);
       }

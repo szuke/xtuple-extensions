@@ -67,7 +67,7 @@ white:true*/
           }
         }
       };
-      XM.ModelMixin.dispatch('XM.Project', 'worksheetUsed',
+      XM.ModelMixin.dispatch("XM.Project", "worksheetUsed",
       [id], dispOptions);
     };
     
@@ -75,7 +75,7 @@ white:true*/
     // PROJECT TASK
     //
     
-    // Unfortunately classes below can't share much with abave because the private functions are different
+    // Unfortunately classes below can't share much with above because the private functions are different
     var _ptProto = XM.ProjectTask.prototype,
       _ptBindEvents = _ptProto.bindEvents,
       _ptStatusDidChange = _ptProto.statusDidChange;
@@ -125,42 +125,35 @@ white:true*/
       }
 
     });
-    
+
+
+    /**
+      @class
+
+      @extends XM.ProjectRelation
+    */
+    XM.WorksheetProjectRelation = XM.ProjectRelation.extend({
+      /** @scope XM.WorksheetProjectRelation.prototype */
+
+      recordType: "XM.WorksheetProjectRelation",
+
+      editableModel: "XM.Project"
+
+    });
+
     // ..........................................................
-    // TASK
+    // COLLECTIONS
     //
-    
-    var _tProto = XM.Task.prototype,
-      _tBindEvents = _tProto.bindEvents,
-      _tStatusDidChange = _tProto.statusDidChange;
-    
-    XM.Task = XM.Task.extend({
 
-      bindEvents: function () {
-        _tBindEvents.apply(this, arguments);
-        this.on("change:isSpecifiedRate", this.isSpecifiedRateDidChange);
-      },
+    /**
+      @class
 
-      isSpecifiedRateDidChange: function () {
-        var spec = this.get("isSpecifiedRate");
-        if (spec) {
-          this.set("billingRate", 0);
-          this.set("billingCurrency", XT.baseCurrency());
-        } else {
-          this.set("billingRate", null);
-          this.set("billingCurrency", null);
-        }
-        _specifiedSetReadOnly.apply(this);
-      },
+      @extends XM.Collection
+    */
+    XM.WorksheetProjectRelationCollection = XM.Collection.extend({
+      /** @scope XM.WorksheetProjectRelationCollection.prototype */
 
-      statusDidChange: function () {
-        _tStatusDidChange.apply(this, arguments);
-        var K = XM.Model,
-          status = this.getStatus();
-        if (status === K.READY_NEW || status === K.READY_CLEAN) {
-          _specifiedSetReadOnly.apply(this);
-        }
-      }
+      model: XM.WorksheetProjectRelation
 
     });
 
