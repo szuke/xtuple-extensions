@@ -91,7 +91,6 @@ trailing:true, white:true*/
       _.each(filterSet, function (filter, index) {
         query = index === 0 ? query + " WHERE (" : query;
         comma = index > 0 ? ", " : "";
-        //query += comma + filter;
         query += comma + filter.dimension + ".[" + filter.value + "]";
       });
       if (query.indexOf(" WHERE (") !== -1) {

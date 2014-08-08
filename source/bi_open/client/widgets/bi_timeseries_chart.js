@@ -165,7 +165,6 @@ trailing:true, white:true*/
         list: listKind,
         searchText: "",
         callback: callback,
-        //parameterItemValues: this.drillDown[0].parameters,
         parameterItemValues: parameterItemValues,
         conditions: [],
         query: null
