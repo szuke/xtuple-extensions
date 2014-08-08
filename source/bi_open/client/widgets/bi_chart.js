@@ -247,7 +247,12 @@ trailing:true, white:true*/
                 if (dimensionCode) {
                   comma = that.chartSubTitle.length > 0 ? ", ": "";
                   that.chartSubTitle += comma + ("_" + parm.attribute).loc() + ":" + parm.value.id;
-                  that.where.push(dimensionCode + ".[" + parm.value.id + "]");
+                  // notice where clauses only support =
+                  that.where.push(
+                      {attribute: parm.attribute,
+                       dimension: dimensionCode,
+                       operator: "=",
+                       value: parm.value.id});
                 }
               });
             this.updateQueries();
