@@ -104,8 +104,7 @@ trailing:true, white:true*/
           dimPicked = that.schema.getDimensionHier(that.getCube(), that.getDimension());
         this.inherited(arguments);
         _.each(this.where, function (filter, index) {
-          dimFilter = filter.substring(0, dimPicked.length);
-          if (dimFilter === dimPicked) {
+          if (filter.dimension === dimPicked) {
             that.where.splice(index, 1);
           }
         });

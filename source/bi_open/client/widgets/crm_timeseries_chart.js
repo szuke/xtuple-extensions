@@ -102,9 +102,9 @@ trailing:true, white:true*/
     kind: "XV.BiTimeSeriesChart",
     collection: "XM.AnalyticCollection",
     // Chart properties
-    chartTitle: "_next6Months".loc(),
+    chartTitle: "_next3Months".loc(),
     prefixChartTitle: "_active".loc(),
-    nextPeriods: 6,
+    nextPeriods: 4,
     parameterWidget: "XV.OpportunityChartParameters",
     drillDown: [
       {attr: "number",
@@ -146,7 +146,7 @@ trailing:true, white:true*/
       _.extend(new XT.mdxQueryTimeSeries(),
         {cube: "CROpportunity",
           where: [
-          "[Opportunity.Opportunity by Status by Stage].[Active]"
+          "[Opportunity.Opportunity by Status by Stage].[Opportunity Status].[Active]"
         ]
        })
       ],
