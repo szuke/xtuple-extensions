@@ -87,6 +87,9 @@ trailing:true, white:true*/
           this.setDimension(model.get("dimension"));
         }
         
+        // Set last filter uuid.  This will drive fetchCollection if a filter is defined
+        this.setLastFilter();
+        
         // If the measure and dimension are defined, fill in the queryTemplate
         // and ask the Collection to get data.
         if (this.getMeasure() && this.getDimension()) {

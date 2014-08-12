@@ -179,6 +179,13 @@ trailing:true, white:true*/
 
           // Set the parameterWidget for filters with last filter used
           this.$.filterDrawer.createComponent({name: "parms", kind: this.getParameterWidget()});
+          //this.$.filterDrawer.$.parms.setLastFilterUuid(this.model.get("uuidFilter"));
+        },
+        /**
+          Set last filter uuid.  Called by implementor create after everything is set up
+          for fetch collection as setLasterFilterUuid can drive a fetch.
+        */
+        setLastFilter: function () {
           this.$.filterDrawer.$.parms.setLastFilterUuid(this.model.get("uuidFilter"));
         },
         /**
