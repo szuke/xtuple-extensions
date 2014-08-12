@@ -146,7 +146,10 @@ trailing:true, white:true*/
       _.extend(new XT.mdxQueryTimeSeries(),
         {cube: "CROpportunity",
           where: [
-          "[Opportunity.Opportunity by Status by Stage].[Opportunity Status].[Active]"
+          {attribute: null,
+            dimension: "[Opportunity.Opportunity by Status by Stage].[Opportunity Status]",
+            operator: "=",
+            value: "Active"}
         ]
        })
       ],

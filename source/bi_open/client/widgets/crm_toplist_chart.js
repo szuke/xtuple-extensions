@@ -227,10 +227,15 @@ trailing:true, white:true*/
       queryTemplates: [
         _.extend(new XT.mdxQueryTopList(),
           {cube: "CROpportunity",
-             where: ["[Opportunity.Opportunity by Status by Stage].[Active]"]
+          where: [
+            {attribute: null,
+               dimension: "[Opportunity.Opportunity by Status by Stage].[Opportunity Status]",
+               operator: "=",
+               value: "Active"}
+          ]
           }
         )
-      ],
-    });
+        ],
+      });
 
   }());
