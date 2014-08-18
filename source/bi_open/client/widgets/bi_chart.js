@@ -179,6 +179,13 @@ trailing:true, white:true*/
 
           // Set the parameterWidget for filters with last filter used
           this.$.filterDrawer.createComponent({name: "parms", kind: this.getParameterWidget()});
+          //this.$.filterDrawer.$.parms.setLastFilterUuid(this.model.get("uuidFilter"));
+        },
+        /**
+          Set last filter uuid.  Called by implementor create after everything is set up
+          for fetch collection as setLasterFilterUuid can drive a fetch.
+        */
+        setLastFilter: function () {
           this.$.filterDrawer.$.parms.setLastFilterUuid(this.model.get("uuidFilter"));
         },
         /**
@@ -247,7 +254,12 @@ trailing:true, white:true*/
                 if (dimensionCode) {
                   comma = that.chartSubTitle.length > 0 ? ", ": "";
                   that.chartSubTitle += comma + ("_" + parm.attribute).loc() + ":" + parm.value.id;
-                  that.where.push(dimensionCode + ".[" + parm.value.id + "]");
+                  // notice where clauses only support =
+                  that.where.push(
+                      {attribute: parm.attribute,
+                       dimension: dimensionCode,
+                       operator: "=",
+                       value: parm.value.id});
                 }
               });
             this.updateQueries();
