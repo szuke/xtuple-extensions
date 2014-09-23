@@ -112,8 +112,8 @@ trailing:true, white:true*/
        collection: "XM.OpportunityRelationCollection",
        workspace: "XM.OpportunityRelation",
        parameters: [
-        {name: "fromStartDate", operator: ">=", value: new Date()},
-        {name: "toStartDate", operator: "<=", value: new Date()},
+        {name: "fromTargetDate", operator: ">=", value: new Date()},
+        {name: "toTargetDate", operator: "<=", value: new Date()},
         {name: "showInactive", operator: "=", value: false}
       ],
      }
