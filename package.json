@@ -22,7 +22,7 @@
   },
   "optionalDependencies": {},
   "engines": {
-    "node": "0.8.x"
+    "node": "0.10.32"
   },
   "scripts": {
     "test-build": "./node_modules/.bin/mocha -R spec test/build/build_app.js",
